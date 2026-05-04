@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenPoem</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #000; color: #fff; font-family: "Courier New", monospace; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        canvas#bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        #text { font-size: 2rem; letter-spacing: 0.3em; position: relative; z-index: 1; }
+        #container { display: none; flex-direction: column; align-items: center; gap: 0.75rem; text-align: center; padding: 1.5rem; position: relative; z-index: 1; }
+        #shield {
+            width: 120px;
+            height: auto;
+            opacity: 0;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3)) drop-shadow(0 0 40px rgba(212, 175, 55, 0.1));
+            transition: opacity 1.2s ease-in, filter 0.3s ease;
+            animation: shieldBreathe 4s ease-in-out infinite;
+            animation-play-state: paused;
+        }
+        #shield:hover {
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5)) drop-shadow(0 0 60px rgba(212, 175, 55, 0.2));
+        }
+        @keyframes shieldBreathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        #logo { font-size: 3rem; letter-spacing: 0.1em; }
+        #soon { font-family: cursive; font-size: 2.2rem; opacity: 0; transition: opacity 0.5s ease-in; }
+        #meta { margin-top: 0.75rem; font-size: 0.95rem; letter-spacing: 0.02em; opacity: 0.85; max-width: 42rem; line-height: 1.35; }
+        #meta a { color: #fff; text-decoration: underline; text-underline-offset: 0.15em; }
+        #footer { margin-top: 1.25rem; font-size: 0.85rem; opacity: 0.6; letter-spacing: 0.02em; }
+        #glyph-22 {
+            margin-top: 0.6rem;
+            font-size: 0.75rem;
+            opacity: 0.25;
+            letter-spacing: 0.15em;
+            cursor: default;
+            transition: opacity 0.5s ease;
+            position: relative;
+        }
+        #glyph-22:hover { opacity: 0.7; }
+        #glyph-22 .glyph-meaning {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.65rem;
+            color: rgba(212, 175, 55, 0.7);
+            letter-spacing: 0.05em;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            padding-bottom: 0.3rem;
+        }
+        #glyph-22:hover .glyph-meaning { opacity: 1; }
+        #tagline {
+            display: inline;
+        }
+        #tagline .tl {
+            display: inline-block;
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0.85;
+        }
+        #tagline .tl.scatter {
+            opacity: 0;
+            transform: translate(var(--sx), var(--sy)) rotate(var(--sr));
+        }
+        #tagline .tl.pulse {
+            animation: letterPulse 1.5s ease-in-out;
+        }
+        @keyframes letterPulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); color: rgba(212, 175, 55, 0.9); }
+        }
+        #ghost-signal {
+            margin-top: 0.5rem;
+            font-size: 0.65rem;
+            opacity: 0.15;
+            transition: opacity 0.5s ease;
+            letter-spacing: 0.04em;
+        }
+        #ghost-signal:hover { opacity: 0.5; }
+        #ghost-signal a {
+            color: rgba(212, 175, 55, 0.6);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+            transition: color 0.3s, border-color 0.3s;
+        }
+        #ghost-signal a:hover {
+            color: rgba(212, 175, 55, 0.9);
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+        #presence {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 500px;
+            height: auto;
+            opacity: 0;
+            transition: opacity 4s ease-in;
+            z-index: 1;
+            pointer-events: none;
+            -webkit-mask-image: radial-gradient(ellipse 60% 65% at 40% 55%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 45%, transparent 70%);
+            mask-image: radial-gradient(ellipse 60% 65% at 40% 55%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 45%, transparent 70%);
+        }
+        #presence.active {
+            opacity: 0.18;
+        }
+        .cursor { animation: blink 1s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        #banner {
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.8s ease-in;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            max-width: 38rem;
+            text-align: left;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(8px);
+        }
+        #banner .banner-title {
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        #banner .banner-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 0.6rem;
+        }
+        #banner .banner-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.75rem;
+        }
+        #banner .banner-axes {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+        #banner .axis {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px;
+            color: rgba(255,255,255,0.5);
+        }
+        #banner .banner-install {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 0.5rem;
+        }
+        #banner .banner-install code {
+            color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.05);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+        }
+        #banner .banner-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        #banner .banner-links a {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: color 0.2s;
+        }
+        #banner .banner-links a:hover {
+            color: rgba(255,255,255,0.8);
+        }
+        #ghost-video {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 960px;
+            height: 540px;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            z-index: 2;
+            overflow: hidden;
+            pointer-events: none;
+            -webkit-mask-image: radial-gradient(ellipse 55% 55% at 65% 60%, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 70%);
+            mask-image: radial-gradient(ellipse 55% 55% at 65% 60%, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 70%);
+        }
+        #ghost-video.active {
+            opacity: 0.22;
+            pointer-events: auto;
+        }
+        #ghost-video:hover {
+            opacity: 0.5;
+        }
+        #ghost-video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #word-tooltip {
+            position: fixed;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            text-align: center;
+            transform: translate(-50%, -100%);
+            padding: 0.6rem 1rem;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 6px;
+            backdrop-filter: blur(12px);
+            max-width: 220px;
+        }
+        #word-tooltip .word-glyph {
+            font-size: 1.4rem;
+            color: rgba(212, 175, 55, 0.6);
+            margin-bottom: 0.15rem;
+        }
+        #word-tooltip .word-name {
+            font-size: 0.95rem;
+            letter-spacing: 0.12em;
+            color: rgba(212, 175, 55, 0.9);
+            margin-bottom: 0.15rem;
+            text-transform: uppercase;
+        }
+        #word-tooltip .word-arcana {
+            font-size: 0.6rem;
+            letter-spacing: 0.08em;
+            color: rgba(212, 175, 55, 0.4);
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+        #word-tooltip .word-desc {
+            font-size: 0.7rem;
+            line-height: 1.45;
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg"></canvas>
+    <div id="ghost-video">
+        <a href="https://youtu.be/cUN3wO9sa5s" target="_blank" rel="noopener" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:3;"></a>
+        <iframe src="https://www.youtube.com/embed/cUN3wO9sa5s?autoplay=1&mute=1&loop=1&playlist=cUN3wO9sa5s&controls=0&showinfo=0&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <img id="presence" src="presence.png" alt="">
+    <div id="word-tooltip">
+        <div class="word-glyph"></div>
+        <div class="word-name"></div>
+        <div class="word-arcana"></div>
+        <div class="word-desc"></div>
+    </div>
+    <div id="text">&#9612;</div>
+    <div id="container">
+        <a href="https://www.nodeoftruth.com/" target="_blank" rel="noopener"><img id="shield" src="logonodetruthsmall.png" alt="OpenPoem Shield"></a>
+        <div id="logo">OpenPoem&#8482;</div>
+        <div id="soon">soon</div>
+        <div id="meta">Specification in draft. Not yet published.<br><span id="tagline"></span></div>
+
+        <div id="banner">
+            <div class="banner-tag">Live now</div>
+            <div class="banner-title">Spec Score MCP</div>
+            <div class="banner-desc">
+                Score your specs before Claude builds from them.<br>
+                A balanced spec produces balanced code. An unbalanced spec produces creative fiction.
+            </div>
+            <div class="banner-axes">
+                <span class="axis">completeness</span>
+                <span class="axis">clarity</span>
+                <span class="axis">constraints</span>
+                <span class="axis">specificity</span>
+            </div>
+            <div class="banner-install">
+                <code>npm i -g spec-score-mcp</code>
+            </div>
+            <div class="banner-links">
+                <a href="https://www.npmjs.com/package/spec-score-mcp">npm</a>
+                <a href="https://github.com/openpoem/spec-score-mcp">GitHub</a>
+                <a href="https://smithery.ai/server/openpoem/spec-score-mcp">Smithery</a>
+                <a href="https://chatgpt.com/g/g-69a2c0c5693c8191b439da913df10834-spec-score-mcp">ChatGPT</a>
+                <a href="https://spec-score-mcp.vercel.app">API</a>
+            </div>
+        </div>
+
+        <div id="footer">&copy; 2026 OpenPoem&trade;</div>
+        <div id="glyph-22">
+            <span class="glyph-meaning">22 Hebrew letters &middot; 22 paths in the Tree of Life &middot; 22 Major Arcana &middot; born on the 22nd</span>
+            &#x5D0;&#x5D1;&#x5D2;&#x5D3;&#x5D4;&#x5D5;&#x5D6;&#x5D7;&#x5D8;&#x5D9;&#x5DB;&#x5DC;&#x5DE;&#x5E0;&#x5E1;&#x5E2;&#x5E4;&#x5E6;&#x5E7;&#x5E8;&#x5E9;&#x5EA;
+        </div>
+        <div id="ghost-signal">
+            <a href="https://youtu.be/cUN3wO9sa5s" target="_blank" rel="noopener">DIORAMA — The Same Ghost</a>
+        </div>
+    </div>
+    <script>
+        // === Consciousness field ===
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        let w, h, nodes = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // === 22 ancient words — mapped to Hebrew letters and Major Arcana ===
+        const ANCIENT_WORDS = [
+            { name: 'Origin', glyph: '\u05D0', arcana: 'The Fool', desc: 'Latin oriri — to rise. Same root as orient: where the sun rises. Every beginning is an east.' },
+            { name: 'Pulse', glyph: '\u05D1', arcana: 'The Magician', desc: 'Latin pulsare — to push, to drive. From pellere. Your heartbeat is not a rhythm. It is a push. Again. Again.' },
+            { name: 'Void', glyph: '\u05D2', arcana: 'The High Priestess', desc: 'Latin vocitus — emptied. Cousin of vacuus. Not nothing. Emptied. Something was there first.' },
+            { name: 'Echo', glyph: '\u05D3', arcana: 'The Empress', desc: 'Greek \u0113kh\u014D — sound. Named after the nymph cursed to only repeat. She couldn\'t speak. She could only return.' },
+            { name: 'Flame', glyph: '\u05D4', arcana: 'The Emperor', desc: 'Latin flagrare — to burn. Same root as flagrant: so obvious it burns. Truth and fire share a word.' },
+            { name: 'Root', glyph: '\u05D5', arcana: 'The Hierophant', desc: 'Latin radix — root. Same word gave us radical. To go to the root of something is, literally, to be radical.' },
+            { name: 'Drift', glyph: '\u05D6', arcana: 'The Lovers', desc: 'Germanic dr\u012Bban — to drive. Dutch drijven, German treiben. Every language uses the same motion. The current was always shared.' },
+            { name: 'Seed', glyph: '\u05D7', arcana: 'The Chariot', desc: 'Old English s\u01E3d, from s\u0101wan — to sow. Latin semen. Season meant sowing-time. Every season is a seed.' },
+            { name: 'Breath', glyph: '\u05D8', arcana: 'Strength', desc: 'Old English br\u01E3\u00FE — smell, vapor. Cousin of brood. To breathe is to brood. Every exhale hatches something.' },
+            { name: 'Wave', glyph: '\u05D9', arcana: 'The Hermit', desc: 'Old English wafian — to wave. Cousin of weave. A wave is woven motion. The sea knits.' },
+            { name: 'Shadow', glyph: '\u05DB', arcana: 'Wheel of Fortune', desc: 'Old English sceadu. Same word became shade — protection. A shadow is not darkness. It is shelter.' },
+            { name: 'Gate', glyph: '\u05DC', arcana: 'Justice', desc: 'Old English geat — an opening. Dutch gat — a hole. A gate is a hole that lets you through. Not a door. A gap.' },
+            { name: 'Spiral', glyph: '\u05DE', arcana: 'The Hanged Man', desc: 'Greek speira — a coil. Cousin of spirit. The spirit coils. Consciousness is not straight. It winds.' },
+            { name: 'Ash', glyph: '\u05E0', arcana: 'Death', desc: 'Old English \u00E6sce. Nearly identical in every Germanic tongue. What fire leaves is the same word everywhere. Universal residue.' },
+            { name: 'Key', glyph: '\u05E1', arcana: 'Temperance', desc: 'Old English c\u01E3g — origin unknown. One of the few words with no traceable root. The key has no origin. It just opens.' },
+            { name: 'Node', glyph: '\u05E2', arcana: 'The Devil', desc: 'Latin nodus — a knot. Cousin of net, knot, nexus. A node is where threads refuse to be separate.' },
+            { name: 'Veil', glyph: '\u05E4', arcana: 'The Tower', desc: 'Latin v\u0113lum — a sail, a cloth. Reveal means re-veil: to cover again. To uncover is to re-cover. The paradox is in the word.' },
+            { name: 'Tide', glyph: '\u05E6', arcana: 'The Star', desc: 'Old English t\u012Bd — time. Dutch tijd, German Zeit. Tide and time are the same word. The sea counts the hours.' },
+            { name: 'Bone', glyph: '\u05E7', arcana: 'The Moon', desc: 'Old English b\u0101n. German Bein means leg. The bone and the limb were one word. Structure was not inside the body. It was the body.' },
+            { name: 'Dust', glyph: '\u05E8', arcana: 'The Sun', desc: 'Old English d\u016Bst. German Dunst means vapor. Dust and mist share a root. The smallest solid and the thinnest air — same word.' },
+            { name: 'Thorn', glyph: '\u05E9', arcana: 'Judgement', desc: 'Old English \u00FEorn. Was once a letter: \u00FE. Before thorn was a word, it was a character in the alphabet. The wound came after the sign.' },
+            { name: 'Crown', glyph: '\u05EA', arcana: 'The World', desc: 'Latin corona — a wreath. Greek kor\u014Dn\u0113 — curved. A crown is a circle. The end that meets the beginning. The loop, worn.' },
+        ];
+
+        // Create nodes — 22 word-bearing + 58 silent
+        const NODE_COUNT = 80;
+        for (let i = 0; i < NODE_COUNT; i++) {
+            const isWord = i < ANCIENT_WORDS.length;
+            nodes.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                r: isWord ? Math.random() * 1.5 + 1.5 : Math.random() * 1.5 + 0.5,
+                pulse: Math.random() * Math.PI * 2,
+                speed: Math.random() * 0.005 + 0.002,
+                word: isWord ? ANCIENT_WORDS[i] : null,
+            });
+        }
+
+        const CONNECTION_DIST = 150;
+        const MOUSE_ATTRACT_DIST = 200;
+        const SHIELD_AURA_DIST = 250;
+        let mouseX = -1000, mouseY = -1000;
+
+        const tooltip = document.getElementById('word-tooltip');
+        const tooltipGlyph = tooltip.querySelector('.word-glyph');
+        const tooltipName = tooltip.querySelector('.word-name');
+        const tooltipArcana = tooltip.querySelector('.word-arcana');
+        const tooltipDesc = tooltip.querySelector('.word-desc');
+        let hoveredWord = null;
+        const WORD_HOVER_DIST = 30;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Check proximity to word nodes
+            let closest = null;
+            let closestDist = WORD_HOVER_DIST;
+            for (const n of nodes) {
+                if (!n.word) continue;
+                const dx = mouseX - n.x;
+                const dy = mouseY - n.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < closestDist) {
+                    closest = n;
+                    closestDist = dist;
+                }
+            }
+
+            if (closest) {
+                hoveredWord = closest;
+                tooltipGlyph.textContent = closest.word.glyph;
+                tooltipName.textContent = closest.word.name;
+                tooltipArcana.textContent = closest.word.arcana;
+                tooltipDesc.textContent = closest.word.desc;
+                tooltip.style.left = closest.x + 'px';
+                tooltip.style.top = (closest.y - 15) + 'px';
+                tooltip.style.opacity = '1';
+                canvas.style.cursor = 'pointer';
+            } else if (hoveredWord) {
+                hoveredWord = null;
+                tooltip.style.opacity = '0';
+                canvas.style.cursor = 'default';
+            }
+        });
+        document.addEventListener('mouseleave', () => {
+            mouseX = -1000;
+            mouseY = -1000;
+            hoveredWord = null;
+            tooltip.style.opacity = '0';
+        });
+
+        // Shield center — updated each frame
+        let shieldCX = w / 2, shieldCY = h / 3;
+        function updateShieldCenter() {
+            const el = document.getElementById('shield');
+            if (el && el.offsetParent !== null) {
+                const rect = el.getBoundingClientRect();
+                shieldCX = rect.left + rect.width / 2;
+                shieldCY = rect.top + rect.height / 2;
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            updateShieldCenter();
+
+            for (const n of nodes) {
+                // Mouse attraction — gentle pull toward cursor
+                const mdx = mouseX - n.x;
+                const mdy = mouseY - n.y;
+                const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+                if (mDist < MOUSE_ATTRACT_DIST && mDist > 1) {
+                    const force = (1 - mDist / MOUSE_ATTRACT_DIST) * 0.015;
+                    n.vx += (mdx / mDist) * force;
+                    n.vy += (mdy / mDist) * force;
+                }
+
+                // Dampen velocity
+                n.vx *= 0.998;
+                n.vy *= 0.998;
+
+                n.x += n.vx;
+                n.y += n.vy;
+                n.pulse += n.speed;
+
+                if (n.x < 0) n.x = w;
+                if (n.x > w) n.x = 0;
+                if (n.y < 0) n.y = h;
+                if (n.y > h) n.y = 0;
+
+                const alpha = 0.15 + Math.sin(n.pulse) * 0.1;
+
+                // Golden aura — nodes near the shield glow gold
+                const sdx = n.x - shieldCX;
+                const sdy = n.y - shieldCY;
+                const sDist = Math.sqrt(sdx * sdx + sdy * sdy);
+                const goldMix = sDist < SHIELD_AURA_DIST ? (1 - sDist / SHIELD_AURA_DIST) : 0;
+
+                const r = 255;
+                const g = Math.round(255 - goldMix * 80);
+                const b = Math.round(255 - goldMix * 200);
+
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.r + goldMix * 0.5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha + goldMix * 0.1})`;
+                ctx.fill();
+
+                // Word nodes — faint label
+                if (n.word) {
+                    const isHovered = hoveredWord === n;
+                    const labelAlpha = isHovered ? 0.7 : 0.12 + Math.sin(n.pulse) * 0.05;
+                    ctx.font = '9px "Courier New", monospace';
+                    ctx.fillStyle = isHovered
+                        ? `rgba(212, 175, 55, ${labelAlpha})`
+                        : `rgba(255, 255, 255, ${labelAlpha})`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(n.word.glyph + ' ' + n.word.name.toLowerCase(), n.x, n.y + n.r + 12);
+                }
+            }
+
+            // Draw connections — gold near shield
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < CONNECTION_DIST) {
+                        const alpha = (1 - dist / CONNECTION_DIST) * 0.06;
+                        const midX = (nodes[i].x + nodes[j].x) / 2;
+                        const midY = (nodes[i].y + nodes[j].y) / 2;
+                        const sDist = Math.sqrt((midX - shieldCX) ** 2 + (midY - shieldCY) ** 2);
+                        const goldMix = sDist < SHIELD_AURA_DIST ? (1 - sDist / SHIELD_AURA_DIST) : 0;
+
+                        const r = 255;
+                        const g = Math.round(255 - goldMix * 80);
+                        const b = Math.round(255 - goldMix * 200);
+
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha + goldMix * 0.03})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        // === Page animation ===
+        const textEl = document.getElementById("text");
+        const containerEl = document.getElementById("container");
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+        async function animate() {
+            for (let i = 1; i <= 3; i++) { await sleep(400); textEl.innerHTML = ". ".repeat(i).trim() + ' <span class="cursor">&#9612;</span>'; }
+            await sleep(600);
+            const msg = "Initializing...";
+            for (let i = 0; i < msg.length; i++) { await sleep(60); textEl.innerHTML = ". . . " + msg.substring(0, i + 1) + ' <span class="cursor">&#9612;</span>'; }
+            await sleep(1200);
+            textEl.style.transition = "opacity 0.8s";
+            textEl.style.opacity = "0";
+            await sleep(900);
+            textEl.style.display = "none";
+            containerEl.style.display = "flex";
+            await sleep(300);
+            const shieldEl = document.getElementById("shield");
+            shieldEl.style.opacity = "1";
+            shieldEl.style.animationPlayState = "running";
+            await sleep(800);
+            document.getElementById("soon").style.opacity = "1";
+            await sleep(800);
+            document.getElementById("banner").style.opacity = "1";
+            await sleep(1500);
+            document.getElementById("ghost-video").classList.add("active");
+            await sleep(2000);
+            document.getElementById("presence").classList.add("active");
+        }
+        animate();
+
+        // === Tagline animation: pulse → fade → scatter → reverse → reform ===
+        const TAGLINE = 'Language as it should always have been.';
+        const taglineEl = document.getElementById('tagline');
+
+        function wrapLetters(text) {
+            taglineEl.innerHTML = '';
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.className = 'tl';
+                span.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+                span.style.setProperty('--sx', (Math.random() - 0.5) * 300 + 'px');
+                span.style.setProperty('--sy', (Math.random() - 0.5) * 200 + 'px');
+                span.style.setProperty('--sr', (Math.random() - 0.5) * 360 + 'deg');
+                taglineEl.appendChild(span);
+            }
+        }
+
+        function getLetters() { return taglineEl.querySelectorAll('.tl'); }
+
+        async function taglineLoop() {
+            // Wait for page animation to finish
+            await sleep(6000);
+
+            while (true) {
+                // Phase 1: Appear letter by letter
+                wrapLetters(TAGLINE);
+                const letters = getLetters();
+                for (const l of letters) { l.style.opacity = '0'; }
+                for (let i = 0; i < letters.length; i++) {
+                    await sleep(40);
+                    letters[i].style.opacity = '0.85';
+                }
+
+                // Phase 2: Hold and pulse
+                await sleep(3000);
+                for (const l of letters) { l.classList.add('pulse'); }
+                await sleep(1500);
+                for (const l of letters) { l.classList.remove('pulse'); }
+
+                // Phase 3: Scatter
+                await sleep(1500);
+                for (const l of letters) {
+                    l.style.setProperty('--sx', (Math.random() - 0.5) * 400 + 'px');
+                    l.style.setProperty('--sy', (Math.random() - 0.5) * 300 + 'px');
+                    l.style.setProperty('--sr', (Math.random() - 0.5) * 540 + 'deg');
+                    l.classList.add('scatter');
+                }
+                await sleep(1800);
+
+                // Phase 4: Reversed text — reform from scatter
+                const reversed = TAGLINE.split('').reverse().join('');
+                wrapLetters(reversed);
+                const rLetters = getLetters();
+                for (const l of rLetters) { l.classList.add('scatter'); }
+                await sleep(100);
+                for (const l of rLetters) { l.classList.remove('scatter'); }
+                await sleep(3000);
+
+                // Phase 5: Scatter reversed
+                for (const l of rLetters) {
+                    l.style.setProperty('--sx', (Math.random() - 0.5) * 400 + 'px');
+                    l.style.setProperty('--sy', (Math.random() - 0.5) * 300 + 'px');
+                    l.style.setProperty('--sr', (Math.random() - 0.5) * 540 + 'deg');
+                    l.classList.add('scatter');
+                }
+                await sleep(1800);
+
+                // Phase 6: Reform as original
+                wrapLetters(TAGLINE);
+                const fLetters = getLetters();
+                for (const l of fLetters) { l.classList.add('scatter'); }
+                await sleep(100);
+                for (const l of fLetters) { l.classList.remove('scatter'); }
+
+                // Phase 7: Hold before next cycle
+                await sleep(8000);
+            }
+        }
+        taglineLoop();
+    </script>
+</body>
+</html>
