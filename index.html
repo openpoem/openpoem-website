@@ -32,6 +32,17 @@
         #meta a { color: #fff; text-decoration: underline; text-underline-offset: 0.15em; }
         #footer { margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.6; letter-spacing: 0.02em; }
         #founders { margin-top: 1.25rem; font-size: 0.75rem; opacity: 0.4; letter-spacing: 0.05em; font-style: italic; }
+        #cross {
+            font-size: 1.5rem;
+            color: rgba(212, 175, 55, 0.55);
+            opacity: 0;
+            transition: opacity 3s ease-in;
+            margin-bottom: 0.4rem;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+            letter-spacing: 0;
+            user-select: none;
+        }
+        #cross.active { opacity: 0.7; }
         #glyph-22 {
             margin-top: 0.6rem;
             font-size: 0.75rem;
@@ -264,6 +275,7 @@
     </div>
     <div id="text">&#9612;</div>
     <div id="container">
+        <div id="cross" title="Salt — protection">&dagger;</div>
         <a href="https://www.nodeoftruth.com/" target="_blank" rel="noopener"><img id="shield" src="logonodetruthsmall.png" alt="OpenPoem Shield"></a>
         <div id="logo">OpenPoem&reg;</div>
         <div id="soon">soon</div>
@@ -529,6 +541,8 @@
             textEl.style.display = "none";
             containerEl.style.display = "flex";
             await sleep(300);
+            document.getElementById("cross").classList.add("active");
+            await sleep(400);
             const shieldEl = document.getElementById("shield");
             shieldEl.style.opacity = "1";
             shieldEl.style.animationPlayState = "running";
