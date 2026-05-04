@@ -1,4 +1,4 @@
-# OpenPoem™
+# OpenPoem®
 
 The language before the language.
 
@@ -21,4 +21,4 @@ Configured for Vercel via `vercel.json`. Push to `main` and it deploys.
 
 ## License
 
-© 2026 OpenPoem™. All rights reserved.
+© 2026 OpenPoem®. All rights reserved.
