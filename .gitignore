@@ -1,0 +1,21 @@
+.vercel
+dialogue/
+.claude/
+.DS_Store
+
+# Deck pages stay local, out of the repo.
+deck/
+deck-agents/
+deck-language/
+
+# Photos stay local, out of the repo. The two the live site needs are kept.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+!ron.png
+!ron-portrait.png
+!two-ships.png
+!signal-banner.png
+!sovereign/ron-portrait.png

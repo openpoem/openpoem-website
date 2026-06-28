@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenPoem — Private AI for regulated industries</title>
+    <meta name="description" content="Enterprise-grade private AI that runs on your own data. Built for banking, accountancy and regulated organisations.">
+    <style>
+        :root{
+            --bg:#ffffff; --bg-alt:#f5f7fa; --ink:#0f2540; --text:#48566a;
+            --muted:#7b8794; --accent:#b07d2b; --cta:#0f2540; --border:#e4e8ee; --radius:10px;
+        }
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        html{ scroll-behavior:smooth; }
+        body{
+            background:var(--bg); color:var(--text);
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+            -webkit-font-smoothing:antialiased; line-height:1.65; font-size:16px;
+        }
+        .container{ max-width:64rem; margin:0 auto; padding:0 1.5rem; }
+        h1,h2,h3{ color:var(--ink); font-weight:600; line-height:1.2; letter-spacing:-0.01em; }
+        a{ color:var(--ink); }
+        .eyebrow{ font-size:0.74rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:0.9rem; }
+
+        /* Header */
+        .site-header{ position:sticky; top:0; z-index:30; background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); }
+        .site-header .container{ display:flex; align-items:center; justify-content:space-between; height:4rem; }
+        .wordmark{ font-size:1.15rem; font-weight:700; color:var(--ink); letter-spacing:0.02em; text-decoration:none; }
+        .header-right{ display:flex; align-items:center; gap:1rem; }
+        .lang-toggle{ display:flex; gap:0.15rem; border:1px solid var(--border); border-radius:6px; padding:0.15rem; background:#fff; }
+        .lang-toggle button{ font-family:inherit; font-size:0.72rem; letter-spacing:0.06em; color:var(--muted); background:transparent; border:none; border-radius:4px; padding:0.3rem 0.55rem; cursor:pointer; transition:color .15s, background .15s; }
+        .lang-toggle button.active{ color:#fff; background:var(--cta); font-weight:600; }
+        .lang-toggle button:hover:not(.active){ color:var(--ink); }
+
+        /* Buttons */
+        .btn{ display:inline-block; font-size:0.92rem; font-weight:600; text-decoration:none; border-radius:7px; padding:0.8rem 1.5rem; cursor:pointer; border:1px solid transparent; transition:background .15s, color .15s, border-color .15s; font-family:inherit; }
+        .btn-primary{ background:var(--cta); color:#fff; border-color:var(--cta); }
+        .btn-primary:hover{ background:#163457; }
+        .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--border); }
+        .btn-ghost:hover{ border-color:var(--ink); }
+        .header-right .btn{ padding:0.5rem 1rem; font-size:0.85rem; }
+
+        /* Hero */
+        .hero{ position:relative; overflow:hidden; padding:5rem 0 3.5rem; text-align:center; }
+        .hero .container{ position:relative; z-index:1; }
+        /* Ambient gradient aura — slow morphing navy/gold blobs behind the hero */
+        .hero-aura{ position:absolute; inset:-20% -10%; z-index:0; pointer-events:none; overflow:hidden; }
+        .hero-aura::after{ /* soft white veil keeps hero text crisp */
+            content:""; position:absolute; inset:0;
+            background:radial-gradient(ellipse at center, rgba(255,255,255,0) 30%, rgba(255,255,255,0.65) 100%); }
+        .hero-aura .blob{ position:absolute; border-radius:50%; filter:blur(60px); opacity:0.55;
+            will-change:transform; transform:translateZ(0); }
+        .hero-aura .b1{ width:42vw; height:42vw; left:8%; top:-8%;
+            background:radial-gradient(circle at 30% 30%, rgba(15,37,64,0.30), rgba(15,37,64,0) 70%);
+            animation:auraDrift1 26s ease-in-out infinite; }
+        .hero-aura .b2{ width:38vw; height:38vw; right:6%; top:0%;
+            background:radial-gradient(circle at 60% 40%, rgba(176,125,43,0.28), rgba(176,125,43,0) 70%);
+            animation:auraDrift2 32s ease-in-out infinite; }
+        .hero-aura .b3{ width:34vw; height:34vw; left:38%; bottom:-22%;
+            background:radial-gradient(circle at 50% 50%, rgba(15,37,64,0.18), rgba(176,125,43,0.12) 55%, rgba(255,255,255,0) 72%);
+            animation:auraDrift3 38s ease-in-out infinite; }
+        @keyframes auraDrift1{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(6%,4%) scale(1.12); } }
+        @keyframes auraDrift2{ 0%,100%{ transform:translate(0,0) scale(1.05); } 50%{ transform:translate(-7%,5%) scale(0.92); } }
+        @keyframes auraDrift3{ 0%,100%{ transform:translate(-3%,0) scale(1); } 50%{ transform:translate(5%,-6%) scale(1.15); } }
+        @media (prefers-reduced-motion:reduce){ .hero-aura .blob{ animation:none; } }
+        .hero h1{ font-size:clamp(2rem,5vw,3.1rem); max-width:40rem; margin:0 auto 1.4rem; }
+        .hero .hero-sub{ font-size:1.12rem; max-width:38rem; margin:0 auto 2rem; color:var(--text); }
+        .hero-cta{ display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; }
+        .sectors{ display:flex; gap:0.5rem 2rem; justify-content:center; flex-wrap:wrap; margin-top:3rem; font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+        .sectors span::before{ content:"·"; margin-right:2rem; color:var(--border); }
+        .sectors span:first-child::before{ content:""; margin:0; }
+
+        /* Sections */
+        .section{ padding:4.5rem 0; }
+        .section-alt{ background:var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+        .section-head{ max-width:38rem; margin:0 auto 2.8rem; text-align:center; }
+        .section-head h2{ font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:0.8rem; }
+        .section-head p{ font-size:1.05rem; color:var(--text); }
+
+        /* Cards */
+        .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1.2rem; }
+        .card{ background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:1.6rem; }
+        .section-alt .card{ background:#fff; }
+        .card h3{ font-size:1.15rem; margin-bottom:0.6rem; }
+        .card p{ font-size:0.95rem; color:var(--text); }
+        .card .card-mark{ width:2.2rem; height:2.2rem; border-radius:7px; background:rgba(176,125,43,0.1); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; margin-bottom:1rem; }
+
+        /* Steps */
+        .steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:1.2rem; counter-reset:step; }
+        .step{ padding-top:1.2rem; border-top:2px solid var(--accent); }
+        .step .step-n{ font-size:0.78rem; letter-spacing:0.1em; color:var(--accent); font-weight:700; }
+        .step h3{ font-size:1.1rem; margin:0.5rem 0 0.5rem; }
+        .step p{ font-size:0.92rem; color:var(--text); }
+        .appr-mcp{ text-align:center; margin-top:2rem; font-size:0.95rem; color:var(--text); }
+        .appr-mcp a{ color:var(--accent); font-weight:600; text-decoration:none; white-space:nowrap; }
+        .appr-mcp a:hover{ text-decoration:underline; }
+        .stat-strip{ display:flex; flex-wrap:wrap; gap:1.5rem 3rem; justify-content:center; margin-top:2.4rem; }
+        .stat{ text-align:center; }
+        .stat .stat-n{ font-size:1.7rem; font-weight:700; color:var(--ink); letter-spacing:-0.01em; }
+        .stat .stat-l{ font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-top:0.3rem; }
+        .infra-audit{ text-align:center; max-width:42rem; margin:2rem auto 0; font-size:0.95rem; color:var(--text); }
+
+
+        /* Pooling */
+        .pool-wrap{ max-width:46rem; margin:0 auto; }
+        .pool-diagram{ width:100%; height:auto; display:block; border:1px solid var(--border); border-radius:var(--radius); background:#fff; }
+        .pool-points{ display:grid; grid-template-columns:repeat(auto-fit,minmax(12rem,1fr)); gap:1.4rem; margin-top:1.9rem; }
+        .pool-point{ padding-top:0.9rem; border-top:2px solid var(--accent); }
+        .pool-point h3{ font-size:1rem; margin-bottom:0.35rem; }
+        .pool-point p{ font-size:0.9rem; color:var(--text); }
+
+        /* Configure band */
+        .configure-band{ text-align:center; }
+        .configure-band .btn{ margin-top:0.3rem; }
+
+        /* Manifesto */
+        .manifesto{ background:var(--ink); text-align:center; }
+        .manifesto .container{ max-width:42rem; }
+        .manifesto p{ font-size:1.1rem; line-height:1.85; color:rgba(255,255,255,0.78); margin:0; }
+        .manifesto .m-ask{ color:rgba(255,255,255,0.55); margin-top:1.6rem; }
+        .manifesto .m-q{ font-size:clamp(1.6rem,4vw,2.2rem); color:var(--accent); font-weight:600; letter-spacing:-0.01em; line-height:1.25; margin:0.5rem 0 1.6rem; }
+
+        /* About */
+        .about-grid{ display:grid; grid-template-columns:minmax(0,1fr) 16rem; gap:3rem; align-items:center; }
+        .about-text h2{ font-size:clamp(1.6rem,4vw,2.2rem); margin-bottom:1rem; }
+        .about-text p{ font-size:1.05rem; }
+        .about-photo img{ width:100%; border-radius:var(--radius); border:1px solid var(--border); display:block; }
+        .about-role{ margin-top:0.8rem; font-size:0.85rem; color:var(--muted); letter-spacing:0.02em; }
+        @media(max-width:640px){ .about-grid{ grid-template-columns:1fr; } .about-photo{ max-width:14rem; } }
+
+        /* Tools */
+        .tool-card code{ font-size:0.78rem; background:var(--bg-alt); border:1px solid var(--border); border-radius:5px; padding:0.5rem 0.7rem; display:block; margin:0.8rem 0; color:var(--ink); overflow-x:auto; }
+        .tool-card .links{ display:flex; gap:1rem; }
+        .tool-card .links a{ font-size:0.85rem; color:var(--accent); text-decoration:none; font-weight:600; }
+        .tool-card .links a:hover{ text-decoration:underline; }
+
+        /* Mark + footer */
+        .mark-band{ text-align:center; padding:3rem 0; }
+        .mark-band .mark{ font-size:1.4rem; color:var(--ink); font-weight:600; letter-spacing:0.02em; }
+        .mark-band .mark-sub{ font-size:0.85rem; color:var(--muted); margin-top:0.5rem; }
+        footer{ background:var(--ink); color:rgba(255,255,255,0.7); padding:3rem 0 2.5rem; }
+        footer .container{ display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:space-between; align-items:center; }
+        footer .foot-word{ color:#fff; font-weight:700; font-size:1.05rem; }
+        footer .foot-tag{ font-size:0.85rem; color:rgba(255,255,255,0.6); }
+        footer a{ color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.85rem; }
+        footer a:hover{ color:#fff; }
+        footer .foot-links{ display:flex; gap:1.5rem; flex-wrap:wrap; align-items:center; }
+        footer .foot-rights{ width:100%; border-top:1px solid rgba(255,255,255,0.12); padding-top:1.5rem; margin-top:0.5rem; font-size:0.78rem; color:rgba(255,255,255,0.45); }
+
+        /* Configurator (light) */
+        .modal-overlay{ position:fixed; inset:0; z-index:50; background:rgba(15,37,64,0.5); backdrop-filter:blur(3px); display:none; align-items:flex-start; justify-content:center; padding:2rem 1rem 3rem; overflow-y:auto; }
+        .modal-overlay.open{ display:flex; }
+        .modal{ position:relative; width:100%; max-width:60rem; margin:auto; display:flex; flex-direction:column; gap:0.8rem; }
+        .modal-close{ align-self:flex-end; width:2.3rem; height:2.3rem; border-radius:50%; border:1px solid var(--border); background:#fff; color:var(--ink); font-size:1.4rem; line-height:1; cursor:pointer; transition:background .15s,color .15s; }
+        .modal-close:hover{ background:var(--ink); color:#fff; }
+        .configurator{ width:100%; display:flex; flex-direction:column; gap:1.5rem; background:#fff; border:1px solid var(--border); border-radius:12px; padding:1.9rem 1.7rem; box-shadow:0 20px 60px rgba(15,37,64,0.18); }
+        .cfg-group{ display:flex; flex-direction:column; gap:0.65rem; }
+        .cfg-label{ font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); font-weight:700; }
+        .cfg-options{ display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:0.65rem; }
+        .cfg-opt{ text-align:left; border:1px solid var(--border); border-radius:8px; padding:0.85rem 0.95rem; background:#fff; color:inherit; cursor:pointer; font-family:inherit; transition:border-color .15s,background .15s; display:flex; flex-direction:column; gap:0.3rem; }
+        .cfg-opt:hover{ border-color:var(--ink); }
+        .cfg-opt.selected{ border-color:var(--cta); background:rgba(15,37,64,0.04); box-shadow:inset 0 0 0 1px var(--cta); }
+        .cfg-opt.disabled{ opacity:0.45; cursor:not-allowed; }
+        .cfg-opt .co-name{ font-size:0.95rem; color:var(--ink); font-weight:600; }
+        .cfg-opt .co-desc{ font-size:0.82rem; line-height:1.5; color:var(--text); }
+        .cfg-addon{ display:flex; align-items:flex-start; gap:0.65rem; border:1px dashed var(--border); border-radius:8px; padding:0.85rem 0.95rem; cursor:pointer; background:#fff; transition:border-color .15s,background .15s; }
+        .cfg-addon:hover{ border-color:var(--ink); }
+        .cfg-addon.selected{ border-style:solid; border-color:var(--cta); background:rgba(15,37,64,0.04); }
+        .cfg-addon .ca-box{ width:1.1rem; height:1.1rem; border:1px solid var(--muted); border-radius:3px; margin-top:0.1rem; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:#fff; line-height:1; }
+        .cfg-addon.selected .ca-box{ background:var(--cta); border-color:var(--cta); }
+        .cfg-summary{ border-top:1px solid var(--border); padding-top:1.4rem; margin-top:0.5rem; display:flex; flex-direction:column; align-items:center; gap:0.95rem; text-align:center; }
+        .cfg-recap{ font-size:0.92rem; color:var(--ink); line-height:1.6; max-width:38rem; }
+        .cfg-cta{ font-size:0.92rem; font-weight:600; color:#fff; background:var(--cta); text-decoration:none; padding:0.85rem 1.9rem; border-radius:7px; transition:background .15s; }
+        .cfg-cta:hover{ background:#163457; }
+        .cfg-disclaimer{ font-size:0.78rem; color:var(--muted); max-width:34rem; line-height:1.5; }
+        .cfg-scan{ display:flex; flex-wrap:wrap; align-items:center; gap:0.9rem; }
+        .cfg-scan-btn{ font-size:0.82rem; font-weight:600; color:var(--ink); background:#fff; border:1px solid var(--ink); border-radius:7px; padding:0.55rem 1.1rem; cursor:pointer; font-family:inherit; transition:background .15s,color .15s; white-space:nowrap; }
+        .cfg-scan-btn:hover{ background:var(--ink); color:#fff; }
+        .cfg-detected{ font-size:0.85rem; color:var(--text); line-height:1.5; flex:1 1 14rem; }
+        .cfg-detected b{ color:var(--ink); font-weight:600; }
+        .cfg-rec{ border:1px solid var(--cta); background:rgba(15,37,64,0.04); border-radius:8px; padding:1.05rem 1.15rem; }
+        .cfg-rec .rec-label{ font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:0.35rem; }
+        .cfg-rec .rec-model{ font-size:1.2rem; color:var(--ink); font-weight:600; margin-bottom:0.3rem; }
+        .cfg-rec .rec-why{ font-size:0.88rem; color:var(--text); line-height:1.5; }
+        .co-badge{ font-size:0.74rem; font-weight:600; margin-top:0.2rem; }
+        .co-badge.fit{ color:#2f855a; }
+        .co-badge.nofit{ color:#b7791f; }
+        /* Model meta chips (size · license · downloads), enriched live from Hugging Face */
+        .co-meta{ display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.45rem; }
+        .chip{ font-size:0.68rem; font-weight:600; letter-spacing:0.02em; padding:0.16rem 0.45rem; border-radius:5px; background:var(--bg-alt); color:var(--text); border:1px solid var(--border); white-space:nowrap; }
+        .chip.size{ background:rgba(15,37,64,0.06); color:var(--ink); }
+        .chip.lic-permissive{ background:rgba(47,133,90,0.1); color:#2f855a; border-color:rgba(47,133,90,0.25); }
+        .chip.lic-gated{ background:rgba(183,121,31,0.1); color:#b7791f; border-color:rgba(183,121,31,0.25); }
+        /* Quantization selector — compact pills */
+        .cfg-quant{ display:flex; flex-wrap:wrap; gap:0.5rem; }
+        .cfg-quant button{ flex:1 1 9rem; text-align:left; border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.8rem; background:#fff; cursor:pointer; font-family:inherit; transition:border-color .15s,background .15s; }
+        .cfg-quant button:hover{ border-color:var(--ink); }
+        .cfg-quant button.selected{ border-color:var(--cta); background:rgba(15,37,64,0.04); box-shadow:inset 0 0 0 1px var(--cta); }
+        .cfg-quant .q-name{ display:block; font-size:0.86rem; font-weight:600; color:var(--ink); }
+        .cfg-quant .q-desc{ display:block; font-size:0.76rem; color:var(--text); margin-top:0.1rem; }
+        /* Live recommendation math */
+        .rec-math{ font-size:0.82rem; color:var(--ink); font-weight:600; margin-top:0.55rem; padding-top:0.55rem; border-top:1px solid rgba(15,37,64,0.1); }
+        .rec-math .ok{ color:#2f855a; } .rec-math .over{ color:#b7791f; }
+        .cfg-source{ font-size:0.72rem; color:var(--muted); display:flex; align-items:center; gap:0.4rem; }
+        .cfg-source .dot{ width:0.5rem; height:0.5rem; border-radius:50%; background:#cbd2db; flex-shrink:0; }
+        .cfg-source.live .dot{ background:#2f855a; }
+        .cfg-source a{ color:var(--accent); font-weight:600; text-decoration:none; }
+        /* Trending strip — live, quality-filtered feed from Hugging Face */
+        .cfg-trend{ border-top:1px solid var(--border); padding-top:1.3rem; margin-top:0.3rem; }
+        .cfg-trend-head{ display:flex; align-items:baseline; justify-content:space-between; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.85rem; }
+        .cfg-trend-head .tl{ font-size:0.74rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink); font-weight:700; }
+        .cfg-trend-head .ts{ font-size:0.76rem; color:var(--muted); }
+        .cfg-trend-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(13.5rem,1fr)); gap:0.6rem; }
+        .trend-card{ display:block; text-decoration:none; border:1px solid var(--border); border-radius:8px; padding:0.7rem 0.8rem; background:#fff; transition:border-color .15s,transform .15s; }
+        .trend-card:hover{ border-color:var(--ink); transform:translateY(-1px); }
+        .trend-card .tc-name{ font-size:0.88rem; font-weight:600; color:var(--ink); word-break:break-word; }
+        .trend-card .tc-author{ font-size:0.74rem; color:var(--muted); margin-top:0.1rem; }
+        .trend-card .tc-stats{ display:flex; gap:0.7rem; margin-top:0.45rem; font-size:0.72rem; color:var(--text); }
+        .trend-card .tc-stats span{ display:inline-flex; align-items:center; gap:0.2rem; }
+        .cfg-trend-loading{ font-size:0.82rem; color:var(--muted); }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a class="wordmark" href="/">OpenPoem<span style="color:var(--accent)">®</span></a>
+            <div class="header-right">
+                <div class="lang-toggle">
+                    <button data-lang="en">EN</button>
+                    <button data-lang="nl">NL</button>
+                </div>
+                <a class="btn btn-primary" id="open-cfg" href="#">Configure</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-aura" aria-hidden="true">
+                <span class="blob b1"></span>
+                <span class="blob b2"></span>
+                <span class="blob b3"></span>
+            </div>
+            <div class="container">
+                <div class="eyebrow" data-k="heroEyebrow">Private AI for regulated industries</div>
+                <h1 data-k="heroH">Enterprise-grade AI that runs on your own data.</h1>
+                <p class="hero-sub" data-k="heroSub">We design, build and deploy private language models inside your own environment. Your data never leaves your walls.</p>
+                <div class="hero-cta">
+                    <a class="btn btn-primary" id="open-cfg-2" href="#" data-k="heroCta">Configure your solution</a>
+                    <a class="btn btn-ghost" href="mailto:info@openpoem.org?subject=OpenPoem%20enquiry" data-k="heroCta2">Talk to us</a>
+                </div>
+                <div class="sectors">
+                    <span data-k="sec1">Banking</span>
+                    <span data-k="sec2">Accountancy</span>
+                    <span data-k="sec3">Compliance</span>
+                    <span data-k="sec4">Sovereignty</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-mark">1</div>
+                        <h3 data-k="v1t">Your data stays yours</h3>
+                        <p data-k="v1d">Models run in your environment, on your infrastructure. Nothing is sent to a third-party AI provider.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-mark">2</div>
+                        <h3 data-k="v2t">Compliance by design</h3>
+                        <p data-k="v2d">Built for privacy, sovereignty and audit. Ready for banking, accountancy and regulated workflows.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-mark">3</div>
+                        <h3 data-k="v3t">Owned, not rented</h3>
+                        <p data-k="v3d">Your model, your data, your control. No per-query costs and no vendor lock-in.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <div class="eyebrow" data-k="poolEyebrow">Pooled, not exposed</div>
+                    <h2 data-k="poolH">Pool your compute. Keep your walls.</h2>
+                    <p data-k="poolSub">Trusted nodes — your own sites, or a federation of vetted partners — pool their GPUs into one private AI fabric. You gain utilisation, burst capacity and resilience, while every request stays inside the trust boundary.</p>
+                </div>
+                <div class="pool-wrap">
+                    <svg class="pool-diagram" viewBox="0 0 760 380" role="img" aria-label="Trusted compute nodes pooled inside a trust boundary, feeding one private AI">
+                        <rect x="22" y="34" width="716" height="312" rx="18" fill="#f9fafc" stroke="#0f2540" stroke-opacity="0.28" stroke-width="1.5" stroke-dasharray="7 6"/>
+                        <rect x="46" y="22" width="202" height="25" rx="12.5" fill="#ffffff"/>
+                        <text x="59" y="39" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" letter-spacing="1.6" fill="#b07d2b" font-weight="700">YOUR TRUST BOUNDARY</text>
+
+                        <path d="M222 97 C 360 97, 380 200, 498 200" fill="none" stroke="#b07d2b" stroke-width="1.6" stroke-opacity="0.55"/>
+                        <path d="M222 161 C 360 161, 390 200, 498 200" fill="none" stroke="#b07d2b" stroke-width="1.6" stroke-opacity="0.55"/>
+                        <path d="M222 225 C 360 225, 390 200, 498 200" fill="none" stroke="#b07d2b" stroke-width="1.6" stroke-opacity="0.55"/>
+                        <path d="M222 289 C 360 289, 380 200, 498 200" fill="none" stroke="#b07d2b" stroke-width="1.6" stroke-opacity="0.55"/>
+
+                        <g font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+                            <g>
+                                <rect x="70" y="72" width="152" height="50" rx="9" fill="#ffffff" stroke="#e4e8ee" stroke-width="1.5"/>
+                                <rect x="84" y="87" width="20" height="20" rx="4" fill="#0f2540"/><circle cx="94" cy="97" r="3" fill="#d9b88a"/>
+                                <text x="116" y="93" font-size="12.5" fill="#0f2540" font-weight="600">Site A</text>
+                                <text x="116" y="109" font-size="10.5" fill="#7b8794">local GPU</text>
+                            </g>
+                            <g>
+                                <rect x="70" y="136" width="152" height="50" rx="9" fill="#ffffff" stroke="#e4e8ee" stroke-width="1.5"/>
+                                <rect x="84" y="151" width="20" height="20" rx="4" fill="#0f2540"/><circle cx="94" cy="161" r="3" fill="#d9b88a"/>
+                                <text x="116" y="157" font-size="12.5" fill="#0f2540" font-weight="600">Site B</text>
+                                <text x="116" y="173" font-size="10.5" fill="#7b8794">local GPU</text>
+                            </g>
+                            <g>
+                                <rect x="70" y="200" width="152" height="50" rx="9" fill="#ffffff" stroke="#e4e8ee" stroke-width="1.5"/>
+                                <rect x="84" y="215" width="20" height="20" rx="4" fill="#0f2540"/><circle cx="94" cy="225" r="3" fill="#d9b88a"/>
+                                <text x="116" y="221" font-size="12.5" fill="#0f2540" font-weight="600">Site C</text>
+                                <text x="116" y="237" font-size="10.5" fill="#7b8794">local GPU</text>
+                            </g>
+                            <g>
+                                <rect x="70" y="264" width="152" height="50" rx="9" fill="#ffffff" stroke="#e4e8ee" stroke-width="1.5"/>
+                                <rect x="84" y="279" width="20" height="20" rx="4" fill="#0f2540"/><circle cx="94" cy="289" r="3" fill="#d9b88a"/>
+                                <text x="116" y="285" font-size="12.5" fill="#0f2540" font-weight="600">Site D</text>
+                                <text x="116" y="301" font-size="10.5" fill="#7b8794">local GPU</text>
+                            </g>
+
+                            <circle cx="222" cy="97" r="3.5" fill="#b07d2b"/>
+                            <circle cx="222" cy="161" r="3.5" fill="#b07d2b"/>
+                            <circle cx="222" cy="225" r="3.5" fill="#b07d2b"/>
+                            <circle cx="222" cy="289" r="3.5" fill="#b07d2b"/>
+
+                            <rect x="500" y="150" width="172" height="100" rx="14" fill="#0f2540"/>
+                            <text x="586" y="193" text-anchor="middle" font-size="17" fill="#ffffff" font-weight="700">Private AI</text>
+                            <text x="586" y="215" text-anchor="middle" font-size="11.5" fill="#d9b88a">pooled capacity</text>
+                        </g>
+                    </svg>
+                    <div class="pool-points">
+                        <div class="pool-point"><h3 data-k="pp1t">Higher utilisation</h3><p data-k="pp1d">Idle GPUs across sites become one shared pool instead of dead capacity.</p></div>
+                        <div class="pool-point"><h3 data-k="pp2t">Burst capacity</h3><p data-k="pp2d">Peak loads borrow from the pool; no single site has to over-provision.</p></div>
+                        <div class="pool-point"><h3 data-k="pp3t">Resilience</h3><p data-k="pp3d">If one node drops, the others carry the load. No central point of failure.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INFRASTRUCTURE -->
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-head">
+                    <div class="eyebrow" data-k="infraEyebrow">Under the hood</div>
+                    <h2 data-k="infraH">Self-hosting, done properly.</h2>
+                    <p data-k="infraSub">Running a model locally is more than downloading weights. We engineer the inference and the memory so your private AI is fast, stable and accountable — on your own hardware.</p>
+                </div>
+                <div class="cards">
+                    <div class="card"><div class="card-mark">◇</div><h3 data-k="if1t">Capable open models</h3><p data-k="if1d">Open-weight models — Qwen, Gemma, Llama — now handle real, tool-driven work. Strong enough for serious workflows on hardware you own.</p></div>
+                    <div class="card"><div class="card-mark">⚡</div><h3 data-k="if2t">Tuned to be fast</h3><p data-k="if2d">vLLM, FP8 weights and KV cache, prefix caching, CUDA graphs, speculative decoding — an agent step drops from 10–15 seconds to 1–3.</p></div>
+                    <div class="card"><div class="card-mark">∞</div><h3 data-k="if3t">Long sessions that survive</h3><p data-k="if3d">FP8 KV cache and disciplined context budgeting keep long, multi-step runs alive within your GPU memory, instead of crashing on overflow.</p></div>
+                    <div class="card"><div class="card-mark">✓</div><h3 data-k="if4t">Reproducible &amp; auditable</h3><p data-k="if4d">Every step's exact parameters and outcomes are recorded in structured state outside the transcript — so the record survives trimming. Built for provenance and audit.</p></div>
+                </div>
+                <div class="stat-strip">
+                    <div class="stat"><div class="stat-n">10–15s ➝ 1–3s</div><div class="stat-l" data-k="st1l">per agent step</div></div>
+                    <div class="stat"><div class="stat-n">≈262K</div><div class="stat-l" data-k="st2l">tokens of context</div></div>
+                    <div class="stat"><div class="stat-n">FP8</div><div class="stat-l" data-k="st3l">weights &amp; KV cache</div></div>
+                </div>
+                <p class="infra-audit" data-k="infraAudit">Every step recorded with its exact parameters — a durable audit trail for banking, accountancy and compliance.</p>
+            </div>
+        </section>
+
+        <!-- VRAM WIZARD -->
+        <style>
+            .vw{ max-width:1080px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:1.4rem; }
+            @media(min-width:880px){ .vw{ grid-template-columns:1fr 1fr; align-items:start; } }
+            .vw-panel{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:1.5rem 1.5rem; box-shadow:0 18px 50px rgba(15,37,64,0.10); }
+            .vw-row{ margin-bottom:1.05rem; } .vw-row:last-child{ margin-bottom:0; }
+            .vw-row label{ display:block; font-size:.74rem; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; font-weight:600; }
+            .vw-row select, .vw-row input[type=number]{ width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:#fdfdfe; border:1px solid var(--border); border-radius:8px; padding:.6rem .7rem; appearance:none; -webkit-appearance:none; }
+            .vw-row select:focus, .vw-row input:focus{ outline:none; border-color:var(--accent); }
+            .vw-seg{ display:flex; flex-wrap:wrap; gap:.4rem; }
+            .vw-seg button{ flex:1 1 auto; min-width:60px; font:inherit; font-size:.85rem; cursor:pointer; padding:.5rem .4rem; border:1px solid var(--border); background:#fdfdfe; color:var(--text); border-radius:8px; transition:.15s; }
+            .vw-seg button.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+            .vw-seg button:hover{ border-color:var(--accent); }
+            .vw-custom{ display:none; grid-template-columns:1fr 1fr; gap:.6rem; margin-top:.6rem; padding-top:.8rem; border-top:1px dashed var(--border); }
+            .vw-custom.on{ display:grid; }
+            .vw-custom .vw-row{ margin:0; } .vw-custom label{ font-size:.66rem; }
+            /* result panel — navy, mono, ties to the homepage word-search card */
+            .vw-out{ background:var(--ink); color:#e8edf4; border-radius:14px; padding:1.6rem 1.6rem; box-shadow:0 18px 50px rgba(15,37,64,0.22); }
+            .vw-big{ display:flex; align-items:baseline; gap:.5rem; flex-wrap:wrap; margin-bottom:.2rem; }
+            .vw-big .n{ font-size:3.1rem; font-weight:700; line-height:1; color:#fff; letter-spacing:-.02em; }
+            .vw-big .u{ font-size:1.1rem; color:var(--accent); font-weight:600; }
+            .vw-big .lab{ flex-basis:100%; font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; color:#9fb0c6; margin-top:.15rem; }
+            .vw-bars{ margin:1.2rem 0 .4rem; font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.8rem; }
+            .vw-bar{ display:grid; grid-template-columns:108px 1fr 66px; align-items:center; gap:.6rem; margin-bottom:.5rem; }
+            .vw-bar .bk{ color:#9fb0c6; } .vw-bar .bv{ text-align:right; color:#fff; }
+            .vw-bar .track{ height:9px; background:rgba(255,255,255,.09); border-radius:5px; overflow:hidden; }
+            .vw-bar .fill{ height:100%; border-radius:5px; }
+            .f-w{ background:#5b7da8; } .f-k{ background:var(--accent); } .f-a{ background:#7fa07a; } .f-f{ background:#6b6f7a; }
+            .vw-sub{ border-top:1px solid rgba(255,255,255,.12); margin-top:.7rem; padding-top:.7rem; font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:.8rem; color:#cdd7e4; display:flex; justify-content:space-between; }
+            .vw-fit{ margin-top:1.1rem; }
+            .vw-fit h4{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#9fb0c6; margin:0 0 .5rem; font-weight:600; }
+            .vw-fit .chip{ display:inline-block; font-size:.84rem; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:#fff; border-radius:999px; padding:.3rem .7rem; margin:0 .35rem .4rem 0; }
+            .vw-fit .chip b{ color:var(--accent); font-weight:600; }
+            .vw-note{ margin-top:1rem; font-size:.8rem; line-height:1.55; color:#aebbcc; }
+            .vw-kv-flag{ color:var(--accent); }
+            .vram-cite{ max-width:760px; margin:1.6rem auto 0; text-align:center; font-size:.8rem; line-height:1.6; color:var(--muted); }
+            .vram-cite a{ color:var(--accent); }
+        </style>
+        <section class="section vram-section" id="vram">
+            <div class="container">
+                <div class="section-head">
+                    <div class="eyebrow" data-k="vramEyebrow">The memory math</div>
+                    <h2 data-k="vramH">Will it fit? Do the full GPU memory math.</h2>
+                    <p data-k="vramSub">“Model → VRAM” is a myth. The weights are only part of the bill — KV cache, activations and framework overhead decide whether a model actually runs on your hardware. This calculator does the complete math, the way we do it before every deployment. Nothing is sent anywhere; it runs in your browser.</p>
+                </div>
+                <div class="vw">
+                    <div class="vw-panel" id="vw-controls"></div>
+                    <div class="vw-out" id="vw-out"></div>
+                </div>
+                <p class="vram-cite" data-k="vramCite"></p>
+            </div>
+        </section>
+
+        <!-- MANIFESTO -->
+        <section class="section manifesto">
+            <div class="container">
+                <p data-k="man1">Every word is a symbol.</p>
+                <p data-k="man2">Every symbol points beyond itself.</p>
+                <p data-k="man3">Most people stop at the symbol.</p>
+                <p class="m-ask" data-k="man4">OpenPoem asks a different question:</p>
+                <p class="m-q" data-k="man5">What exists before the words?</p>
+                <p data-k="man6">That is where ideas are born.</p>
+                <p data-k="man7">That is where meaning lives.</p>
+                <p data-k="man8">That is where we build from.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-head">
+                    <div class="eyebrow" data-k="apprEyebrow">How we work</div>
+                    <h2 data-k="apprH">From requirement to running model.</h2>
+                    <p data-k="apprSub">A clear path, with the core captured at every step so nothing is lost between the idea and the result.</p>
+                </div>
+                <div class="steps">
+                    <div class="step"><div class="step-n">01</div><h3 data-k="st1t">Discovery</h3><p data-k="st1d">We map the real problem and the data behind it.</p></div>
+                    <div class="step"><div class="step-n">02</div><h3 data-k="st2t">Specification</h3><p data-k="st2d">We capture the core as a clear, testable specification.</p></div>
+                    <div class="step"><div class="step-n">03</div><h3 data-k="st3t">Prototype</h3><p data-k="st3d">We build a working model on your data, fast.</p></div>
+                    <div class="step"><div class="step-n">04</div><h3 data-k="st4t">Production</h3><p data-k="st4d">We deploy it in your environment and hand over ownership.</p></div>
+                </div>
+                <p class="appr-mcp"><span data-k="apprMcp">Every step is captured as a structured spec — nothing is lost between requirement and running model.</span> <a href="https://github.com/openpoem/docs-mcp" data-k="apprMcpLink">Use our Docs MCP →</a></p>
+            </div>
+        </section>
+
+        <section class="section section-alt configure-band">
+            <div class="container">
+                <div class="section-head">
+                    <div class="eyebrow" data-k="cfgIntroEyebrow">Configure</div>
+                    <h2 data-k="cfgIntroH">Build your private AI in two minutes.</h2>
+                    <p data-k="cfgIntroNote">Tell us your hardware and what you need it for. We recommend the right model and send a tailored proposal.</p>
+                </div>
+                <a class="btn btn-primary" id="open-cfg-3" href="#" data-k="heroCta">Configure your solution</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <div class="eyebrow" data-k="aboutEyebrow">Who we are</div>
+                        <h2 data-k="aboutH">Built by people who ship.</h2>
+                        <p data-k="aboutBody">OpenPoem brings private, owned AI to organisations that cannot afford to give their data away — with a track record that proves it works in production.</p>
+                        <div class="about-role" data-k="aboutRole">OpenPoem</div>
+                    </div>
+                    <div class="about-photo">
+                        <img src="ron-portrait.png" alt="OpenPoem">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="section-head">
+                    <div class="eyebrow" data-k="toolsEyebrow">Open tooling</div>
+                    <h2 data-k="toolsH">Tools we build in the open.</h2>
+                    <p data-k="toolsSub">Practical, open-source tools that bring structure and quality to AI-assisted work.</p>
+                </div>
+                <div class="cards">
+                    <div class="card tool-card">
+                        <h3>OpenPoem® MCP</h3>
+                        <p data-k="tool0d">Read, validate and translate a structured spec into idiomatic code in any language.</p>
+                        <code>git clone https://github.com/openpoem/poem-mcp.git</code>
+                        <div class="links"><a href="https://github.com/openpoem/poem-mcp">GitHub</a></div>
+                    </div>
+                    <div class="card tool-card">
+                        <h3>Spec Score MCP</h3>
+                        <p data-k="tool1d">Score your specifications before you build. A balanced spec produces balanced results.</p>
+                        <code>git clone https://github.com/openpoem/spec-score-mcp.git</code>
+                        <div class="links"><a href="https://github.com/openpoem/spec-score-mcp">GitHub</a><a href="https://smithery.ai/server/openpoem/spec-score-mcp">Smithery</a></div>
+                    </div>
+                    <div class="card tool-card">
+                        <h3>Docs MCP</h3>
+                        <p data-k="tool2d">Write specifications straight to GitHub. The validator enforces a fixed structure, so half-specs never reach production.</p>
+                        <code>git clone https://github.com/openpoem/docs-mcp.git</code>
+                        <div class="links"><a href="https://github.com/openpoem/docs-mcp">GitHub</a></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mark-band">
+            <div class="container">
+                <div class="mark">OpenPoem®</div>
+                <div class="mark-sub" data-k="markLine">A registered trademark in the Benelux. Private AI you own.</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div>
+                <div class="foot-word">OpenPoem<span style="color:var(--accent)">®</span></div>
+                <div class="foot-tag" data-k="footTag">Private AI you own.</div>
+            </div>
+            <div class="foot-links">
+                <a href="mailto:info@openpoem.org">info@openpoem.org</a>
+                <a href="/sovereign/" data-k="footPrincipals">For principals · by introduction</a>
+            </div>
+            <div class="foot-rights" data-k="footRights">© OpenPoem. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="cfg-modal" aria-hidden="true">
+        <div class="modal">
+            <button class="modal-close" id="cfg-close" aria-label="Close">&times;</button>
+            <div class="configurator" id="cfg"></div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        const STATIC = {
+            en: {
+                heroEyebrow:"Private AI for regulated industries",
+                heroH:"Enterprise-grade AI that runs on your own data.",
+                heroSub:"We design, build and deploy private language models inside your own environment. Your data never leaves your walls.",
+                heroCta:"Configure your solution", heroCta2:"Talk to us",
+                sec1:"Banking", sec2:"Accountancy", sec3:"Compliance", sec4:"Sovereignty",
+                v1t:"Your data stays yours", v1d:"Models run in your environment, on your infrastructure. Nothing is sent to a third-party AI provider.",
+                v2t:"Compliance by design", v2d:"Built for privacy, sovereignty and audit. Ready for banking, accountancy and regulated workflows.",
+                v3t:"Owned, not rented", v3d:"Your model, your data, your control. No per-query costs and no vendor lock-in.",
+                poolEyebrow:"Pooled, not exposed", poolH:"Pool your compute. Keep your walls.",
+                poolSub:"Trusted nodes — your own sites, or a federation of vetted partners — pool their GPUs into one private AI fabric. You gain utilisation, burst capacity and resilience, while every request stays inside the trust boundary.",
+                pp1t:"Higher utilisation", pp1d:"Idle GPUs across sites become one shared pool instead of dead capacity.",
+                pp2t:"Burst capacity", pp2d:"Peak loads borrow from the pool; no single site has to over-provision.",
+                pp3t:"Resilience", pp3d:"If one node drops, the others carry the load. No central point of failure.",
+                man1:"Every word is a symbol.", man2:"Every symbol points beyond itself.", man3:"Most people stop at the symbol.",
+                man4:"OpenPoem asks a different question:", man5:"What exists before the words?",
+                man6:"That is where ideas are born.", man7:"That is where meaning lives.", man8:"That is where we build from.",
+                apprEyebrow:"How we work", apprH:"From requirement to running model.",
+                apprSub:"A clear path, with the core captured at every step so nothing is lost between the idea and the result.",
+                infraEyebrow:"Under the hood", infraH:"Self-hosting, done properly.",
+                infraSub:"Running a model locally is more than downloading weights. We engineer the inference and the memory so your private AI is fast, stable and accountable — on your own hardware.",
+                if1t:"Capable open models", if1d:"Open-weight models — Qwen, Gemma, Llama — now handle real, tool-driven work. Strong enough for serious workflows on hardware you own.",
+                if2t:"Tuned to be fast", if2d:"vLLM, FP8 weights and KV cache, prefix caching, CUDA graphs, speculative decoding — an agent step drops from 10–15 seconds to 1–3.",
+                if3t:"Long sessions that survive", if3d:"FP8 KV cache and disciplined context budgeting keep long, multi-step runs alive within your GPU memory, instead of crashing on overflow.",
+                if4t:"Reproducible & auditable", if4d:"Every step's exact parameters and outcomes are recorded in structured state outside the transcript — so the record survives trimming. Built for provenance and audit.",
+                st1l:"per agent step", st2l:"tokens of context", st3l:"weights & KV cache",
+                infraAudit:"Every step recorded with its exact parameters — a durable audit trail for banking, accountancy and compliance.",
+                vramEyebrow:"The memory math", vramH:"Will it fit? Do the full GPU memory math.",
+                vramSub:"“Model → VRAM” is a myth. The weights are only part of the bill — KV cache, activations and framework overhead decide whether a model actually runs on your hardware. This calculator does the complete math, the way we do it before every deployment. Nothing is sent anywhere; it runs in your browser.",
+                vramCite:"Method based on the real components of inference memory — weights, KV cache (grows with context), activations and framework overhead — with a safety margin on top. Sanity-checked against published model architectures.",
+                apprMcp:"Every step is captured as a structured spec — nothing is lost between requirement and running model.", apprMcpLink:"Use our Docs MCP →",
+                st1t:"Discovery", st1d:"We map the real problem and the data behind it.",
+                st2t:"Specification", st2d:"We capture the core as a clear, testable specification.",
+                st3t:"Prototype", st3d:"We build a working model on your data, fast.",
+                st4t:"Production", st4d:"We deploy it in your environment and hand over ownership.",
+                cfgIntroEyebrow:"Configure", cfgIntroH:"Build your private AI in two minutes.",
+                cfgIntroNote:"Tell us your hardware and what you need it for. We recommend the right model and send a tailored proposal.",
+                aboutEyebrow:"Who we are", aboutH:"Built by people who ship.",
+                aboutBody:"OpenPoem brings private, owned AI to organisations that cannot afford to give their data away — with a track record that proves it works in production.",
+                aboutRole:"OpenPoem",
+                toolsEyebrow:"Open tooling", toolsH:"Tools we build in the open.",
+                toolsSub:"Practical, open-source tools that bring structure and quality to AI-assisted work.",
+                tool0d:"Read, validate and translate a structured spec into idiomatic code in any language.",
+                tool1d:"Score your specifications before you build. A balanced spec produces balanced results.",
+                tool2d:"Write specifications straight to GitHub. The validator enforces a fixed structure, so half-specs never reach production.",
+                markLine:"A registered trademark in the Benelux. Private AI you own.",
+                footTag:"Private AI you own.", footPrincipals:"For principals · by introduction",
+                footRights:"© OpenPoem. All rights reserved."
+            },
+            nl: {
+                heroEyebrow:"Private AI voor gereguleerde sectoren",
+                heroH:"AI van enterprise-niveau, op je eigen data.",
+                heroSub:"Wij ontwerpen, bouwen en implementeren private taalmodellen binnen je eigen omgeving. Je data verlaat nooit je muren.",
+                heroCta:"Stel je oplossing samen", heroCta2:"Neem contact op",
+                sec1:"Banking", sec2:"Accountancy", sec3:"Compliance", sec4:"Soevereiniteit",
+                v1t:"Je data blijft van jou", v1d:"Modellen draaien in je eigen omgeving, op je eigen infrastructuur. Niets gaat naar een externe AI-aanbieder.",
+                v2t:"Compliance by design", v2d:"Gebouwd voor privacy, soevereiniteit en audit. Klaar voor banking, accountancy en gereguleerde processen.",
+                v3t:"In eigendom, niet gehuurd", v3d:"Je eigen model, je eigen data, jouw controle. Geen kosten per vraag, geen vendor lock-in.",
+                poolEyebrow:"Gepoold, niet blootgesteld", poolH:"Pool je rekenkracht. Hou je muren.",
+                poolSub:"Vertrouwde nodes — je eigen vestigingen, of een federatie van doorgelichte partners — poolen hun GPU's tot één private AI-fabric. Je wint benutting, piekcapaciteit en uitvalbestendigheid, terwijl elke aanvraag binnen de vertrouwensgrens blijft.",
+                pp1t:"Hogere benutting", pp1d:"Idle GPU's over vestigingen worden één gedeelde pool in plaats van dode capaciteit.",
+                pp2t:"Piekcapaciteit", pp2d:"Pieken lenen uit de pool; geen enkele vestiging hoeft te over-provisionen.",
+                pp3t:"Uitvalbestendig", pp3d:"Valt een node weg, dan dragen de andere de last. Geen centraal punt van falen.",
+                man1:"Elk woord is een symbool.", man2:"Elk symbool wijst voorbij zichzelf.", man3:"De meesten blijven bij het symbool staan.",
+                man4:"OpenPoem stelt een andere vraag:", man5:"Wat bestaat er vóór de woorden?",
+                man6:"Daar worden ideeën geboren.", man7:"Daar leeft betekenis.", man8:"Daarvandaan bouwen we.",
+                apprEyebrow:"Hoe we werken", apprH:"Van requirement naar werkend model.",
+                apprSub:"Een helder pad, waarbij de kern bij elke stap wordt vastgelegd zodat er niets verloren gaat tussen het idee en het resultaat.",
+                infraEyebrow:"Onder de motorkap", infraH:"Zelf hosten, goed gedaan.",
+                infraSub:"Een model lokaal draaien is meer dan weights downloaden. Wij engineeren de inference en het geheugen zodat je private AI snel, stabiel en verantwoord is — op je eigen hardware.",
+                if1t:"Sterke open modellen", if1d:"Open-weight modellen — Qwen, Gemma, Llama — doen nu echt tool-gedreven werk. Sterk genoeg voor serieuze workflows op hardware die je zelf bezit.",
+                if2t:"Afgestemd op snelheid", if2d:"vLLM, FP8-weights en KV-cache, prefix-caching, CUDA-graphs, speculative decoding — een agent-stap zakt van 10–15 seconden naar 1–3.",
+                if3t:"Lange sessies die het overleven", if3d:"FP8 KV-cache en strak contextbeheer houden lange, meerstaps-runs in leven binnen je GPU-geheugen, in plaats van crashen bij overflow.",
+                if4t:"Reproduceerbaar & auditbaar", if4d:"Exacte parameters en uitkomsten van elke stap worden vastgelegd in een gestructureerde state buiten het transcript — zo blijft het verslag bewaard. Gebouwd voor provenance en audit.",
+                st1l:"per agent-stap", st2l:"tokens context", st3l:"weights & KV-cache",
+                infraAudit:"Elke stap vastgelegd met exacte parameters — een duurzaam audittrail voor banking, accountancy en compliance.",
+                vramEyebrow:"De geheugen-rekensom", vramH:"Past het? Doe de volledige GPU-geheugensom.",
+                vramSub:"“Model → VRAM” is een mythe. De weights zijn maar een deel van de rekening — KV-cache, activations en framework-overhead bepalen of een model echt op jouw hardware draait. Deze rekenmachine doet de volledige som, zoals wij die doen vóór elke uitrol. Er gaat niets naar buiten; het draait in je browser.",
+                vramCite:"Methode gebaseerd op de echte componenten van inference-geheugen — weights, KV-cache (groeit met context), activations en framework-overhead — met een veiligheidsmarge erbovenop. Gecontroleerd tegen gepubliceerde modelarchitecturen.",
+                apprMcp:"Elke stap wordt vastgelegd als een gestructureerde spec — niets gaat verloren tussen requirement en werkend model.", apprMcpLink:"Gebruik onze Docs MCP →",
+                st1t:"Verkenning", st1d:"We brengen het echte probleem en de data erachter in kaart.",
+                st2t:"Specificatie", st2d:"We leggen de kern vast in een heldere, toetsbare specificatie.",
+                st3t:"Prototype", st3d:"We bouwen een werkend model op je data, snel.",
+                st4t:"Productie", st4d:"We zetten het live in je omgeving en dragen het eigendom over.",
+                cfgIntroEyebrow:"Samenstellen", cfgIntroH:"Stel je private AI samen in twee minuten.",
+                cfgIntroNote:"Vertel ons je hardware en waarvoor je het nodig hebt. Wij adviseren het juiste model en sturen een voorstel op maat.",
+                aboutEyebrow:"Wie we zijn", aboutH:"Gebouwd door mensen die leveren.",
+                aboutBody:"OpenPoem brengt private AI in eigendom naar organisaties die hun data niet kunnen weggeven — met een track record dat bewijst dat het in productie werkt.",
+                aboutRole:"OpenPoem",
+                toolsEyebrow:"Open tooling", toolsH:"Tools die we open bouwen.",
+                toolsSub:"Praktische, open-source tools die structuur en kwaliteit brengen in AI-ondersteund werk.",
+                tool0d:"Lees, valideer en vertaal een gestructureerde spec naar idiomatische code in elke taal.",
+                tool1d:"Geef je specificaties een score voordat je bouwt. Een gebalanceerde spec geeft een gebalanceerd resultaat.",
+                tool2d:"Schrijf specificaties direct naar GitHub. De validator dwingt een vaste structuur af, zodat halve specs nooit in productie belanden.",
+                markLine:"Een in de Benelux geregistreerd handelsmerk. Private AI die van jou is.",
+                footTag:"Private AI die van jou is.", footPrincipals:"Voor principalen · op introductie",
+                footRights:"© OpenPoem. Alle rechten voorbehouden."
+            }
+        };
+        const CFG = {
+            en: {
+                machine:"1. Your machine", scanBtn:"Scan my machine",
+                detIntro:"A browser cannot read your memory directly. Scan for chip and GPU, then confirm your memory below.",
+                detDetected:"Detected", detGreat:"Great for local models.", detEst:"Estimated memory", detConfirm:", confirm or adjust below.", detCores:"cores",
+                useLabel:"2. What will you use it for? (this picks the model)",
+                recLabel:"Recommended for you", bestFor:"Best fit for", onWord:"on", strongest:"The strongest model that runs on",
+                tooBigA:"This needs about", tooBigB:"GB, more than", tooBigC:". We can build or host a machine that runs it.",
+                quantLabel:"3. Precision (controls memory & quality)",
+                QUANT:{q4:["Balanced · 4-bit","Best size-to-quality. Recommended for local."],q8:["High quality · 8-bit","Near-full quality, ~2× the memory."],fp16:["Full · 16-bit","Maximum fidelity, server-grade memory."]},
+                recServerNote:"The strongest pick for your needs — we build or host a machine that runs it.",
+                fitsYour:"fits your", exceedsYour:"exceeds your", approxWord:"≈", weProvide:"we provide the machine",
+                dlWord:"downloads", gatedWord:"Gated", srcLive:"Live model data from", srcBaked:"Model data from", lPrecision:"Precision",
+                trendLabel:"Trending now on Hugging Face", trendSub:"Live · curated, quant builds filtered out", trendLoading:"Loading the latest open models…", trendEmpty:"Live feed unavailable right now.",
+                modelLabel:"4. The model", runsOn:"runs on", needsA:"needs ~", needsB:" GB, we can build it",
+                dataLabel:"5. Your data", serviceLabel:"6. Service", sectorLabel:"7. Sector",
+                yourBuild:"Your build: ", forWord:"for", withComp:", with the compliance pack",
+                cta:"Request your build", disclaimer:"Tell us your setup and we send you a tailored quote. No commitment.",
+                mailIntro:"I would like a private AI build.", notSpec:"not specified", needsBigger:" (needs a bigger machine)",
+                lMemory:"Memory", lDetected:"Detected", lModel:"Model", lUse:"Use case", lData:"Data", lService:"Service", lComp:"Compliance pack", yes:"yes", no:"no",
+                RAM:{8:["8 GB","Entry laptop."],16:["16 GB","Most laptops."],32:["32 GB","Pro laptop."],64:["64 GB","High-end Mac or workstation."],128:["128 GB","Workstation."],512:["A server we provide","We build or host it. No memory limit."]},
+                USE:{writing:["Drafting & writing","Documents, proposals, communication."],research:["Research & Q&A","Answers across your own documents."],code:["Code & engineering","Write, review and explain code."],analysis:["Data & reporting","Analyse data, build reports."],support:["Client support","Answer client and customer questions."],strategy:["Reasoning & strategy","Plan, decide, think problems through."]},
+                MODELD:{llama8b:"Fast and light. Runs on a laptop. Drafting, search and Q&A.",qwen14b:"Compact all-rounder. Strong reasoning for its size, Apache-licensed.",mistral24b:"Efficient 24B. Apache 2.0, fully permissive. A solid general workhorse.",gemma27b:"Google's open 27B. Strong writing and multilingual.",qwen32b:"Sharp at code and analysis. Apache-licensed, excellent value.",llama70b:"Balanced reasoning, efficient at scale.",qwen72b:"Strong all-rounder. Excellent at code and analysis.",mistral123b:"123B. Strong multilingual reasoning.",deepseek:"Frontier reasoning. Thinks step by step. MIT-licensed.",llama405b:"Frontier scale. Maximum open capability."},
+                DATA:{files:["Your own files","Notes, documents, your knowledge."],integration:["Files + integration","Connect your systems: CRM, ledger, mail."],enterprise:["Full enterprise data","Pipelines across your whole organisation."]},
+                SERVICE:{setup:["Setup only","We build it, hand it over, you own it."],partner:["Sovereign Partner","Ongoing updates, support and new models."]},
+                addon:["Compliance & audit pack","Banking and accountancy ready. Audit support built in."]
+            },
+            nl: {
+                machine:"1. Je machine", scanBtn:"Scan mijn machine",
+                detIntro:"Een browser kan je geheugen niet direct lezen. Scan voor chip en GPU, bevestig daarna je geheugen hieronder.",
+                detDetected:"Gevonden", detGreat:"Sterk voor lokale modellen.", detEst:"Geschat geheugen", detConfirm:", bevestig of pas aan hieronder.", detCores:"cores",
+                useLabel:"2. Waarvoor ga je het gebruiken? (dit kiest het model)",
+                recLabel:"Aanbevolen voor jou", bestFor:"Beste keuze voor", onWord:"op", strongest:"Het sterkste model dat draait op",
+                tooBigA:"Dit vraagt ongeveer", tooBigB:"GB, meer dan", tooBigC:". Wij bouwen of hosten een machine die het draait.",
+                quantLabel:"3. Precisie (bepaalt geheugen & kwaliteit)",
+                QUANT:{q4:["Gebalanceerd · 4-bit","Beste verhouding grootte/kwaliteit. Aanbevolen voor lokaal."],q8:["Hoge kwaliteit · 8-bit","Bijna volledige kwaliteit, ~2× geheugen."],fp16:["Volledig · 16-bit","Maximale precisie, server-geheugen."]},
+                recServerNote:"De sterkste keuze voor jouw behoefte — wij bouwen of hosten een machine die het draait.",
+                fitsYour:"past op je", exceedsYour:"overschrijdt je", approxWord:"≈", weProvide:"wij leveren de machine",
+                dlWord:"downloads", gatedWord:"Gated", srcLive:"Live modeldata van", srcBaked:"Modeldata van", lPrecision:"Precisie",
+                trendLabel:"Nu trending op Hugging Face", trendSub:"Live · gecureerd, quant-builds eruit gefilterd", trendLoading:"Nieuwste open modellen laden…", trendEmpty:"Live feed nu even niet beschikbaar.",
+                modelLabel:"4. Het model", runsOn:"draait op", needsA:"vraagt ~", needsB:" GB, wij bouwen het",
+                dataLabel:"5. Je data", serviceLabel:"6. Service", sectorLabel:"7. Sector",
+                yourBuild:"Je build: ", forWord:"voor", withComp:", met het compliance-pakket",
+                cta:"Vraag je build aan", disclaimer:"Vertel ons je setup en we sturen je een offerte op maat. Vrijblijvend.",
+                mailIntro:"Ik wil graag een private AI laten bouwen.", notSpec:"niet opgegeven", needsBigger:" (vraagt een grotere machine)",
+                lMemory:"Geheugen", lDetected:"Gevonden", lModel:"Model", lUse:"Toepassing", lData:"Data", lService:"Service", lComp:"Compliance-pakket", yes:"ja", no:"nee",
+                RAM:{8:["8 GB","Instaplaptop."],16:["16 GB","De meeste laptops."],32:["32 GB","Pro-laptop."],64:["64 GB","High-end Mac of workstation."],128:["128 GB","Workstation."],512:["Een server van ons","Wij bouwen of hosten hem. Geen geheugenlimiet."]},
+                USE:{writing:["Schrijven & opstellen","Documenten, voorstellen, communicatie."],research:["Onderzoek & vraag-antwoord","Antwoorden uit je eigen documenten."],code:["Code & engineering","Code schrijven, nakijken en uitleggen."],analysis:["Data & rapportage","Data analyseren, rapporten maken."],support:["Klantondersteuning","Vragen van klanten beantwoorden."],strategy:["Redeneren & strategie","Plannen, beslissen, problemen doordenken."]},
+                MODELD:{llama8b:"Snel en licht. Draait op een laptop. Schrijven, zoeken en vraag-antwoord.",qwen14b:"Compacte allrounder. Sterk redeneren voor zijn formaat, Apache-licentie.",mistral24b:"Efficiënte 24B. Apache 2.0, volledig permissief. Een degelijke werkpaard.",gemma27b:"Google's open 27B. Sterk in schrijven en meertaligheid.",qwen32b:"Scherp in code en analyse. Apache-licentie, uitstekende prijs/kwaliteit.",llama70b:"Gebalanceerd redeneren, efficiënt op schaal.",qwen72b:"Sterke allrounder. Uitstekend in code en analyse.",mistral123b:"123B. Sterk meertalig redeneren.",deepseek:"Frontier-redeneren. Denkt stap voor stap. MIT-licentie.",llama405b:"Frontier-niveau. Maximale open kracht."},
+                DATA:{files:["Je eigen bestanden","Notities, documenten, je kennis."],integration:["Bestanden + koppeling","Koppel je systemen: CRM, grootboek, mail."],enterprise:["Volledige bedrijfsdata","Pijplijnen door je hele organisatie."]},
+                SERVICE:{setup:["Alleen opzetten","Wij bouwen het, dragen het over, jij bezit het."],partner:["Sovereign Partner","Doorlopende updates, support en nieuwe modellen."]},
+                addon:["Compliance- en auditpakket","Klaar voor banking en accountancy. Audit-ondersteuning inbegrepen."]
+            }
+        };
+        // Curated allowlist of open-weight model families. params/license/downloads
+        // are baked-in fallbacks (verified against Hugging Face) and refreshed LIVE
+        // at load from the HF Hub API (CORS-enabled, no auth). `repo` is the canonical
+        // safetensors repo we read param counts from.
+        const MODELS = [
+            {id:'llama8b',   name:'Llama 3.1 8B',     repo:'meta-llama/Llama-3.1-8B-Instruct',          params:8.03e9,  license:'llama3.1', gated:true,  downloads:10147881, bestFor:['writing','research','support']},
+            {id:'qwen14b',   name:'Qwen2.5 14B',      repo:'Qwen/Qwen2.5-14B-Instruct',                 params:14.8e9,  license:'apache-2.0', gated:false, downloads:2217753, bestFor:['research','code','support']},
+            {id:'mistral24b',name:'Mistral Small 24B',repo:'mistralai/Mistral-Small-24B-Instruct-2501', params:23.6e9,  license:'apache-2.0', gated:false, downloads:52990,   bestFor:['writing','research','analysis','support']},
+            {id:'gemma27b',  name:'Gemma 2 27B',      repo:'google/gemma-2-27b-it',                     params:27.2e9,  license:'gemma', gated:true,      downloads:32528,   bestFor:['writing','research','support']},
+            {id:'qwen32b',   name:'Qwen2.5 32B',      repo:'Qwen/Qwen2.5-32B-Instruct',                 params:32.8e9,  license:'apache-2.0', gated:false, downloads:2499364, bestFor:['code','analysis','research']},
+            {id:'llama70b',  name:'Llama 3.3 70B',    repo:'meta-llama/Llama-3.3-70B-Instruct',         params:70.6e9,  license:'llama3.3', gated:true,  downloads:675237,  bestFor:['writing','research','strategy','support']},
+            {id:'qwen72b',   name:'Qwen2.5 72B',      repo:'Qwen/Qwen2.5-72B-Instruct',                 params:72.7e9,  license:'other', gated:false,    downloads:669038,  bestFor:['code','analysis','research','strategy']},
+            {id:'mistral123b',name:'Mistral Large 2', repo:'mistralai/Mistral-Large-Instruct-2411',     params:122.6e9, license:'other', gated:false,    downloads:8328,    bestFor:['writing','analysis','strategy']},
+            {id:'deepseek',  name:'DeepSeek R1',      repo:'deepseek-ai/DeepSeek-R1',                   params:684.5e9, license:'mit', gated:false,      downloads:7292805, bestFor:['strategy','code','analysis','research']},
+            {id:'llama405b', name:'Llama 3.1 405B',   repo:'meta-llama/Llama-3.1-405B-Instruct',        params:405.9e9, license:'llama3.1', gated:true,  downloads:210929,  bestFor:['strategy','analysis','writing']},
+        ];
+        // Quantisation: bytes per weight. Memory ≈ params × bytes × overhead(KV+activations).
+        const QUANT = { q4:0.5, q8:1, fp16:2 };
+        const QUANT_IDS = ['q4','q8','fp16'];
+        const MEM_OVERHEAD = 1.2;
+        const memNeededGB = (params, q) => Math.round(params * QUANT[q] * MEM_OVERHEAD / 1e9);
+        // Friendly license labels + permissiveness (matters for regulated buyers).
+        const LICENSE = {
+            'apache-2.0':{label:'Apache 2.0', kind:'permissive'},
+            'mit':{label:'MIT', kind:'permissive'},
+            'llama3.1':{label:'Llama Community', kind:'community'},
+            'llama3.3':{label:'Llama Community', kind:'community'},
+            'gemma':{label:'Gemma', kind:'community'},
+            'other':{label:'Custom license', kind:'other'},
+        };
+        // Escape any third-party (Hugging Face) string before it goes into innerHTML.
+        const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const licInfo = lic => LICENSE[lic] || {label:(lic||'—'), kind:'other'};
+        const fmtDownloads = n => n>=1e6 ? (n/1e6).toFixed(1).replace(/\.0$/,'')+'M' : n>=1e3 ? Math.round(n/1e3)+'k' : (n||0)+'';
+        const fmtParams = p => p>=1e12 ? (p/1e12).toFixed(1)+'T' : (p/1e9)>=100 ? Math.round(p/1e9)+'B' : (p/1e9).toFixed(1).replace(/\.0$/,'')+'B';
+        const RAM_IDS=[8,16,32,64,128,512];
+        const USE_IDS=['writing','research','code','analysis','support','strategy'];
+        const DATA_IDS=['files','integration','enterprise'];
+        const SERVICE_IDS=['setup','partner'];
+
+        let lang = localStorage.getItem('lang');
+        if(lang!=='nl' && lang!=='en'){ lang = (navigator.language||'').toLowerCase().indexOf('nl')===0 ? 'nl' : 'en'; }
+        const C = () => CFG[lang];
+
+        const state = { ram:16, usecase:['research'], model:null, manual:false, quant:'q4', data:'files', service:'setup', compliance:false, detected:null, estimated:false, hfLive:false, trending:null, trendDone:false };
+        const root = document.getElementById('cfg');
+        const modelMem = m => memNeededGB(m.params, state.quant);
+
+        const ramName = id => C().RAM[id] ? C().RAM[id][0] : id+' GB';
+        const useName = id => C().USE[id] ? C().USE[id][0] : id;
+        const dataName = id => C().DATA[id] ? C().DATA[id][0] : id;
+        const serviceName = id => C().SERVICE[id] ? C().SERVICE[id][0] : id;
+
+        function recommend(){
+            // Strongest model that actually fits in the chosen memory at the chosen
+            // quantisation, best-matched to the selected use cases. Bigger params = stronger.
+            const fit = MODELS.filter(m=>modelMem(m)<=state.ram);
+            const pool = fit.length ? fit : [MODELS[0]];
+            return pool.slice().sort((a,b)=>{
+                if(state.usecase.length){
+                    const am=a.bestFor.filter(x=>state.usecase.indexOf(x)>=0).length;
+                    const bm=b.bestFor.filter(x=>state.usecase.indexOf(x)>=0).length;
+                    if(bm!==am) return bm-am;
+                }
+                return b.params-a.params;
+            })[0];
+        }
+        function currentModel(){
+            if(state.manual && state.model){ const m = MODELS.find(m=>m.id===state.model); if(m) return m; }
+            return recommend();
+        }
+        // Refresh the curated catalog live from the Hugging Face Hub API (no auth, CORS-ok).
+        // Updates param count / downloads / license / gated in place; silently keeps the
+        // baked-in fallback for any repo that errors or is slow.
+        async function enrichFromHF(){
+            const withTimeout = (p, ms) => Promise.race([p, new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')), ms))]);
+            const jobs = MODELS.map(async m => {
+                try{
+                    const r = await withTimeout(fetch('https://huggingface.co/api/models/'+m.repo, {headers:{'Accept':'application/json'}}), 4000);
+                    if(!r.ok) return false;
+                    const d = await r.json();
+                    const p = d.safetensors && d.safetensors.total;
+                    if(p) m.params = p;
+                    if(typeof d.downloads==='number') m.downloads = d.downloads;
+                    if(d.gated!=null) m.gated = d.gated!==false;
+                    const lic = (d.tags||[]).find(t=>t.indexOf('license:')===0);
+                    if(lic){ const val = lic.slice('license:'.length); if(val) m.license = val; }
+                    return true;
+                }catch(e){ return false; }
+            });
+            const results = await Promise.all(jobs);
+            if(results.some(Boolean)){ state.hfLive = true; render(); }
+        }
+        // Live "trending now" feed from HF, QUALITY-FILTERED: drop quant/derivative repos
+        // and low-signal models so a regulated buyer never sees junk. Read-only strip.
+        const TREND_JUNK = /(gguf|awq|gptq|nvfp4|fp8|mlx|litert|bnb|abliterated|uncensored|[-_.](?:int4|int8|4bit|8bit|2bit))/i;
+        async function fetchTrending(){
+            try{
+                const ctrl = new AbortController();
+                const timer = setTimeout(()=>ctrl.abort(), 5000);
+                const r = await fetch('https://huggingface.co/api/models?pipeline_tag=text-generation&sort=trendingScore&direction=-1&limit=50', {headers:{'Accept':'application/json'}, signal:ctrl.signal});
+                clearTimeout(timer);
+                if(!r.ok) throw new Error('http '+r.status);
+                const list = await r.json();
+                state.trending = (Array.isArray(list)?list:[])
+                    .filter(m => m && m.id && !TREND_JUNK.test(m.id))
+                    .filter(m => (m.likes||0) >= 100 && (m.downloads||0) >= 5000)
+                    .slice(0, 8)
+                    .map(m => ({ id:m.id, author:(m.id.split('/')[0]||''), name:(m.id.split('/').slice(1).join('/')||m.id), likes:m.likes||0, downloads:m.downloads||0 }));
+            }catch(e){ state.trending = []; }
+            state.trendDone = true; render();
+        }
+        async function scan(){
+            const d = { cores: navigator.hardwareConcurrency || null, apple:false, gpu:null, platform:'' };
+            d.platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+            if(navigator.gpu){
+                try{
+                    const ad = await navigator.gpu.requestAdapter();
+                    if(ad){
+                        let ai = {};
+                        if(ad.info) ai = ad.info; else if(ad.requestAdapterInfo) ai = await ad.requestAdapterInfo();
+                        d.gpu = ((ai.vendor||'')+' '+(ai.architecture||'')).trim();
+                        if(/apple/i.test(d.gpu)) d.apple = true;
+                    }
+                }catch(e){}
+            }
+            if(/mac/i.test(d.platform)) d.apple = true;
+            let est = 16;
+            if(d.apple) est = d.cores>=12 ? 64 : (d.cores>=10 ? 32 : 16);
+            else if(navigator.deviceMemory) est = navigator.deviceMemory>=8 ? 16 : navigator.deviceMemory;
+            const tiers=[8,16,32,64,128];
+            state.ram = tiers.reduce((p,c)=>Math.abs(c-est)<Math.abs(p-est)?c:p, 16);
+            state.estimated = true; state.manual = false; state.detected = d;
+            render();
+        }
+
+        function buildGroup(label, ids, dict, current, onPick, multi){
+            const grp=document.createElement('div'); grp.className='cfg-group';
+            const lab=document.createElement('div'); lab.className='cfg-label'; lab.textContent=label; grp.appendChild(lab);
+            const opts=document.createElement('div'); opts.className='cfg-options';
+            ids.forEach(id=>{
+                const sel = multi ? current.indexOf(id)>=0 : current===id;
+                const b=document.createElement('button'); b.type='button'; b.className='cfg-opt'+(sel?' selected':'');
+                b.innerHTML='<span class="co-name">'+dict[id][0]+'</span><span class="co-desc">'+dict[id][1]+'</span>';
+                b.addEventListener('click', ()=>onPick(id));
+                opts.appendChild(b);
+            });
+            grp.appendChild(opts); return grp;
+        }
+
+        function render(){
+            if(!root) return;
+            root.innerHTML='';
+            const t = C();
+
+            const mg=document.createElement('div'); mg.className='cfg-group';
+            const ml=document.createElement('div'); ml.className='cfg-label'; ml.textContent=t.machine; mg.appendChild(ml);
+            const scanRow=document.createElement('div'); scanRow.className='cfg-scan';
+            const scanBtn=document.createElement('button'); scanBtn.type='button'; scanBtn.className='cfg-scan-btn'; scanBtn.textContent=t.scanBtn;
+            scanBtn.addEventListener('click', scan);
+            scanRow.appendChild(scanBtn);
+            const det=document.createElement('div'); det.className='cfg-detected';
+            if(state.detected){
+                const d=state.detected; const parts=[];
+                if(d.apple) parts.push('<b>Apple Silicon</b>');
+                else if(d.platform) parts.push(esc(d.platform));
+                if(d.cores) parts.push(d.cores+' '+t.detCores);
+                if(d.gpu) parts.push('GPU: '+esc(d.gpu));
+                det.innerHTML=t.detDetected+': '+(parts.join(' · ')||'')+'. '+(d.apple?t.detGreat+' ':'')+t.detEst+' <b>'+ramName(state.ram)+'</b>'+t.detConfirm;
+            } else { det.innerHTML=t.detIntro; }
+            scanRow.appendChild(det); mg.appendChild(scanRow);
+            const ramOpts=document.createElement('div'); ramOpts.className='cfg-options';
+            RAM_IDS.forEach(id=>{
+                const b=document.createElement('button'); b.type='button'; b.className='cfg-opt'+(state.ram===id?' selected':'');
+                b.innerHTML='<span class="co-name">'+t.RAM[id][0]+'</span><span class="co-desc">'+t.RAM[id][1]+'</span>';
+                b.addEventListener('click', ()=>{ state.ram=id; render(); });
+                ramOpts.appendChild(b);
+            });
+            mg.appendChild(ramOpts); root.appendChild(mg);
+
+            root.appendChild(buildGroup(t.useLabel, USE_IDS, t.USE, state.usecase, id=>{ const i=state.usecase.indexOf(id); if(i>=0) state.usecase.splice(i,1); else state.usecase.push(id); render(); }, true));
+
+            // Precision / quantisation selector — drives all the memory math below.
+            const qg=document.createElement('div'); qg.className='cfg-group';
+            const ql=document.createElement('div'); ql.className='cfg-label'; ql.textContent=t.quantLabel; qg.appendChild(ql);
+            const qrow=document.createElement('div'); qrow.className='cfg-quant';
+            QUANT_IDS.forEach(qid=>{
+                const b=document.createElement('button'); b.type='button'; b.className=state.quant===qid?'selected':'';
+                b.innerHTML='<span class="q-name">'+t.QUANT[qid][0]+'</span><span class="q-desc">'+t.QUANT[qid][1]+'</span>';
+                b.addEventListener('click', ()=>{ state.quant=qid; render(); });
+                qrow.appendChild(b);
+            });
+            qg.appendChild(qrow); root.appendChild(qg);
+
+            const m = currentModel();
+            const mem = modelMem(m);
+            const fits = mem <= state.ram;
+            const recDiv=document.createElement('div'); recDiv.className='cfg-rec';
+            let why;
+            if(fits){
+                const matched = state.usecase.filter(x=>m.bestFor.indexOf(x)>=0).map(useName);
+                why = matched.length ? t.bestFor+' '+matched.join(', ').toLowerCase()+' '+t.onWord+' '+ramName(state.ram)+'.' : t.strongest+' '+ramName(state.ram)+'.';
+            } else {
+                why = t.recServerNote;
+            }
+            // The honest math, shown openly: params · precision ≈ memory, vs. your machine.
+            const mathStr = fmtParams(m.params)+' · '+t.QUANT[state.quant][0]+' ≈ <b>'+mem+' GB</b> — '
+                + (fits ? '<span class="ok">'+t.fitsYour+' '+ramName(state.ram)+'</span>'
+                        : '<span class="over">'+t.exceedsYour+' '+ramName(state.ram)+'</span>');
+            recDiv.innerHTML='<div class="rec-label">'+t.recLabel+'</div><div class="rec-model">'+esc(m.name)+'</div>'
+                +'<div class="rec-why">'+why+'</div><div class="rec-math">'+mathStr+'</div>';
+            root.appendChild(recDiv);
+
+            const modg=document.createElement('div'); modg.className='cfg-group';
+            const modl=document.createElement('div'); modl.className='cfg-label'; modl.textContent=t.modelLabel; modg.appendChild(modl);
+            const modo=document.createElement('div'); modo.className='cfg-options';
+            MODELS.forEach(o=>{
+                const b=document.createElement('button'); b.type='button'; b.className='cfg-opt'+(o.id===m.id?' selected':'');
+                const omem = modelMem(o); const ok = omem <= state.ram;
+                const lic = licInfo(o.license);
+                const licClass = o.gated ? 'lic-gated' : (lic.kind==='permissive' ? 'lic-permissive' : '');
+                const chips = '<span class="co-meta">'
+                    + '<span class="chip size">'+fmtParams(o.params)+'</span>'
+                    + '<span class="chip '+licClass+'">'+(o.gated?t.gatedWord+' · ':'')+esc(lic.label)+'</span>'
+                    + '<span class="chip">'+fmtDownloads(o.downloads)+' '+t.dlWord+'</span>'
+                    + '</span>';
+                const badge = ok ? '<span class="co-badge fit">'+t.approxWord+' '+omem+' GB · '+t.runsOn+' '+ramName(state.ram)+'</span>'
+                                 : '<span class="co-badge nofit">'+t.approxWord+' '+omem+' GB · '+t.weProvide+'</span>';
+                b.innerHTML='<span class="co-name">'+esc(o.name)+'</span><span class="co-desc">'+t.MODELD[o.id]+'</span>'+chips+badge;
+                b.addEventListener('click', ()=>{ state.model=o.id; state.manual=true; render(); });
+                modo.appendChild(b);
+            });
+            modg.appendChild(modo); root.appendChild(modg);
+            // Provenance: tells the buyer this catalogue is live, not a stale brochure.
+            const src=document.createElement('div'); src.className='cfg-source'+(state.hfLive?' live':'');
+            src.innerHTML='<span class="dot"></span>'+(state.hfLive?t.srcLive:t.srcBaked)+' <a href="https://huggingface.co/models" target="_blank" rel="noopener">Hugging Face</a>';
+            root.appendChild(src);
+
+            root.appendChild(buildGroup(t.dataLabel, DATA_IDS, t.DATA, state.data, id=>{ state.data=id; render(); }, false));
+            root.appendChild(buildGroup(t.serviceLabel, SERVICE_IDS, t.SERVICE, state.service, id=>{ state.service=id; render(); }, false));
+
+            const ag=document.createElement('div'); ag.className='cfg-group';
+            const al=document.createElement('div'); al.className='cfg-label'; al.textContent=t.sectorLabel; ag.appendChild(al);
+            const ad=document.createElement('div'); ad.className='cfg-addon'+(state.compliance?' selected':'');
+            ad.innerHTML='<span class="ca-box">'+(state.compliance?'✓':'')+'</span><span><span class="co-name">'+t.addon[0]+'</span><br><span class="co-desc">'+t.addon[1]+'</span></span>';
+            ad.addEventListener('click', ()=>{ state.compliance=!state.compliance; render(); });
+            ag.appendChild(ad); root.appendChild(ag);
+
+            const useNames = state.usecase.map(useName);
+            const useText = useNames.length ? ' '+t.forWord+' '+useNames.join(', ').toLowerCase() : '';
+            const recap = m.name+useText+', '+t.onWord+' '+ramName(state.ram).toLowerCase()+', '+dataName(state.data).toLowerCase()+', '+serviceName(state.service).toLowerCase()+(state.compliance?t.withComp:'')+'.';
+            const body = t.mailIntro+'\n\n'
+                +t.lMemory+': '+ramName(state.ram)+'\n'
+                +(state.detected ? (t.lDetected+': '+(state.detected.apple?'Apple Silicon, ':'')+(state.detected.cores?state.detected.cores+' '+t.detCores+', ':'')+(state.detected.gpu||'')+'\n') : '')
+                +t.lModel+': '+m.name+' ('+fmtParams(m.params)+')'+(mem>state.ram?t.needsBigger:'')+'\n'
+                +t.lPrecision+': '+t.QUANT[state.quant][0]+' (≈ '+mem+' GB)\n'
+                +t.lUse+': '+(useNames.length?useNames.join(', '):t.notSpec)+'\n'
+                +t.lData+': '+dataName(state.data)+'\n'
+                +t.lService+': '+serviceName(state.service)+'\n'
+                +t.lComp+': '+(state.compliance?t.yes:t.no)+'\n';
+            const mailto='mailto:info@openpoem.org?subject='+encodeURIComponent('Private AI build: '+m.name)+'&body='+encodeURIComponent(body);
+            const sum=document.createElement('div'); sum.className='cfg-summary';
+            sum.innerHTML='<div class="cfg-recap">'+t.yourBuild+recap+'</div>'
+                +'<a class="cfg-cta" href="'+mailto+'">'+t.cta+'</a>'
+                +'<div class="cfg-disclaimer">'+t.disclaimer+'</div>';
+            root.appendChild(sum);
+
+            // Trending strip — live, quality-filtered feed from Hugging Face.
+            const tr=document.createElement('div'); tr.className='cfg-trend';
+            const trh=document.createElement('div'); trh.className='cfg-trend-head';
+            trh.innerHTML='<span class="tl">'+t.trendLabel+'</span><span class="ts">'+t.trendSub+'</span>';
+            tr.appendChild(trh);
+            if(!state.trendDone){
+                const ld=document.createElement('div'); ld.className='cfg-trend-loading'; ld.textContent=t.trendLoading; tr.appendChild(ld);
+            } else if(state.trending && state.trending.length){
+                const grid=document.createElement('div'); grid.className='cfg-trend-grid';
+                state.trending.forEach(o=>{
+                    const a=document.createElement('a'); a.className='trend-card';
+                    a.href='https://huggingface.co/'+o.id.split('/').map(encodeURIComponent).join('/'); a.target='_blank'; a.rel='noopener';
+                    a.innerHTML='<div class="tc-name">'+esc(o.name)+'</div><div class="tc-author">'+esc(o.author)+'</div>'
+                        +'<div class="tc-stats"><span>♥ '+fmtDownloads(o.likes)+'</span><span>↓ '+fmtDownloads(o.downloads)+'</span></div>';
+                    grid.appendChild(a);
+                });
+                tr.appendChild(grid);
+            } else {
+                const ld=document.createElement('div'); ld.className='cfg-trend-loading'; ld.textContent=t.trendEmpty; tr.appendChild(ld);
+            }
+            root.appendChild(tr);
+        }
+
+        function applyStatic(){
+            const d = STATIC[lang] || STATIC.en;
+            document.querySelectorAll('[data-k]').forEach(el=>{
+                const k = el.getAttribute('data-k');
+                if(d[k]!=null) el.textContent = d[k];
+            });
+            document.querySelectorAll('.lang-toggle button').forEach(b=>{
+                b.classList.toggle('active', b.getAttribute('data-lang')===lang);
+            });
+            document.documentElement.lang = lang;
+            if(window.__vramRelang) window.__vramRelang();
+        }
+        function setLang(l){ lang=l; try{ localStorage.setItem('lang',l); }catch(e){} applyStatic(); render(); }
+        document.querySelectorAll('.lang-toggle button').forEach(b=>{
+            b.addEventListener('click', ()=>setLang(b.getAttribute('data-lang')));
+        });
+
+        applyStatic();
+        render();
+        enrichFromHF();   // refresh the catalogue live from Hugging Face (non-blocking)
+        fetchTrending();  // live, quality-filtered trending strip (non-blocking)
+
+        var modal=document.getElementById('cfg-modal');
+        var closeBtn=document.getElementById('cfg-close');
+        function openModal(e){ if(e) e.preventDefault(); if(modal){ modal.classList.add('open'); document.body.style.overflow='hidden'; } }
+        function closeModal(){ if(modal){ modal.classList.remove('open'); document.body.style.overflow=''; } }
+        ['open-cfg','open-cfg-2','open-cfg-3'].forEach(function(id){ var b=document.getElementById(id); if(b) b.addEventListener('click', openModal); });
+        if(closeBtn) closeBtn.addEventListener('click', closeModal);
+        if(modal) modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
+    })();
+    </script>
+    <script>
+    /* ---------------------------------------------------------------------
+       VRAM wizard — the full inference-memory math, in the browser.
+       Total VRAM = weights + KV cache + activations + framework overhead,
+       times a safety margin. KV cache and activations are computed from the
+       real architecture (layers, KV heads, head dim) of each model, so the
+       number reflects how memory actually behaves at your context length.
+       --------------------------------------------------------------------- */
+    (function(){
+        const $ = id => document.getElementById(id);
+        const ctlEl = $('vw-controls'), outEl = $('vw-out');
+        if(!ctlEl || !outEl) return;
+
+        // params B, layers L, KV heads Hkv, head dim D, hidden H — from published configs
+        const MODELS = [
+            {k:'llama8b',   label:'Llama 3.1 · 8B',          P:8,    L:32,  Hkv:8,  D:128, H:4096},
+            {k:'qwen7b',    label:'Qwen 2.5 · 7B',           P:7.6,  L:28,  Hkv:4,  D:128, H:3584},
+            {k:'qwen14b',   label:'Qwen 2.5 · 14B',          P:14.8, L:48,  Hkv:8,  D:128, H:5120},
+            {k:'mistral24b',label:'Mistral Small · 24B',     P:23.6, L:40,  Hkv:8,  D:128, H:5120},
+            {k:'gemma27b',  label:'Gemma 2 · 27B',           P:27.2, L:46,  Hkv:16, D:128, H:4608},
+            {k:'qwen32b',   label:'Qwen 2.5 · 32B',          P:32.5, L:64,  Hkv:8,  D:128, H:5120},
+            {k:'llama70b',  label:'Llama 3.3 · 70B',         P:70.6, L:80,  Hkv:8,  D:128, H:8192},
+            {k:'r1d70b',    label:'DeepSeek-R1-Distill · 70B',P:70.6, L:80,  Hkv:8,  D:128, H:8192},
+            {k:'qwen72b',   label:'Qwen 2.5 · 72B',          P:72.7, L:80,  Hkv:8,  D:128, H:8192},
+            {k:'mistral123b',label:'Mistral Large · 123B',   P:123,  L:88,  Hkv:8,  D:128, H:12288},
+            {k:'llama405b', label:'Llama 3.1 · 405B',        P:406,  L:126, Hkv:8,  D:128, H:16384},
+            {k:'custom',    label:'— Custom / from the ARK',  P:32,   L:64,  Hkv:8,  D:128, H:5120}
+        ];
+        // weights: effective bytes per parameter (bits-per-weight ÷ 8)
+        const QUANT = [
+            {k:'fp16', b:2.0,   en:'FP16 · full',      nl:'FP16 · vol'},
+            {k:'fp8',  b:1.0,   en:'FP8',              nl:'FP8'},
+            {k:'q8',   b:1.06,  en:'Q8_0 · 8-bit',     nl:'Q8_0 · 8-bit'},
+            {k:'q6',   b:0.82,  en:'Q6_K · 6-bit',     nl:'Q6_K · 6-bit'},
+            {k:'q5',   b:0.71,  en:'Q5_K_M · 5-bit',   nl:'Q5_K_M · 5-bit'},
+            {k:'q4',   b:0.60,  en:'Q4_K_M · 4-bit ★', nl:'Q4_K_M · 4-bit ★'},
+            {k:'q3',   b:0.49,  en:'Q3_K_M · 3-bit',   nl:'Q3_K_M · 3-bit'}
+        ];
+        const KVP = [ {k:'fp16',b:2,en:'FP16',nl:'FP16'}, {k:'fp8',b:1,en:'FP8 ★',nl:'FP8 ★'}, {k:'int8',b:1,en:'INT8',nl:'INT8'} ];
+        const CTX = [4096,8192,16384,32768,65536,131072,262144];
+        const BATCH = [1,2,4,8,16,32];
+        const RT = [ {k:'vllm',base:1.2,en:'vLLM',nl:'vLLM'}, {k:'llamacpp',base:0.6,en:'llama.cpp',nl:'llama.cpp'}, {k:'trtllm',base:1.0,en:'TensorRT-LLM',nl:'TensorRT-LLM'}, {k:'hf',base:1.8,en:'Transformers',nl:'Transformers'} ];
+        const MARGIN = [0.10,0.15,0.20,0.30];
+        const GPUS = [
+            {n:'1× RTX 4090', v:24}, {n:'1× RTX 5090', v:32},
+            {n:'1× L40S / RTX 6000 Ada', v:48}, {n:'1× H100 / A100', v:80},
+            {n:'2× H100', v:160}, {n:'4× H100', v:320}, {n:'8× H100', v:640}, {n:'16× H100', v:1280}
+        ];
+        const MAC_FACTOR = 0.72;
+        const MACS = [ {g:64}, {g:128}, {g:192}, {g:256}, {g:512} ];
+
+        const TXT = {
+            en:{ model:'Model', quant:'Precision (weights)', kv:'KV-cache precision', ctx:'Context window (tokens)',
+                 batch:'Concurrent requests', rt:'Runtime', margin:'Safety margin',
+                 cP:'Params (B)', cL:'Layers', cHkv:'KV heads', cD:'Head dim',
+                 rec:'Recommended VRAM', weights:'Weights', kvc:'KV cache', act:'Activations', fw:'Framework + CUDA',
+                 subtotal:'Subtotal', marginL:'safety margin', fitsGpu:'Fits on (GPU)', fitsMac:'Fits on (Mac unified)',
+                 macUse:'usable', cluster:'Beyond a single box — we design and host the cluster.',
+                 kvNote:'KV cache here is', kvNote2:'— that is the part that grows every time you raise the context window or add concurrent users.',
+                 macNote:'Mac unified memory: ~72% is usable for the model by default; we can raise that on your machine.' },
+            nl:{ model:'Model', quant:'Precisie (weights)', kv:'KV-cache precisie', ctx:'Contextvenster (tokens)',
+                 batch:'Gelijktijdige verzoeken', rt:'Runtime', margin:'Veiligheidsmarge',
+                 cP:'Params (B)', cL:'Layers', cHkv:'KV-heads', cD:'Head dim',
+                 rec:'Aanbevolen VRAM', weights:'Weights', kvc:'KV-cache', act:'Activations', fw:'Framework + CUDA',
+                 subtotal:'Subtotaal', marginL:'veiligheidsmarge', fitsGpu:'Past op (GPU)', fitsMac:'Past op (Mac unified)',
+                 macUse:'bruikbaar', cluster:'Voorbij één machine — wij ontwerpen en hosten het cluster.',
+                 kvNote:'KV-cache is hier', kvNote2:'— dat is het deel dat groeit zodra je het contextvenster verhoogt of meer gelijktijdige gebruikers toevoegt.',
+                 macNote:'Mac unified memory: standaard is ~72% bruikbaar voor het model; op jouw machine kunnen we dat verhogen.' }
+        };
+        const lng = () => TXT[document.documentElement.lang] || TXT.en;
+
+        const S = { model:'qwen32b', quant:'q4', kv:'fp16', ctx:32768, batch:1, rt:'vllm', margin:0.15,
+                    cP:32, cL:64, cHkv:8, cD:128 };
+
+        const fmtCtx = n => n>=1024 ? (n/1024)+'K' : ''+n;
+        const g1 = x => x>=100 ? Math.round(x) : Math.round(x*10)/10;
+
+        function arch(){
+            const m = MODELS.find(x=>x.k===S.model);
+            if(S.model==='custom') return {P:+S.cP||1, L:+S.cL||1, Hkv:+S.cHkv||1, D:+S.cD||1, H:(+S.cHkv||1)*(+S.cD||1)*4};
+            return m;
+        }
+        function compute(){
+            const a = arch();
+            const bpw = QUANT.find(q=>q.k===S.quant).b;
+            const kvb = KVP.find(q=>q.k===S.kv).b;
+            const weights = a.P * bpw;                                  // GB  (B params × bytes)
+            const kvPerTok = 2 * a.L * a.Hkv * a.D * kvb;               // bytes per token
+            const kv = kvPerTok * S.ctx * S.batch / 1e9;               // GB
+            const act = S.batch * (a.H/4096) * (Math.min(S.ctx,8192)/4096) * 0.35;  // compute buffers
+            const fw = (RT.find(r=>r.k===S.rt).base) + 0.05*(weights+kv);           // framework + fragmentation
+            const subtotal = weights + kv + act + fw;
+            const rec = subtotal * (1 + S.margin);
+            return {weights,kv,act,fw,subtotal,rec};
+        }
+
+        function fitGpu(rec){ const g = GPUS.find(x=>x.v>=rec); return g?g.n+' · '+g.v+' GB':null; }
+        function fitMac(rec){ const m = MACS.find(x=>x.g*MAC_FACTOR>=rec); return m?m.g+' GB ('+Math.round(m.g*MAC_FACTOR)+' GB '+lng().macUse+')':null; }
+
+        function seg(field, items, val, fmt){
+            return '<div class="vw-seg">'+items.map(it=>{
+                const k = (typeof it==='object')?it.k:it;
+                const lab = fmt?fmt(it):k;
+                return '<button type="button" data-f="'+field+'" data-v="'+k+'"'+(String(k)===String(val)?' class="on"':'')+'>'+lab+'</button>';
+            }).join('')+'</div>';
+        }
+
+        function renderControls(){
+            const t = lng();
+            const opt = (its,val,f)=> its.map(o=>'<option value="'+o.k+'"'+(o.k===val?' selected':'')+'>'+(f?f(o):o.label)+'</option>').join('');
+            ctlEl.innerHTML =
+                '<div class="vw-row"><label>'+t.model+'</label><select data-f="model">'+opt(MODELS,S.model)+'</select>'+
+                  '<div class="vw-custom'+(S.model==='custom'?' on':'')+'" id="vw-cust">'+
+                    '<div class="vw-row"><label>'+t.cP+'</label><input type="number" data-f="cP" value="'+S.cP+'" min="0.1" step="0.1"></div>'+
+                    '<div class="vw-row"><label>'+t.cL+'</label><input type="number" data-f="cL" value="'+S.cL+'" min="1" step="1"></div>'+
+                    '<div class="vw-row"><label>'+t.cHkv+'</label><input type="number" data-f="cHkv" value="'+S.cHkv+'" min="1" step="1"></div>'+
+                    '<div class="vw-row"><label>'+t.cD+'</label><input type="number" data-f="cD" value="'+S.cD+'" min="1" step="1"></div>'+
+                  '</div></div>'+
+                '<div class="vw-row"><label>'+t.quant+'</label><select data-f="quant">'+opt(QUANT,S.quant,o=>o[document.documentElement.lang]||o.en)+'</select></div>'+
+                '<div class="vw-row"><label>'+t.kv+'</label>'+seg('kv',KVP,S.kv,o=>o[document.documentElement.lang]||o.en)+'</div>'+
+                '<div class="vw-row"><label>'+t.ctx+'</label>'+seg('ctx',CTX,S.ctx,fmtCtx)+'</div>'+
+                '<div class="vw-row"><label>'+t.batch+'</label>'+seg('batch',BATCH,S.batch,x=>'×'+x)+'</div>'+
+                '<div class="vw-row"><label>'+t.rt+'</label>'+seg('rt',RT,S.rt,o=>o[document.documentElement.lang]||o.en)+'</div>'+
+                '<div class="vw-row"><label>'+t.margin+'</label>'+seg('margin',MARGIN,S.margin,x=>Math.round(x*100)+'%')+'</div>';
+        }
+
+        function bar(cls,label,val,rec){
+            const pct = Math.max(2, Math.min(100, val/rec*100));
+            return '<div class="vw-bar"><span class="bk">'+label+'</span>'+
+                   '<span class="track"><span class="fill '+cls+'" style="width:'+pct+'%"></span></span>'+
+                   '<span class="bv">'+g1(val)+' GB</span></div>';
+        }
+        function renderOut(){
+            const t = lng(), r = compute();
+            const gpu = fitGpu(r.rec), mac = fitMac(r.rec);
+            outEl.innerHTML =
+                '<div class="vw-big"><span class="n">'+g1(r.rec)+'</span><span class="u">GB</span>'+
+                  '<span class="lab">'+t.rec+'</span></div>'+
+                '<div class="vw-bars">'+
+                    bar('f-w',t.weights,r.weights,r.rec)+
+                    bar('f-k',t.kvc,r.kv,r.rec)+
+                    bar('f-a',t.act,r.act,r.rec)+
+                    bar('f-f',t.fw,r.fw,r.rec)+
+                '</div>'+
+                '<div class="vw-sub"><span>'+t.subtotal+': '+g1(r.subtotal)+' GB</span><span>+'+Math.round(S.margin*100)+'% '+t.marginL+'</span></div>'+
+                '<div class="vw-fit"><h4>'+t.fitsGpu+'</h4>'+
+                   (gpu?'<span class="chip">'+gpu+'</span>':'<span class="chip">'+t.cluster+'</span>')+
+                   '<h4 style="margin-top:.7rem">'+t.fitsMac+'</h4>'+
+                   (mac?'<span class="chip">Mac · <b>'+mac+'</b></span>':'<span class="chip">'+t.cluster+'</span>')+
+                '</div>'+
+                '<p class="vw-note">'+t.kvNote+' <span class="vw-kv-flag">'+g1(r.kv)+' GB</span> '+t.kvNote2+'</p>'+
+                '<p class="vw-note">'+t.macNote+'</p>';
+        }
+
+        function rerender(){ renderControls(); renderOut(); }
+
+        ctlEl.addEventListener('change', e=>{
+            const f = e.target.getAttribute('data-f'); if(!f) return;
+            S[f] = (e.target.type==='number') ? +e.target.value : e.target.value;
+            rerender();
+        });
+        ctlEl.addEventListener('click', e=>{
+            const b = e.target.closest('button[data-f]'); if(!b) return;
+            const f = b.getAttribute('data-f'); let v = b.getAttribute('data-v');
+            if(f==='ctx'||f==='batch') v=+v; if(f==='margin') v=+v;
+            S[f]=v; rerender();
+        });
+
+        window.__vramRelang = rerender;   // re-render on EN/NL toggle
+        rerender();
+    })();
+    </script>
+</body>
+</html>

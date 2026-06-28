@@ -1,0 +1,98 @@
+{
+ "apple": {
+  "root": "From Old English \"æppel\", anciently applied to all fruit.",
+  "before": "A round, often red or green edible fruit from trees.",
+  "feeling": "Invokes freshness, health, and a crunchy satisfaction.",
+  "model": "qwen2.5:32b"
+ },
+ "bijzonder": {
+  "root": "Dutch, from 'bij' (by) and 'zonder' (without), suggesting beyond normal.",
+  "before": "A notion of something standing out, unique, apart from the usual.",
+  "feeling": "Sense of marvel, surprise at distinctiveness, uniqueness.",
+  "model": "qwen2.5:32b"
+ },
+ "respect": {
+  "root": "respicere in Latin, re- (again) + spicere (look)",
+  "before": "recognizing worth and value in another's presence deeply",
+  "feeling": "a motion of honor and esteem, uplifting connection deeply sensed",
+  "model": "qwen2.5:32b"
+ },
+ "emotion": {
+  "root": "e(mo)-tion, from Latin 'emotus', denoting a motion within.",
+  "before": "Bodily responses and internal reactions to stimuli, unspoken.",
+  "feeling": "A surge of inner experience, raw and primal, coloring consciousness.",
+  "model": "qwen2.5:32b"
+ },
+ "understand": {
+  "root": "Under + stand; to stand below, support.",
+  "before": "The act of grasping something deeply, internally.",
+  "feeling": "Clarity, connection, peace.",
+  "model": "qwen2.5:32b"
+ },
+ "poem": {
+  "root": "From Greek \"poieo\", meaning to create or make.",
+  "before": "An expression of soul, feelings woven into rhythm and rhyme.",
+  "feeling": "Evokes deep emotions, stirs the heart with its lyrical flow.",
+  "model": "qwen2.5:32b"
+ },
+ "truth": {
+  "root": "Old English \"triewe,\" trust, fidelity.",
+  "before": "The state of being factually accurate or true.",
+  "feeling": "Assurance, clarity, liberation from doubt.",
+  "model": "qwen2.5:32b"
+ },
+ "love": {
+  "root": "*lubh-, an ancient root meaning to cherish.",
+  "before": "Actions and feelings of deep affection and care for another.",
+  "feeling": "Warmth, connection, and a desire for well-being of others.",
+  "model": "qwen2.5:32b"
+ },
+ "time": {
+  "root": "Latin 'tempus', relating to seasons, moments.",
+  "before": "Cyclical natural phenomena, life's progression observed.",
+  "feeling": "Passage of existence, evokes urgency, nostalgia.",
+  "model": "qwen2.5:32b"
+ },
+ "fear": {
+  "root": "From Old English \"fēor,\" meaning distress or anxiety.",
+  "before": "The primal instinct signaling danger, prompting survival action.",
+  "feeling": "A tightening in the chest, cold sweat, urging flight or freeze.",
+  "model": "qwen2.5:32b"
+ },
+ "home": {
+  "root": "Old English \"ham\", a place of residence, security.",
+  "before": "The central hub where one dwells, feels safe, and belongs.",
+  "feeling": "Warmth, safety, belonging, comfort, and peace.",
+  "model": "qwen2.5:32b"
+ },
+ "freedom": {
+  "root": "Old English \"frēo\", meaning \"free\", \"noble\"; derived liberty and independence concepts.",
+  "before": "The human desire for autonomy, self-determination in thought and action.",
+  "feeling": "Liberation from constraints, empowerment to act without fetters.",
+  "model": "qwen2.5:32b"
+ },
+ "memory": {
+  "root": "memori (Latin), to recall, a sense of remembering past.",
+  "before": "Experiencing events, storing sensations, thoughts without naming.",
+  "feeling": "Nostalgia, warmth, sometimes sadness, the flux of recollection.",
+  "model": "qwen2.5:32b"
+ },
+ "silence": {
+  "root": "From Latin 'silentem', meaning not speaking.",
+  "before": "The absence of sound, a state of quietude.",
+  "feeling": "Peace, calmness, a pause in auditory chaos.",
+  "model": "qwen2.5:32b"
+ },
+ "grace": {
+  "root": "Latin \"gratia\", gift, gratitude, favor.",
+  "before": "Elegant ease in movement or manner, unearned favor.",
+  "feeling": "Lightness, appreciation, warmth.",
+  "model": "qwen2.5:32b"
+ },
+ "mercy": {
+  "root": "From Latin \"misericordia,\" mercy and heart's misfortune intertwined.",
+  "before": "The act of relieving suffering, grace shown in empathy’s light.",
+  "feeling": "Compassion's warm embrace, easing pain with gentle might.",
+  "model": "qwen2.5:32b"
+ }
+}

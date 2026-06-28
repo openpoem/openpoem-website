@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>OpenPoem — Sovereign Intelligence</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            background: #060606;
+            background-image: radial-gradient(130% 80% at 50% -12%, rgba(212,175,55,0.12), rgba(6,6,6,0) 55%);
+            color: rgba(255,255,255,0.86);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.75;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1.5rem 6rem;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+        .serif { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif; }
+        .wrap { width: 100%; max-width: 41rem; }
+
+        .topbar { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 1.4rem; z-index: 20; }
+        .backlink { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
+        .backlink:hover { color: rgba(212,175,55,0.8); }
+        .lang-toggle { display: flex; gap: 0.2rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.3); border-radius: 4px; padding: 0.2rem; backdrop-filter: blur(8px); }
+        .lang-toggle button { font-family: inherit; font-size: 0.7rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); background: transparent; border: none; border-radius: 3px; padding: 0.3rem 0.55rem; cursor: pointer; transition: color 0.15s, background 0.15s; }
+        .lang-toggle button.active { color: #000; background: rgba(212,175,55,0.9); font-weight: 600; }
+        .lang-toggle button:hover:not(.active) { color: #fff; }
+
+        .wordmark { text-align: center; font-size: 0.78rem; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(212,175,55,0.85); margin-bottom: 5rem; }
+        .rule { width: 1px; height: 4rem; margin: 0 auto 2.4rem; background: linear-gradient(rgba(212,175,55,0.65), rgba(212,175,55,0)); }
+
+        .hero { text-align: center; }
+        .hero .eyebrow { font-size: 0.7rem; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(212,175,55,0.7); margin-bottom: 1.4rem; }
+        .hero .hero-line { font-size: 2.4rem; line-height: 1.24; font-weight: 400; color: #fff; letter-spacing: 0.004em; margin-bottom: 1.7rem; }
+        .hero .hero-sub { font-size: 1.08rem; color: rgba(255,255,255,0.74); max-width: 34rem; margin: 0 auto; }
+
+        .section { margin-top: 5rem; }
+        .section .eyebrow { font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(212,175,55,0.65); margin-bottom: 1rem; }
+        .section h2 { font-size: 1.6rem; line-height: 1.3; font-weight: 400; color: #fff; margin-bottom: 1rem; letter-spacing: 0.005em; }
+        .section p { font-size: 1.04rem; color: rgba(255,255,255,0.74); }
+
+        .divider { width: 100%; height: 1px; margin: 5rem 0 0; background: linear-gradient(90deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.25) 50%, rgba(212,175,55,0) 100%); }
+
+        .cta-wrap { margin-top: 5rem; text-align: center; }
+        .cta { display: inline-block; font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(212,175,55,0.95); border: 1px solid rgba(212,175,55,0.5); border-radius: 2px; padding: 1.15rem 2.6rem; text-decoration: none; transition: color 0.2s, background 0.2s, border-color 0.2s; }
+        .cta:hover { color: #000; background: rgba(212,175,55,0.92); border-color: rgba(212,175,55,0.92); }
+        .footnote { text-align: center; margin-top: 2.2rem; font-size: 0.74rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); }
+        .principal { margin-top: 5rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.95rem; }
+        .principal img { width: min(20rem, 78vw); aspect-ratio: 4 / 5; border-radius: 6px; object-fit: cover; object-position: center; border: 1px solid rgba(212,175,55,0.4); box-shadow: 0 0 60px rgba(212,175,55,0.12); }
+        .principal .pc-name { font-size: 1.2rem; color: #fff; letter-spacing: 0.03em; }
+        .principal .pc-line { font-size: 0.95rem; color: rgba(255,255,255,0.62); max-width: 26rem; }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <a class="backlink" href="/" data-k="backlink">OpenPoem</a>
+        <div class="lang-toggle">
+            <button data-lang="en">EN</button>
+            <button data-lang="nl">NL</button>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="wordmark">OpenPoem™</div>
+        <div class="rule"></div>
+
+        <div class="hero">
+            <div class="eyebrow" data-k="heroEyebrow">By introduction only</div>
+            <h1 class="hero-line serif" data-k="heroLine">Sovereign intelligence, for those who cannot afford to be seen.</h1>
+            <p class="hero-sub" data-k="heroSub">A private artificial intelligence that knows your world and answers only to you. Owned outright. Seen by no one.</p>
+        </div>
+
+        <div class="section">
+            <div class="eyebrow" data-k="p1Eyebrow">The principle</div>
+            <h2 class="serif" data-k="p1H">Your world should never leave your hands.</h2>
+            <p data-k="p1P">Every deal, every record, every word you write is yours. The moment it touches a public AI, it leaves you. It is read, stored, and used to train someone else's model. We do the opposite. Your intelligence lives where you live. Behind your walls. Under your name. Off the grid.</p>
+        </div>
+
+        <div class="section">
+            <div class="eyebrow" data-k="p2Eyebrow">What we build</div>
+            <h2 class="serif" data-k="p2H">An intelligence that serves you alone.</h2>
+            <p data-k="p2P">A private model, trained on your own world. Your family office, your investments, your correspondence, your archive. It understands all of it, and it answers to no one else. No subscription. No provider. No one looking over your shoulder. An asset you own, not a service you rent.</p>
+        </div>
+
+        <div class="section">
+            <div class="eyebrow" data-k="p3Eyebrow">Discretion</div>
+            <h2 class="serif" data-k="p3H">A small number of principals.</h2>
+            <p data-k="p3P">We take on very few. Every engagement begins under a non-disclosure agreement. The model is built on hardware you control, or in a vault we host in your name. Nothing is ever shared, sold, or seen.</p>
+        </div>
+
+        <div class="section">
+            <div class="eyebrow" data-k="p4Eyebrow">Access</div>
+            <h2 class="serif" data-k="p4H">This work moves by introduction.</h2>
+            <p data-k="p4P">We do not advertise it. It passes from one trusted hand to the next. If you were pointed here, you already hold the key.</p>
+        </div>
+
+        <div class="principal">
+            <img src="ron-portrait.png" alt="OpenPoem">
+            <div class="pc-name serif">OpenPoem</div>
+            <div class="pc-line" data-k="pcLine">You work with me directly. Not a team, not a queue.</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="cta-wrap">
+            <a class="cta" id="cta" href="#" data-k="ctaText">Request a confidential briefing</a>
+            <div class="footnote" data-k="footnote">By introduction. All enquiries are held in strict confidence.</div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        var STATIC = {
+            en: {
+                backlink: "OpenPoem",
+                heroEyebrow: "By introduction only",
+                heroLine: "Sovereign intelligence, for those who cannot afford to be seen.",
+                heroSub: "A private artificial intelligence that knows your world and answers only to you. Owned outright. Seen by no one.",
+                p1Eyebrow: "The principle",
+                p1H: "Your world should never leave your hands.",
+                p1P: "Every deal, every record, every word you write is yours. The moment it touches a public AI, it leaves you. It is read, stored, and used to train someone else's model. We do the opposite. Your intelligence lives where you live. Behind your walls. Under your name. Off the grid.",
+                p2Eyebrow: "What we build",
+                p2H: "An intelligence that serves you alone.",
+                p2P: "A private model, trained on your own world. Your family office, your investments, your correspondence, your archive. It understands all of it, and it answers to no one else. No subscription. No provider. No one looking over your shoulder. An asset you own, not a service you rent.",
+                p3Eyebrow: "Discretion",
+                p3H: "A small number of principals.",
+                p3P: "We take on very few. Every engagement begins under a non-disclosure agreement. The model is built on hardware you control, or in a vault we host in your name. Nothing is ever shared, sold, or seen.",
+                p4Eyebrow: "Access",
+                p4H: "This work moves by introduction.",
+                p4P: "We do not advertise it. It passes from one trusted hand to the next. If you were pointed here, you already hold the key.",
+                pcLine: "You work with me directly. Not a team, not a queue.",
+                ctaText: "Request a confidential briefing",
+                footnote: "By introduction. All enquiries are held in strict confidence.",
+                mailSubject: "Confidential briefing",
+                mailBody: "I would like to request a confidential briefing.\n\nReferred by: \n"
+            },
+            nl: {
+                backlink: "OpenPoem",
+                heroEyebrow: "Alleen op introductie",
+                heroLine: "Soevereine intelligentie, voor wie zich niet kan permitteren gezien te worden.",
+                heroSub: "Een private kunstmatige intelligentie die jouw wereld kent en alleen aan jou antwoordt. Volledig in eigendom. Door niemand gezien.",
+                p1Eyebrow: "Het principe",
+                p1H: "Jouw wereld hoort nooit je handen te verlaten.",
+                p1P: "Elke deal, elk dossier, elk woord dat je schrijft is van jou. Op het moment dat het een publieke AI raakt, verlaat het je. Het wordt gelezen, bewaard en gebruikt om het model van een ander te trainen. Wij doen het omgekeerde. Jouw intelligentie leeft waar jij leeft. Achter jouw muren. Onder jouw naam. Buiten het net.",
+                p2Eyebrow: "Wat we bouwen",
+                p2H: "Een intelligentie die alleen jou dient.",
+                p2P: "Een privaat model, getraind op jouw eigen wereld. Je family office, je investeringen, je correspondentie, je archief. Het begrijpt het allemaal, en het antwoordt aan niemand anders. Geen abonnement. Geen aanbieder. Niemand die meekijkt. Een bezit dat je hebt, geen dienst die je huurt.",
+                p3Eyebrow: "Discretie",
+                p3H: "Een klein aantal principalen.",
+                p3P: "We nemen er weinig aan. Elke samenwerking begint onder een geheimhoudingsovereenkomst. Het model wordt gebouwd op hardware die jij beheert, of in een kluis die wij op jouw naam hosten. Niets wordt ooit gedeeld, verkocht of gezien.",
+                p4Eyebrow: "Toegang",
+                p4H: "Dit werk beweegt op introductie.",
+                p4P: "We adverteren het niet. Het gaat van de ene vertrouwde hand naar de volgende. Als je hierheen bent gewezen, heb je de sleutel al.",
+                pcLine: "Je werkt rechtstreeks met mij. Geen team, geen wachtrij.",
+                ctaText: "Vraag een vertrouwelijke kennismaking aan",
+                footnote: "Op introductie. Alle aanvragen worden strikt vertrouwelijk behandeld.",
+                mailSubject: "Vertrouwelijke kennismaking",
+                mailBody: "Ik wil graag een vertrouwelijke kennismaking aanvragen.\n\nDoorverwezen door: \n"
+            }
+        };
+
+        var lang = localStorage.getItem('lang');
+        if(lang!=='nl' && lang!=='en'){ lang = (navigator.language||'').toLowerCase().indexOf('nl')===0 ? 'nl' : 'en'; }
+
+        function apply(){
+            var d = STATIC[lang] || STATIC.en;
+            document.querySelectorAll('[data-k]').forEach(function(el){
+                var k = el.getAttribute('data-k');
+                if(d[k]!=null) el.textContent = d[k];
+            });
+            var cta = document.getElementById('cta');
+            if(cta){ cta.href = 'mailto:info@openpoem.org?subject='+encodeURIComponent(d.mailSubject)+'&body='+encodeURIComponent(d.mailBody); }
+            document.querySelectorAll('.lang-toggle button').forEach(function(b){
+                b.classList.toggle('active', b.getAttribute('data-lang')===lang);
+            });
+            document.documentElement.lang = lang;
+        }
+        document.querySelectorAll('.lang-toggle button').forEach(function(b){
+            b.addEventListener('click', function(){ lang=b.getAttribute('data-lang'); try{ localStorage.setItem('lang',lang); }catch(e){} apply(); });
+        });
+        apply();
+    })();
+    </script>
+</body>
+</html>

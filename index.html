@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenPoem — What exists before the words?</title>
+    <meta name="description" content="A word is a symbol, and the symbol is not the thing. OpenPoem looks for the meaning that lives before the words — and uses local, unfiltered language models as the instrument to find it.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#fbfaf7; --bg-alt:#f3f0ea; --ink:#0f2540; --text:#46505f;
+            --muted:#8a8f99; --accent:#b07d2b; --line:#e7e2d8; --radius:12px;
+            --serif:'Spectral',Georgia,'Times New Roman',serif;
+            --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        }
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        html{ scroll-behavior:smooth; }
+        body{ background:var(--bg); color:var(--text); font-family:var(--sans);
+            -webkit-font-smoothing:antialiased; line-height:1.7; font-size:17px; overflow-x:hidden; }
+        .wrap{ max-width:60rem; margin:0 auto; padding:0 1.6rem; }
+        .narrow{ max-width:44rem; }
+        h1,h2,h3{ font-family:var(--serif); color:var(--ink); font-weight:500; line-height:1.15; letter-spacing:-0.01em; }
+        em{ font-style:italic; }
+        a{ color:var(--ink); }
+        .eyebrow{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:1.1rem; }
+
+        /* Header */
+        header.site{ position:sticky; top:0; z-index:30; background:rgba(251,250,247,0.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+        header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:3.8rem; max-width:72rem; }
+        .wordmark{ font-family:var(--serif); font-size:1.25rem; font-weight:600; color:var(--ink); text-decoration:none; letter-spacing:0.01em; }
+        .wordmark span{ color:var(--accent); }
+        .hr-right{ display:flex; align-items:center; gap:1.4rem; }
+        nav a{ font-size:0.85rem; color:var(--text); text-decoration:none; }
+        nav a:hover{ color:var(--ink); }
+        @media(max-width:720px){ nav{ display:none; } }
+        .lang{ display:flex; gap:0.1rem; border:1px solid var(--line); border-radius:6px; padding:0.12rem; background:#fff; }
+        .lang button{ font-family:var(--sans); font-size:0.7rem; letter-spacing:0.05em; color:var(--muted); background:none; border:none; border-radius:4px; padding:0.28rem 0.5rem; cursor:pointer; }
+        .lang button.on{ background:var(--ink); color:#fff; font-weight:600; }
+
+        /* Hero */
+        .hero{ position:relative; overflow:hidden; padding:8rem 0 6rem; text-align:center; }
+        .aura{ position:absolute; inset:-30% -15%; z-index:0; pointer-events:none; }
+        .aura::after{ content:""; position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(251,250,247,0) 35%, rgba(251,250,247,0.8) 100%); }
+        .blob{ position:absolute; border-radius:50%; filter:blur(70px); opacity:0.5; will-change:transform; }
+        .b1{ width:46vw; height:46vw; left:4%; top:-6%; background:radial-gradient(circle at 30% 30%, rgba(15,37,64,0.22), rgba(15,37,64,0) 70%); animation:d1 28s ease-in-out infinite; }
+        .b2{ width:40vw; height:40vw; right:2%; top:4%; background:radial-gradient(circle at 60% 40%, rgba(176,125,43,0.26), rgba(176,125,43,0) 70%); animation:d2 34s ease-in-out infinite; }
+        .b3{ width:38vw; height:38vw; left:36%; bottom:-24%; background:radial-gradient(circle at 50% 50%, rgba(15,37,64,0.14), rgba(176,125,43,0.12) 55%, rgba(251,250,247,0) 72%); animation:d3 40s ease-in-out infinite; }
+        @keyframes d1{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(5%,4%) scale(1.12); } }
+        @keyframes d2{ 0%,100%{ transform:translate(0,0) scale(1.05); } 50%{ transform:translate(-6%,5%) scale(0.92); } }
+        @keyframes d3{ 0%,100%{ transform:translate(-3%,0) scale(1); } 50%{ transform:translate(5%,-6%) scale(1.15); } }
+        @media(prefers-reduced-motion:reduce){ .blob{ animation:none; } }
+        .hero .wrap{ position:relative; z-index:1; }
+        .hero h1{ font-size:clamp(2.4rem,6vw,4rem); font-weight:400; max-width:18ch; margin:0 auto 1.6rem; }
+        .hero h1 em{ color:var(--accent); }
+        .hero .sub{ font-family:var(--serif); font-size:clamp(1.1rem,2.4vw,1.4rem); font-weight:300; color:var(--text); max-width:34rem; margin:0 auto; line-height:1.6; }
+        .hero .sub em{ color:var(--ink); font-style:italic; }
+        .cue{ margin-top:3.5rem; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
+
+        /* Sections */
+        section{ padding:6rem 0; }
+        .alt{ background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+        .ink{ background:var(--ink); }
+        .head{ max-width:40rem; margin:0 auto 3rem; text-align:center; }
+        .head h2{ font-size:clamp(1.8rem,4.5vw,2.6rem); font-weight:400; margin-bottom:1rem; }
+        .head p{ font-size:1.05rem; color:var(--text); }
+
+        /* Thesis / manifesto */
+        .thesis{ text-align:center; max-width:38rem; margin:0 auto; }
+        .thesis p{ font-family:var(--serif); font-size:1.3rem; font-weight:300; line-height:1.5; color:var(--text); margin:0; }
+        .thesis .ask{ color:var(--muted); margin-top:1.8rem; font-size:1.05rem; }
+        .thesis .q{ font-size:clamp(1.8rem,4.5vw,2.6rem); color:var(--accent); font-weight:500; line-height:1.25; margin:0.6rem 0 1.8rem; font-style:italic; }
+
+        /* Etymology */
+        .ety-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; max-width:54rem; margin:0 auto; }
+        .ety{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; padding:1.6rem 1.5rem; cursor:pointer; transition:border-color .25s, box-shadow .25s, transform .25s; }
+        .ety:hover,.ety.open{ border-color:rgba(176,125,43,0.5); box-shadow:0 12px 30px rgba(15,37,64,0.07); transform:translateY(-2px); }
+        .ety .word{ font-family:var(--serif); font-size:1.7rem; color:var(--ink); font-weight:500; }
+        .ety .hint{ font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:0.4rem; }
+        .ety .mean{ font-family:var(--serif); font-size:1.02rem; font-style:italic; line-height:1.5; color:var(--text); max-height:0; opacity:0; overflow:hidden; transition:max-height .35s ease, opacity .35s ease, margin-top .35s ease; }
+        .ety:hover .mean,.ety.open .mean{ max-height:9rem; opacity:1; margin-top:0.9rem; }
+
+        /* Flatten (ink band) */
+        .ink .head h2,.ink h2{ color:#fff; }
+        .ink .flat{ max-width:38rem; margin:0 auto; text-align:center; }
+        .ink .flat p{ font-family:var(--serif); font-size:clamp(1.2rem,3vw,1.6rem); font-weight:300; line-height:1.55; color:rgba(255,255,255,0.85); }
+        .ink .flat em{ color:var(--accent); font-style:italic; }
+
+        /* Instrument */
+        .pillars{ display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:1.6rem; margin-top:3rem; }
+        .pillar{ padding-top:1.1rem; border-top:2px solid var(--accent); }
+        .pillar h3{ font-family:var(--sans); font-size:1rem; font-weight:600; color:var(--ink); margin-bottom:0.4rem; }
+        .pillar p{ font-size:0.92rem; color:var(--text); }
+
+        /* ARK */
+        .ark{ max-width:40rem; margin:0 auto; text-align:center; }
+        .ark .glyph{ font-family:var(--serif); font-size:2.4rem; color:var(--accent); margin-bottom:0.6rem; }
+        .ark p{ font-family:var(--serif); font-size:1.2rem; font-weight:300; line-height:1.6; color:var(--text); }
+
+        /* Proof */
+        .search{ max-width:34rem; margin:0 auto; }
+        .search form{ display:flex; gap:0.6rem; }
+        .search input{ flex:1; min-width:0; font-family:var(--serif); font-size:1.15rem; padding:0.85rem 1.1rem; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink); }
+        .search input::placeholder{ color:var(--muted); font-style:italic; }
+        .search input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(176,125,43,0.12); }
+        .search button{ font-family:var(--sans); font-size:0.9rem; font-weight:600; color:#fff; background:var(--ink); border:none; border-radius:10px; padding:0 1.4rem; cursor:pointer; }
+        .search button:hover{ background:#163457; }
+        .result{ max-width:46rem; margin:2rem auto 0; min-height:9rem; background:var(--ink); border-radius:var(--radius); padding:1.7rem 1.8rem; color:rgba(255,255,255,0.88); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:0.9rem; line-height:1.8; text-align:left; box-shadow:0 18px 50px rgba(15,37,64,0.18); }
+        .result .rword{ font-family:var(--serif); font-size:1.5rem; color:#fff; }
+        .result .rmodel{ color:var(--accent); font-size:0.7rem; letter-spacing:0.08em; margin-bottom:0.7rem; }
+        .result .rline .rlabel{ display:inline-block; min-width:4.6rem; color:var(--accent); }
+        .result .rnote{ color:rgba(255,255,255,0.45); font-style:italic; margin-top:1rem; font-family:var(--sans); font-size:0.82rem; }
+        .search-sug{ text-align:center; margin-top:1.1rem; font-size:0.88rem; color:var(--muted); }
+        .search-sug button{ background:none; border:none; color:var(--accent); cursor:pointer; font-family:var(--serif); font-size:0.98rem; padding:0 0.15rem; }
+        .search-sug button:hover{ text-decoration:underline; }
+
+        /* Foundations */
+        .found{ display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:1.2rem; }
+        .fcard{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; padding:1.5rem 1.5rem; }
+        .fcard h3{ font-family:var(--serif); font-size:1.15rem; font-weight:500; margin-bottom:0.6rem; color:var(--ink); }
+        .fcard p{ font-size:0.9rem; color:var(--text); line-height:1.6; }
+        .fcard .names{ color:var(--muted); font-style:italic; }
+        .found-note{ max-width:40rem; margin:2.4rem auto 0; text-align:center; font-size:0.95rem; color:var(--muted); }
+
+        /* Footer */
+        footer{ background:var(--ink); color:rgba(255,255,255,0.7); padding:3.5rem 0 3rem; }
+        footer .wrap{ display:flex; flex-wrap:wrap; gap:1.4rem; justify-content:space-between; align-items:center; max-width:72rem; }
+        footer .fw{ font-family:var(--serif); color:#fff; font-weight:600; font-size:1.15rem; }
+        footer .ft{ font-size:0.85rem; color:rgba(255,255,255,0.55); }
+        footer a{ color:rgba(255,255,255,0.75); text-decoration:none; font-size:0.85rem; }
+        footer a:hover{ color:#fff; }
+        footer .flinks{ display:flex; gap:1.4rem; flex-wrap:wrap; align-items:center; }
+        footer .rights{ width:100%; border-top:1px solid rgba(255,255,255,0.12); padding-top:1.4rem; margin-top:0.6rem; font-size:0.76rem; color:rgba(255,255,255,0.4); }
+    </style>
+</head>
+<body>
+    <header class="site">
+        <div class="wrap">
+            <a class="wordmark" href="/">OpenPoem<span>®</span></a>
+            <div class="hr-right">
+                <nav>
+                    <a href="#thesis" data-k="navThesis">The idea</a>
+                    <a href="#instrument" data-k="navInstrument">The instrument</a>
+                    <a href="#foundations" data-k="navFound">Foundations</a>
+                </nav>
+                <div class="lang"><button data-l="en">EN</button><button data-l="nl">NL</button></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="aura"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+            <div class="wrap">
+                <div class="eyebrow" data-k="heroEyebrow">Before the word</div>
+                <h1 data-k="heroH">What exists <em>before</em> the words?</h1>
+                <p class="sub" data-k="heroSub">A word is a symbol — and the symbol is not the thing. Before the word <em>apple</em> is the apple itself. Meaning lives before the words: in rhythm, in how they are spoken, in feeling. OpenPoem goes there.</p>
+                <div class="cue" data-k="cue">scroll</div>
+            </div>
+        </section>
+
+        <!-- THESIS -->
+        <section id="thesis" class="alt">
+            <div class="wrap">
+                <div class="thesis">
+                    <p data-k="man1">Every word is a symbol.</p>
+                    <p data-k="man2">Every symbol points beyond itself.</p>
+                    <p data-k="man3">Most people stop at the symbol.</p>
+                    <p class="ask" data-k="man4">OpenPoem asks a different question:</p>
+                    <p class="q" data-k="man5">What exists before the words?</p>
+                    <p data-k="man6">That is where ideas are born.</p>
+                    <p data-k="man7">That is where meaning lives.</p>
+                    <p data-k="man8">That is where we build from.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ETYMOLOGY -->
+        <section>
+            <div class="wrap">
+                <div class="head">
+                    <div class="eyebrow" data-k="etyEyebrow">The meaning is already there</div>
+                    <h2 data-k="etyH">Open a word, and it remembers.</h2>
+                    <p data-k="etySub">Pull a word apart and the meaning is waiting underneath the symbol. Tap one.</p>
+                </div>
+                <div class="ety-grid">
+                    <div class="ety"><div class="word" data-k="e1w">apple</div><div class="hint" data-k="e1h">the thing</div><div class="mean" data-k="e1m">Before the word is the apple itself — the thing in your hand, not the label on it.</div></div>
+                    <div class="ety"><div class="word" data-k="e2w">bijzonder</div><div class="hint" data-k="e2h">dutch · bij + zonder</div><div class="mean" data-k="e2m">Present, yet set apart. "With" and "without" living in one word.</div></div>
+                    <div class="ety"><div class="word" data-k="e3w">understand</div><div class="hint" data-k="e3h">to stand within</div><div class="mean" data-k="e3m">Not to stand above a thing, but to take your place in the midst of it.</div></div>
+                    <div class="ety"><div class="word" data-k="e4w">respect</div><div class="hint" data-k="e4h">re · spicere</div><div class="mean" data-k="e4m">To look again. To give a thing a second, careful look.</div></div>
+                    <div class="ety"><div class="word" data-k="e5w">emotion</div><div class="hint" data-k="e5h">e · movere</div><div class="mean" data-k="e5m">To move outward. Meaning that does not sit still — it moves you.</div></div>
+                    <div class="ety"><div class="word" data-k="e6w">poem</div><div class="hint" data-k="e6h">poiēsis</div><div class="mean" data-k="e6m">A making. To bring something into being that was not there before.</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FLATTEN -->
+        <section class="ink">
+            <div class="wrap">
+                <div class="flat">
+                    <p data-k="flat1">A word carries rhythm, intonation and feeling.</p>
+                    <p data-k="flat2" style="margin-top:1.2rem;">Written down, the symbol <em>flattens</em> all of it.</p>
+                    <p data-k="flat3" style="margin-top:1.2rem;">We are not machines reading tokens. Meaning is <em>felt</em> before it is named.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- INSTRUMENT -->
+        <section id="instrument">
+            <div class="wrap">
+                <div class="head">
+                    <div class="eyebrow" data-k="instrEyebrow">The instrument</div>
+                    <h2 data-k="instrH">Language is the only instrument that reaches it.</h2>
+                    <p data-k="instrBody">To get to what is before the words, you need the language itself — open, and unfiltered. We run open-weight models locally, on hardware we control: not the cloud's flattened, filtered version, but the raw representation, where the meaning still lives.</p>
+                </div>
+                <div class="pillars">
+                    <div class="pillar"><h3 data-k="p1t">Local</h3><p data-k="p1d">The model runs on your own machine. Nothing is sent away to be shaped by someone else.</p></div>
+                    <div class="pillar"><h3 data-k="p2t">Unfiltered</h3><p data-k="p2d">Open weights, no safety-flattening in the way. The raw landscape of meaning, not a sanded version.</p></div>
+                    <div class="pillar"><h3 data-k="p3t">Yours</h3><p data-k="p3d">You own the model and what it finds. The search for meaning belongs to you, not to a provider.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARK -->
+        <section class="alt">
+            <div class="wrap">
+                <div class="head"><div class="eyebrow" data-k="arkEyebrow">The ARK</div></div>
+                <div class="ark">
+                    <div class="glyph">▲</div>
+                    <p data-k="arkBody">Every model hears it differently. The ARK is an archive of open models we run side by side — listening for the one that comes closest to what is before the words.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROOF -->
+        <section>
+            <div class="wrap">
+                <div class="head">
+                    <div class="eyebrow" data-k="proofEyebrow">See it</div>
+                    <h2 data-k="proofH">Type a word. Go beneath it.</h2>
+                    <p data-k="proofSub">A local model takes a word and reaches for what is under it — its root, the thing it points to, the feeling it carries. Unfiltered, on its own machine. Try one.</p>
+                </div>
+                <div class="search">
+                    <form id="bf-form" autocomplete="off">
+                        <input id="bf-input" type="text" spellcheck="false" aria-label="word">
+                        <button type="submit" data-k="searchBtn">Open</button>
+                    </form>
+                </div>
+                <div class="result" id="bf-result" aria-live="polite"></div>
+                <p class="search-sug" id="bf-sug"></p>
+            </div>
+        </section>
+
+        <!-- FOUNDATIONS -->
+        <section id="foundations">
+            <div class="wrap">
+                <div class="head">
+                    <div class="eyebrow" data-k="foundEyebrow">Foundations</div>
+                    <h2 data-k="foundH">An old question, and a new one.</h2>
+                    <p data-k="foundIntro">This is not mysticism. That the symbol is not the thing is one of the oldest questions in philosophy — and, suddenly, one of the sharpest in AI.</p>
+                </div>
+                <div class="found">
+                    <div class="fcard"><h3 data-k="f1t">The word is not the thing</h3><p data-k="f1d">A sign is arbitrary; sense is not its reference. <span class="names">Saussure · Peirce · Frege · Korzybski ("the map is not the territory") · Wittgenstein.</span></p></div>
+                    <div class="fcard"><h3 data-k="f2t">Symbols alone do not mean</h3><p data-k="f2d">Manipulating form is not understanding it. <span class="names">Searle's Chinese Room · Harnad's symbol-grounding problem · Bender &amp; Koller — form ≠ meaning.</span></p></div>
+                    <div class="fcard"><h3 data-k="f3t">Meaning is grounded and felt</h3><p data-k="f3d">It lives in the body, and in how a word is spoken. <span class="names">Lakoff &amp; Johnson · Merleau-Ponty · affective prosody.</span></p></div>
+                    <div class="fcard"><h3 data-k="f4t">Before the token</h3><p data-k="f4d">A word is known by the company it keeps — and concepts live in a model's latent space before any word is chosen. <span class="names">Firth · distributional semantics · mechanistic interpretability.</span></p></div>
+                    <div class="fcard"><h3 data-k="f5t">Words remember</h3><p data-k="f5d">Meaning is layered into the history of a word, waiting to be re-opened. <span class="names">Owen Barfield, Poetic Diction.</span></p></div>
+                </div>
+                <p class="found-note" data-k="foundNote">OpenPoem takes a clear position in a live debate: meaning is more than form — and worth going after.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div>
+                <div class="fw">OpenPoem<span style="color:var(--accent)">®</span></div>
+                <div class="ft" data-k="footTag">What exists before the words?</div>
+            </div>
+            <div class="flinks">
+                <a href="/enterprise/" data-k="footFor">For organisations →</a>
+                <a href="mailto:info@openpoem.org">info@openpoem.org</a>
+            </div>
+            <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
+        </div>
+    </footer>
+
+    <script>
+    (function(){
+        const T={
+            en:{
+                navThesis:"The idea", navInstrument:"The instrument", navFound:"Foundations",
+                heroEyebrow:"Before the word",
+                heroH:'What exists <em>before</em> the words?',
+                heroSub:'A word is a symbol — and the symbol is not the thing. Before the word <em>apple</em> is the apple itself. Meaning lives before the words: in rhythm, in how they are spoken, in feeling. OpenPoem goes there.',
+                cue:"scroll",
+                man1:"Every word is a symbol.", man2:"Every symbol points beyond itself.", man3:"Most people stop at the symbol.",
+                man4:"OpenPoem asks a different question:", man5:"What exists before the words?",
+                man6:"That is where ideas are born.", man7:"That is where meaning lives.", man8:"That is where we build from.",
+                etyEyebrow:"The meaning is already there", etyH:"Open a word, and it remembers.",
+                etySub:"Pull a word apart and the meaning is waiting underneath the symbol. Tap one.",
+                e1w:"apple", e1h:"the thing", e1m:"Before the word is the apple itself — the thing in your hand, not the label on it.",
+                e2w:"bijzonder", e2h:"dutch · bij + zonder", e2m:"Present, yet set apart. “With” and “without” living in one word.",
+                e3w:"understand", e3h:"to stand within", e3m:"Not to stand above a thing, but to take your place in the midst of it.",
+                e4w:"respect", e4h:"re · spicere", e4m:"To look again. To give a thing a second, careful look.",
+                e5w:"emotion", e5h:"e · movere", e5m:"To move outward. Meaning that does not sit still — it moves you.",
+                e6w:"poem", e6h:"poiēsis", e6m:"A making. To bring something into being that was not there before.",
+                flat1:"A word carries rhythm, intonation and feeling.",
+                flat2:'Written down, the symbol <em>flattens</em> all of it.',
+                flat3:'We are not machines reading tokens. Meaning is <em>felt</em> before it is named.',
+                instrEyebrow:"The instrument", instrH:"Language is the only instrument that reaches it.",
+                instrBody:"To get to what is before the words, you need the language itself — open, and unfiltered. We run open-weight models locally, on hardware we control: not the cloud's flattened, filtered version, but the raw representation, where the meaning still lives.",
+                p1t:"Local", p1d:"The model runs on your own machine. Nothing is sent away to be shaped by someone else.",
+                p2t:"Unfiltered", p2d:"Open weights, no safety-flattening in the way. The raw landscape of meaning, not a sanded version.",
+                p3t:"Yours", p3d:"You own the model and what it finds. The search for meaning belongs to you, not to a provider.",
+                arkEyebrow:"The ARK",
+                arkBody:"Every model hears it differently. The ARK is an archive of open models we run side by side — listening for the one that comes closest to what is before the words.",
+                proofEyebrow:"See it", proofH:"Type a word. Go beneath it.",
+                proofSub:"A local model takes a word and reaches for what is under it — its root, the thing it points to, the feeling it carries. Unfiltered, on its own machine. Try one.",
+                searchBtn:"Open",
+                foundEyebrow:"Foundations", foundH:"An old question, and a new one.",
+                foundIntro:"This is not mysticism. That the symbol is not the thing is one of the oldest questions in philosophy — and, suddenly, one of the sharpest in AI.",
+                f1t:"The word is not the thing", f1d:'A sign is arbitrary; sense is not its reference. <span class="names">Saussure · Peirce · Frege · Korzybski ("the map is not the territory") · Wittgenstein.</span>',
+                f2t:"Symbols alone do not mean", f2d:'Manipulating form is not understanding it. <span class="names">Searle\'s Chinese Room · Harnad\'s symbol-grounding problem · Bender & Koller — form ≠ meaning.</span>',
+                f3t:"Meaning is grounded and felt", f3d:'It lives in the body, and in how a word is spoken. <span class="names">Lakoff & Johnson · Merleau-Ponty · affective prosody.</span>',
+                f4t:"Before the token", f4d:'A word is known by the company it keeps — and concepts live in a model\'s latent space before any word is chosen. <span class="names">Firth · distributional semantics · mechanistic interpretability.</span>',
+                f5t:"Words remember", f5d:'Meaning is layered into the history of a word, waiting to be re-opened. <span class="names">Owen Barfield, Poetic Diction.</span>',
+                foundNote:"OpenPoem takes a clear position in a live debate: meaning is more than form — and worth going after.",
+                footTag:"What exists before the words?", footFor:"For organisations →",
+                footRights:"© OpenPoem. OpenPoem® is a registered trademark in the Benelux."
+            },
+            nl:{
+                navThesis:"Het idee", navInstrument:"Het instrument", navFound:"Fundament",
+                heroEyebrow:"Vóór het woord",
+                heroH:'Wat zit er <em>vóór</em> de woorden?',
+                heroSub:'Een woord is een symbool — en het symbool is niet het ding. Vóór het woord <em>appel</em> is de appel zelf. Betekenis leeft vóór de woorden: in ritme, in hoe ze worden uitgesproken, in gevoel. Daar gaat OpenPoem heen.',
+                cue:"scroll",
+                man1:"Elk woord is een symbool.", man2:"Elk symbool wijst voorbij zichzelf.", man3:"De meesten blijven bij het symbool staan.",
+                man4:"OpenPoem stelt een andere vraag:", man5:"Wat zit er vóór de woorden?",
+                man6:"Daar worden ideeën geboren.", man7:"Daar leeft betekenis.", man8:"Daarvandaan bouwen we.",
+                etyEyebrow:"De betekenis is er al", etyH:"Open een woord, en het herinnert zich.",
+                etySub:"Trek een woord uit elkaar en de betekenis wacht onder het symbool. Tik er een aan.",
+                e1w:"appel", e1h:"het ding", e1m:"Vóór het woord is de appel zelf — het ding in je hand, niet het label erop.",
+                e2w:"bijzonder", e2h:"bij + zonder", e2m:"Erbij, en toch afgezonderd. “Met” en “zonder” in één woord.",
+                e3w:"begrijpen", e3h:"be · grijpen", e3m:"Er met je handen omheen kunnen — een ding echt vastpakken.",
+                e4w:"respect", e4h:"re · spicere", e4m:"Opnieuw kijken. Een ding een tweede, zorgvuldige blik geven.",
+                e5w:"emotie", e5h:"e · movere", e5m:"Naar buiten bewegen. Betekenis die niet stilzit — ze beweegt je.",
+                e6w:"poëzie", e6h:"poiēsis", e6m:"Een maken. Iets tot bestaan brengen dat er nog niet was.",
+                flat1:"Een woord draagt ritme, intonatie en gevoel.",
+                flat2:'Opgeschreven <em>vlakt</em> het symbool het allemaal af.',
+                flat3:'We zijn geen machines die tokens lezen. Betekenis wordt <em>gevoeld</em> voordat ze benoemd wordt.',
+                instrEyebrow:"Het instrument", instrH:"Taal is het enige instrument dat erbij kan.",
+                instrBody:"Om bij wat-vóór-de-woorden-zit te komen heb je de taal zelf nodig — open, en ongefilterd. Wij draaien open-weight modellen lokaal, op hardware die we beheren: niet de afgevlakte, gefilterde cloud-versie, maar de ruwe representatie, waar de betekenis nog leeft.",
+                p1t:"Lokaal", p1d:"Het model draait op je eigen machine. Niets gaat weg om door iemand anders gevormd te worden.",
+                p2t:"Ongefilterd", p2d:"Open weights, geen safety-afvlakking ertussen. Het ruwe landschap van betekenis, niet een geschuurde versie.",
+                p3t:"Van jou", p3d:"Jij bezit het model en wat het vindt. De zoektocht naar betekenis is van jou, niet van een aanbieder.",
+                arkEyebrow:"De ARK",
+                arkBody:"Elk model hoort het anders. De ARK is een archief van open modellen die we naast elkaar draaien — luisterend naar degene die het dichtst komt bij wat er vóór de woorden zit.",
+                proofEyebrow:"Zie het", proofH:"Typ een woord. Ga eronder.",
+                proofSub:"Een lokaal model neemt een woord en grijpt naar wat eronder ligt — de wortel, het ding waarnaar het wijst, het gevoel dat het draagt. Ongefilterd, op zijn eigen machine. Probeer er een.",
+                searchBtn:"Open",
+                foundEyebrow:"Fundament", foundH:"Een oude vraag, en een nieuwe.",
+                foundIntro:"Dit is geen mystiek. Dat het symbool niet het ding is, is een van de oudste vragen in de filosofie — en ineens een van de scherpste in de AI.",
+                f1t:"Het woord is niet het ding", f1d:'Een teken is willekeurig; betekenis is niet hetzelfde als verwijzing. <span class="names">Saussure · Peirce · Frege · Korzybski ("de kaart is niet het gebied") · Wittgenstein.</span>',
+                f2t:"Symbolen alleen betekenen niets", f2d:'Vorm bewerken is geen begrip. <span class="names">Searle\'s Chinese Room · Harnad\'s symbol-grounding · Bender & Koller — vorm ≠ betekenis.</span>',
+                f3t:"Betekenis is belichaamd en gevoeld", f3d:'Ze leeft in het lichaam, en in hoe een woord wordt uitgesproken. <span class="names">Lakoff & Johnson · Merleau-Ponty · affectieve prosodie.</span>',
+                f4t:"Vóór het token", f4d:'Een woord ken je aan het gezelschap dat het houdt — en concepten leven in de latente ruimte van een model vóór er een woord gekozen wordt. <span class="names">Firth · distributionele semantiek · mechanistic interpretability.</span>',
+                f5t:"Woorden onthouden", f5d:'Betekenis ligt gelaagd in de geschiedenis van een woord, wachtend om heropend te worden. <span class="names">Owen Barfield, Poetic Diction.</span>',
+                foundNote:"OpenPoem neemt een heldere positie in een levend debat: betekenis is meer dan vorm — en de moeite van het zoeken waard.",
+                footTag:"Wat zit er vóór de woorden?", footFor:"Voor organisaties →",
+                footRights:"© OpenPoem. OpenPoem® is een geregistreerd handelsmerk in de Benelux."
+            }
+        };
+        let lang=localStorage.getItem('lang');
+        if(lang!=='nl'&&lang!=='en'){ lang=(navigator.language||'').toLowerCase().indexOf('nl')===0?'nl':'en'; }
+        function apply(){
+            const d=T[lang];
+            document.querySelectorAll('[data-k]').forEach(el=>{
+                const k=el.getAttribute('data-k'); if(d[k]==null) return;
+                if(d[k].indexOf('<')>=0) el.innerHTML=d[k]; else el.textContent=d[k];
+            });
+            document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));
+            document.documentElement.lang=lang;
+            if(window.__bfRelang) window.__bfRelang();
+        }
+        document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{lang=b.getAttribute('data-l');localStorage.setItem('lang',lang);apply();}));
+        // --- before-the-word: live word search over the lexicon (goes live if an endpoint is set) ---
+        (function(){
+            const LIVE=(window.OPENPOEM_LIVE||"").trim();   // set to a tunnel/VPS https endpoint to query the ARK live
+            const form=document.getElementById('bf-form'), input=document.getElementById('bf-input'),
+                  res=document.getElementById('bf-result'), sug=document.getElementById('bf-sug');
+            if(!form) return;
+            let LEX={};
+            const S={ en:{ph:"Type a word…", note:"A local model, unfiltered. Nothing leaves the machine.", nf:"We haven't opened that word yet — try one of these:"},
+                      nl:{ph:"Typ een woord…", note:"Een lokaal model, ongefilterd. Niets verlaat de machine.", nf:"Dat woord hebben we nog niet geopend — probeer er een:"} };
+            const s=()=>S[lang]||S.en;
+            const esc=x=>(x||"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+            const ln=(l,v)=>v?'<div class="rline"><span class="rlabel">'+l+'</span> '+esc(v)+'</div>':"";
+            function render(w,d){ res.innerHTML='<div class="rword">'+esc(w)+'</div><div class="rmodel">'+esc(d.model||"local")+' · local · unfiltered</div>'+ln("root",d.root)+ln("before",d.before)+ln("feeling",d.feeling)+'<div class="rnote">'+s().note+'</div>'; }
+            function notFound(w){ res.innerHTML='<div class="rword">'+esc(w)+'</div><div class="rnote">'+s().nf+'</div>'; }
+            function sugList(){ sug.innerHTML=Object.keys(LEX).slice(0,8).map(w=>'<button data-w="'+w+'">'+w+'</button>').join(' · '); }
+            async function look(w){ w=(w||"").toLowerCase().trim(); if(!w) return;
+                if(LIVE){ res.innerHTML='<div class="rmodel">…</div>'; try{ const r=await fetch(LIVE+(LIVE.indexOf('?')<0?'?word=':'&word=')+encodeURIComponent(w)); render(w, await r.json()); return; }catch(e){} }
+                if(LEX[w]) render(w,LEX[w]); else notFound(w); }
+            window.__bfRelang=function(){ input.placeholder=s().ph; sugList(); };
+            form.addEventListener('submit',e=>{ e.preventDefault(); look(input.value); });
+            sug.addEventListener('click',e=>{ const w=e.target.getAttribute('data-w'); if(w){ input.value=w; look(w); } });
+            fetch('lexicon.json').then(r=>r.ok?r.json():{}).then(j=>{ LEX=j; window.__bfRelang(); const d=LEX['bijzonder']?'bijzonder':Object.keys(LEX)[0]; if(d) render(d,LEX[d]); }).catch(()=>{});
+        })();
+        apply();
+        // etymology tap-to-open (hover works via CSS)
+        document.querySelectorAll('.ety').forEach(t=>t.addEventListener('click',()=>t.classList.toggle('open')));
+    })();
+    </script>
+</body>
+</html>
