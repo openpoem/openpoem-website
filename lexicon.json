@@ -1,0 +1,114 @@
+{
+ "apple": {
+  "root": "Old English \"æppel\"",
+  "source": "Proto-Indo-European \"*apple-\", likely referring to fruit in general.",
+  "before": "The round, sweet or tart fruit of certain trees.",
+  "feeling": "Nostalgia, simplicity, purity.",
+  "model": "qwen2.5:32b"
+ },
+ "bijzonder": {
+  "root": "Dutch, from Middle Dutch *bijzonder*, from *bij* (by) + *sonder* (separately)",
+  "source": "Likely from Proto-Germanic *biją* (by) and *samaz* (together), indicating a separation within a whole",
+  "before": "A distinction made within a group, highlighting something separate yet part of the ensemble",
+  "feeling": "The sense of singling out, with a touch of uniqueness or exceptionality",
+  "model": "qwen2.5:32b"
+ },
+ "respect": {
+  "root": "Latin \"respicere\", re- (back) + specere (look)",
+  "source": "PIE *spek-, to observe, likely from *sek- (to cut), indicating separation and distinction",
+  "before": "The act of observing or noticing someone with attention and care",
+  "feeling": "Carries a sense of honoring through attentiveness and consideration",
+  "model": "qwen2.5:32b"
+ },
+ "emotion": {
+  "root": "Latin \"emotus\", past participle of \"emovere\" (to move out), from \"e-\" (out) and \"movere\" (to move).",
+  "source": "PIE \"*se-\" (to follow, to seek); the ancients viewed emotion as a seeking or moving force within.",
+  "before": "The physical and mental stirrings preceding action or response.",
+  "feeling": "A surge of inner movement towards reaction or expression.",
+  "model": "qwen2.5:32b"
+ },
+ "understand": {
+  "root": "Old English \"understandan\" - \"under\" (close, particular) + \"standan\" (to stand)",
+  "source": "Proto-Germanic \"*under-\" (close to) + \"*standen\" (to stand), likely from PIE roots *ndher (near) and *sta- (to stand).",
+  "before": "The act of being close enough to a thing to grasp its nature.",
+  "feeling": "A deep, intimate knowing through closeness.",
+  "model": "qwen2.5:32b"
+ },
+ "poem": {
+  "root": "Greek \"poiein\" (to create)",
+  "source": "PIE \"*kwei-\" (to make, build), likely tied to creative acts and craftsmanship.",
+  "before": "The act of crafting meaning through speech or song.",
+  "feeling": "A stirring from within, a need to express the ineffable.",
+  "model": "qwen2.5:32b"
+ },
+ "truth": {
+  "root": "Old English \"triewþ\" or \"treowþ,\" from Proto-Germanic \"*triwiz\"",
+  "source": "Likely from PIE \"*dru-,\" meaning reliability and trust; rooted in concepts of fidelity and steadfastness",
+  "before": "The unwavering state between the world as it is and perception, reality and belief",
+  "feeling": "A deep-seated sense of alignment with what is genuine and real",
+  "model": "qwen2.5:32b"
+ },
+ "love": {
+  "root": "Old English \"lufu\", Germanic \"*lubo\"",
+  "source": "Proto-Indo-European \"*leubh-\", to cherish, care deeply for",
+  "before": "The deep attachment and care between individuals, often within family or close groups",
+  "feeling": "A profound affection and desire for the well-being of another",
+  "model": "qwen2.5:32b"
+ },
+ "time": {
+  "root": "Old English \"tīma\", related to change or period.",
+  "source": "Proto-Germanic \"*tīmōn\", likely from PIE \"*di-mon-\", division of time.",
+  "before": "The passing and marking of seasonal changes and events.",
+  "feeling": "Flow, measurement, inevitability.",
+  "model": "qwen2.5:32b"
+ },
+ "fear": {
+  "root": "Old English \"fearan\"",
+  "source": "Proto-Germanic \"*fēraną\" (to frighten)",
+  "before": "The instinctive reaction to potential danger",
+  "feeling": "A tightening in the chest, alertness to threat",
+  "model": "qwen2.5:32b"
+ },
+ "home": {
+  "root": "Old English \"hām\", meaning home or village.",
+  "source": "Proto-Germanic \"*haimaz\", referring to a settled place versus wild lands.",
+  "before": "The safe, central place where one's tribe gathers and sleeps.",
+  "feeling": "Warmth, safety, belonging.",
+  "model": "qwen2.5:32b"
+ },
+ "freedom": {
+  "root": "Old English \"freodom\", from \"freo\" (free) + \"-dom\"",
+  "source": "Proto-Germanic \"*frijaz\" (loving, dear; free), likely from PIE \"*pleh₂-\" (to grant, allow)",
+  "before": "The state of being unrestricted and autonomous",
+  "feeling": "Liberation, empowerment",
+  "model": "qwen2.5:32b"
+ },
+ "memory": {
+  "root": "Latin \"memoria\", from \"memor\" (mindful)",
+  "source": "PIE \"*men-\" (to think), reflecting the ancient connection between memory and mental presence",
+  "before": "The ability to recall past experiences and knowledge",
+  "feeling": "A sense of continuity, reflection, and sometimes nostalgia",
+  "model": "qwen2.5:32b"
+ },
+ "silence": {
+  "root": "Old French \"silence\", from Latin \"silentem\" (nominative \"sileō\"), meaning 'to be quiet'",
+  "source": "Likely from Proto-Indo-European *se-, base of words meaning 'to keep still' or 'be quiet', reflecting a time when the concept was closely tied to actions and states of inactivity",
+  "before": "The absence of sound, the void between noises where only natural sounds like wind or water flow untouched by human voice",
+  "feeling": "Peaceful emptiness, a pause for reflection or rest",
+  "model": "qwen2.5:32b"
+ },
+ "grace": {
+  "root": "Old French \"grace\", from Latin \"gratia\"",
+  "source": "Likely from Proto-Indo-European \"*gwer-\", meaning to cheer, invoke joy or favor",
+  "before": "The favor shown or received in social interactions or divine blessings",
+  "feeling": "Lightness of being, elegance in motion or manner",
+  "model": "qwen2.5:32b"
+ },
+ "mercy": {
+  "root": "Old French \"merci\", from Latin \"misericordia\"",
+  "source": "Likely from PIE \"*misd-er-yo-\", meaning 'wishing well', combining 'mis-' (change) and 'cord' (heart)",
+  "before": "The act of altering a harsh judgment to kindness",
+  "feeling": "A shift from sternness to compassion, softening the heart",
+  "model": "qwen2.5:32b"
+ }
+}

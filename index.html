@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenPoem · Go beneath the word</title>
+    <meta name="description" content="OpenPoem is an iPhone app that finds the meaning under any word and any sentence. Private and on-device — nothing leaves your iPhone.">
+    <meta property="og:title" content="OpenPoem · go beneath the word">
+    <meta property="og:description" content="An iPhone app that finds the meaning under any word and sentence. Private, on-device, free.">
+    <meta name="theme-color" content="#fbfaf7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#fbfaf7; --bg-alt:#f1efe9; --ink:#0f2540; --text:#46505f;
+            --muted:#8a8f99; --accent:#b07d2b; --line:#e7e2d8;
+            --serif:'Spectral',Georgia,'Times New Roman',serif;
+            --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        }
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        html{ scroll-behavior:smooth; }
+        body{ background:var(--bg); color:var(--text); font-family:var(--sans);
+            -webkit-font-smoothing:antialiased; line-height:1.6; font-size:17px; overflow-x:hidden; }
+        .wrap{ max-width:64rem; margin:0 auto; padding:0 1.6rem; }
+        h1,h2,h3{ font-family:var(--serif); color:var(--ink); font-weight:500; line-height:1.08; letter-spacing:-0.02em; }
+        em{ font-style:italic; color:var(--accent); }
+
+        /* Header */
+        header.site{ position:sticky; top:0; z-index:30; background:rgba(251,250,247,0.8); backdrop-filter:saturate(180%) blur(14px); border-bottom:1px solid var(--line); }
+        header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:3.4rem; max-width:72rem; }
+        .wordmark{ font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); text-decoration:none; }
+        .wordmark span{ color:var(--accent); }
+        .hr-right{ display:flex; align-items:center; gap:1rem; }
+        .nav-cta{ font-family:var(--sans); font-size:0.8rem; font-weight:600; color:#fff; background:var(--accent); padding:0.4rem 0.9rem; border-radius:980px; text-decoration:none; }
+        .nav-cta:hover{ background:#9a6c22; }
+        .lang{ display:flex; gap:0.1rem; }
+        .lang button{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.04em; color:var(--muted); background:none; border:none; border-radius:6px; padding:0.2rem 0.4rem; cursor:pointer; }
+        .lang button.on{ color:var(--ink); font-weight:700; }
+
+        .eyebrow{ font-family:var(--sans); font-size:0.74rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:1.2rem; }
+
+        /* Hero */
+        .hero{ position:relative; overflow:hidden; padding:6.5rem 0 4rem; text-align:center; }
+        .aura{ position:absolute; inset:-30% -15%; z-index:0; pointer-events:none; }
+        .aura::after{ content:""; position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(251,250,247,0) 40%, rgba(251,250,247,0.85) 100%); }
+        .blob{ position:absolute; border-radius:50%; filter:blur(80px); opacity:0.45; will-change:transform; }
+        .b1{ width:44vw; height:44vw; left:6%; top:-8%; background:radial-gradient(circle at 30% 30%, rgba(15,37,64,0.2), rgba(15,37,64,0) 70%); animation:d1 30s ease-in-out infinite; }
+        .b2{ width:40vw; height:40vw; right:4%; top:2%; background:radial-gradient(circle at 60% 40%, rgba(176,125,43,0.24), rgba(176,125,43,0) 70%); animation:d2 36s ease-in-out infinite; }
+        @keyframes d1{ 0%,100%{ transform:translate(0,0) scale(1); } 50%{ transform:translate(5%,4%) scale(1.12); } }
+        @keyframes d2{ 0%,100%{ transform:translate(0,0) scale(1.05); } 50%{ transform:translate(-6%,5%) scale(0.92); } }
+        @media(prefers-reduced-motion:reduce){ .blob{ animation:none; } }
+        .hero .wrap{ position:relative; z-index:1; }
+        .app-icon{ width:88px; height:88px; border-radius:20px; box-shadow:0 14px 34px rgba(15,37,64,0.2); margin-bottom:1.6rem; }
+        h1{ font-size:clamp(2.8rem,8.5vw,5.2rem); font-weight:500; max-width:14ch; margin:0 auto 1.4rem; }
+        .hero .sub{ font-family:var(--serif); font-size:clamp(1.2rem,2.8vw,1.6rem); font-weight:300; color:var(--text); max-width:30rem; margin:0 auto; line-height:1.5; }
+
+        /* Waitlist */
+        .wl{ max-width:30rem; margin:2.4rem auto 0; }
+        .wl form{ display:flex; gap:0.6rem; }
+        .wl input{ flex:1; min-width:0; font-family:var(--sans); font-size:1rem; padding:0.95rem 1.2rem; border:1px solid var(--line); border-radius:980px; background:#fff; color:var(--ink); }
+        .wl input::placeholder{ color:var(--muted); }
+        .wl input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(176,125,43,0.12); }
+        .wl button{ font-family:var(--sans); font-size:0.95rem; font-weight:600; color:#fff; background:var(--accent); border:none; border-radius:980px; padding:0 1.7rem; cursor:pointer; white-space:nowrap; }
+        .wl button:hover{ background:#9a6c22; }
+        .wl .note{ font-size:0.8rem; color:var(--muted); margin-top:0.9rem; }
+        .wl .thanks{ color:var(--accent); font-weight:600; font-family:var(--serif); font-size:1.15rem; }
+        .badges{ margin-top:1.5rem; font-size:0.74rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+
+        /* Phones */
+        .phone{ width:300px; max-width:78vw; margin:0 auto; }
+        .phone .frame{ border-radius:42px; border:12px solid #0f2540; background:#0f2540; box-shadow:0 40px 90px rgba(15,37,64,0.28); overflow:hidden; }
+        .phone img{ display:block; width:100%; }
+        .hero-phone{ margin-top:3.5rem; }
+
+        /* Feature sections */
+        .feat{ padding:7rem 0; text-align:center; }
+        .feat.alt{ background:var(--bg-alt); }
+        .feat h2{ font-size:clamp(2.2rem,6.5vw,3.8rem); font-weight:500; max-width:16ch; margin:0 auto; }
+        .feat .lead{ font-size:clamp(1.15rem,2.6vw,1.5rem); color:var(--text); max-width:32rem; margin:1.1rem auto 0; line-height:1.5; }
+        .feat .phone{ margin-top:3.5rem; }
+
+        /* Privacy (dark) */
+        .priv{ background:var(--ink); text-align:center; padding:8rem 0; }
+        .priv .eyebrow{ color:var(--accent); }
+        .priv h2{ color:#fff; font-size:clamp(2.2rem,6.5vw,3.8rem); font-weight:500; max-width:18ch; margin:0 auto; }
+        .priv .lead{ font-size:clamp(1.15rem,2.6vw,1.45rem); color:rgba(255,255,255,0.7); max-width:34rem; margin:1.3rem auto 0; line-height:1.55; }
+        .priv .glyph{ font-family:var(--serif); font-size:2.6rem; color:var(--accent); margin-bottom:1.2rem; }
+
+        /* CTA */
+        .cta{ text-align:center; padding:7rem 0 8rem; }
+        .cta h2{ font-size:clamp(2.2rem,6.5vw,3.6rem); font-weight:500; }
+        .cta .lead{ font-size:1.2rem; color:var(--text); max-width:30rem; margin:1rem auto 0; }
+
+        /* Reveal on scroll */
+        .reveal{ opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease; }
+        .reveal.in{ opacity:1; transform:none; }
+        @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+        /* Footer */
+        footer{ background:var(--ink); color:rgba(255,255,255,0.6); padding:2.6rem 0; }
+        footer .wrap{ display:flex; flex-wrap:wrap; gap:1rem 1.6rem; justify-content:space-between; align-items:center; max-width:72rem; }
+        footer .fw{ font-family:var(--serif); color:#fff; font-weight:600; font-size:1.05rem; }
+        footer a{ color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.85rem; }
+        footer a:hover{ color:#fff; }
+        footer .rights{ width:100%; border-top:1px solid rgba(255,255,255,0.12); padding-top:1.2rem; margin-top:0.4rem; font-size:0.74rem; color:rgba(255,255,255,0.4); }
+    </style>
+</head>
+<body>
+    <header class="site">
+        <div class="wrap">
+            <a class="wordmark" href="/">OpenPoem<span>®</span></a>
+            <div class="hr-right">
+                <div class="lang"><button data-l="en">EN</button><button data-l="nl">NL</button></div>
+                <a class="nav-cta" href="#get" data-k="navCta">Get the app</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="aura"><div class="blob b1"></div><div class="blob b2"></div></div>
+            <div class="wrap">
+                <img class="app-icon" src="assets/app-icon.png" alt="OpenPoem" width="88" height="88">
+                <div class="eyebrow" data-k="heroEyebrow">For iPhone</div>
+                <h1 data-k="heroH">Go beneath the <em>word</em>.</h1>
+                <p class="sub" data-k="heroSub">The meaning under any word — and any sentence. On your iPhone.</p>
+                <div class="wl">
+                    <form class="wl-form" autocomplete="on">
+                        <input type="email" name="email" required spellcheck="false" data-kph="wlPh" placeholder="your email" aria-label="email">
+                        <button type="submit" data-k="wlBtn">Get notified</button>
+                    </form>
+                    <div class="note" data-k="wlNote">Coming to the App Store. No spam — one email.</div>
+                </div>
+                <div class="phone hero-phone reveal"><div class="frame"><img src="assets/app-word.png" alt="OpenPoem — the meaning of a word" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- SENTENCE -->
+        <section class="feat alt">
+            <div class="wrap">
+                <div class="reveal">
+                    <div class="eyebrow" data-k="s1Eyebrow">A sentence</div>
+                    <h2 data-k="s1H">Read what sits beneath the words.</h2>
+                    <p class="lead" data-k="s1P">Type a whole sentence. OpenPoem returns what it really means, what it carries, and how it moves.</p>
+                </div>
+                <div class="phone reveal"><div class="frame"><img src="assets/app-sentence.png" alt="OpenPoem — the reading of a sentence" loading="lazy" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- SIMPLE -->
+        <section class="feat">
+            <div class="wrap">
+                <div class="reveal">
+                    <div class="eyebrow" data-k="s2Eyebrow">One field</div>
+                    <h2 data-k="s2H">Type anything. Go beneath it.</h2>
+                    <p class="lead" data-k="s2P">One field, one tap. Its root, what it points to, the feeling it carries — in a moment.</p>
+                </div>
+                <div class="phone reveal"><div class="frame"><img src="assets/app-home.png" alt="OpenPoem — one search field" loading="lazy" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- PRIVACY -->
+        <section class="priv">
+            <div class="wrap reveal">
+                <div class="glyph">◦</div>
+                <div class="eyebrow" data-k="privEyebrow">Private by design</div>
+                <h2 data-k="privH">It all happens on your iPhone.</h2>
+                <p class="lead" data-k="privP">OpenPoem runs on the model built into your iPhone. No account, no cloud, no tracking. Nothing you look up ever leaves the device — it even works offline.</p>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta" id="get">
+            <div class="wrap reveal">
+                <h2 data-k="ctaH">Be there when it lands.</h2>
+                <p class="lead" data-k="ctaP">OpenPoem is coming to the App Store. Be the first to know.</p>
+                <div class="wl">
+                    <form class="wl-form" autocomplete="on">
+                        <input type="email" name="email" required spellcheck="false" data-kph="wlPh" placeholder="your email" aria-label="email">
+                        <button type="submit" data-k="wlBtn">Get notified</button>
+                    </form>
+                    <div class="note" data-k="wlNote2">No spam. One email, when it's live.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div class="fw">OpenPoem<span style="color:var(--accent)">®</span></div>
+            <a href="mailto:info@openpoem.org">info@openpoem.org</a>
+            <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
+        </div>
+    </footer>
+
+    <script>
+    (function(){
+        const T={
+            en:{
+                navCta:"Get the app",
+                heroEyebrow:"For iPhone",
+                heroH:'Go beneath the <em>word</em>.',
+                heroSub:"The meaning under any word — and any sentence. On your iPhone.",
+                wlPh:"your email", wlBtn:"Get notified",
+                wlNote:"Coming to the App Store. No spam — one email.",
+                s1Eyebrow:"A sentence", s1H:"Read what sits beneath the words.",
+                s1P:"Type a whole sentence. OpenPoem returns what it really means, what it carries, and how it moves.",
+                s2Eyebrow:"One field", s2H:"Type anything. Go beneath it.",
+                s2P:"One field, one tap. Its root, what it points to, the feeling it carries — in a moment.",
+                privEyebrow:"Private by design", privH:"It all happens on your iPhone.",
+                privP:"OpenPoem runs on the model built into your iPhone. No account, no cloud, no tracking. Nothing you look up ever leaves the device — it even works offline.",
+                ctaH:"Be there when it lands.", ctaP:"OpenPoem is coming to the App Store. Be the first to know.",
+                wlNote2:"No spam. One email, when it's live.",
+                wlThanks:"Thank you — you're on the list.",
+                footRights:"© OpenPoem. OpenPoem® is a registered trademark in the Benelux."
+            },
+            nl:{
+                navCta:"Haal de app",
+                heroEyebrow:"Voor iPhone",
+                heroH:'Ga onder het <em>woord</em>.',
+                heroSub:"De betekenis onder elk woord — en elke zin. Op je iPhone.",
+                wlPh:"je e-mail", wlBtn:"Hou me op de hoogte",
+                wlNote:"Komt naar de App Store. Geen spam — één mailtje.",
+                s1Eyebrow:"Een zin", s1H:"Lees wat onder de woorden zit.",
+                s1P:"Typ een hele zin. OpenPoem geeft terug wat hij echt betekent, wat hij draagt en hoe hij beweegt.",
+                s2Eyebrow:"Eén veld", s2H:"Typ wat je wilt. Ga eronder.",
+                s2P:"Eén veld, één tik. De wortel, waar het naar wijst, het gevoel dat het draagt — in een oogwenk.",
+                privEyebrow:"Privé van nature", privH:"Alles gebeurt op je iPhone.",
+                privP:"OpenPoem draait op het model in je iPhone zelf. Geen account, geen cloud, geen tracking. Niets dat je opzoekt verlaat ooit het toestel — het werkt zelfs offline.",
+                ctaH:"Wees erbij als hij landt.", ctaP:"OpenPoem komt naar de App Store. Hoor het als eerste.",
+                wlNote2:"Geen spam. Eén mailtje, als hij live is.",
+                wlThanks:"Dank je — je staat op de lijst.",
+                footRights:"© OpenPoem. OpenPoem® is een geregistreerd handelsmerk in de Benelux."
+            }
+        };
+        let lang=localStorage.getItem('lang');
+        if(lang!=='nl'&&lang!=='en'){ lang=(navigator.language||'').toLowerCase().indexOf('nl')===0?'nl':'en'; }
+        function apply(){
+            const d=T[lang];
+            document.querySelectorAll('[data-k]').forEach(el=>{
+                const k=el.getAttribute('data-k'); if(d[k]==null) return;
+                if(d[k].indexOf('<')>=0) el.innerHTML=d[k]; else el.textContent=d[k];
+            });
+            document.querySelectorAll('[data-kph]').forEach(el=>{
+                const k=el.getAttribute('data-kph'); if(d[k]!=null) el.placeholder=d[k];
+            });
+            document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));
+            document.documentElement.lang=lang;
+        }
+        document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{lang=b.getAttribute('data-l');localStorage.setItem('lang',lang);apply();}));
+
+        // waitlist: POST to an endpoint if set, else open a prefilled email
+        const ENDPOINT=(window.OPENPOEM_WAITLIST||"").trim();
+        const LIST_EMAIL="waitlist@openpoem.org";
+        document.querySelectorAll('.wl-form').forEach(form=>{
+            form.addEventListener('submit', async e=>{
+                e.preventDefault();
+                const input=form.querySelector('input[type=email]'); const email=(input.value||"").trim();
+                if(!email) return;
+                const done=()=>{ form.outerHTML='<div class="thanks">'+(T[lang]||T.en).wlThanks+'</div>'; };
+                if(ENDPOINT){ try{ await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}); }catch(err){} done(); return; }
+                window.location.href='mailto:'+LIST_EMAIL+'?subject='+encodeURIComponent('OpenPoem waitlist')+'&body='+encodeURIComponent('Please add me to the OpenPoem waitlist: '+email);
+                done();
+            });
+        });
+
+        // reveal on scroll
+        const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.12});
+        document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+        apply();
+    })();
+    </script>
+</body>
+</html>
