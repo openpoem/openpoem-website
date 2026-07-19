@@ -1,0 +1,24 @@
+.vercel
+dialogue/
+.claude/
+.DS_Store
+
+# Deck pages stay local, out of the repo.
+deck/
+deck-agents/
+deck-language/
+
+# Photos stay local, out of the repo — including personal ones (ron*.png).
+# Nothing here is deployed except the app assets below.
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+
+# Stale files kept local only, never deployed.
+README.md
+lexicon.json
+
+# The ONLY images the live site needs: the app icon + real screenshots.
+!assets/*.png

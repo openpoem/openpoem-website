@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenPoem · Go beneath the word</title>
+    <meta name="description" content="OpenPoem is an iPhone app that finds the meaning under any word or sentence. Private and on-device — nothing leaves your iPhone.">
+    <meta property="og:title" content="OpenPoem · go beneath the word">
+    <meta property="og:description" content="An iPhone app that finds the meaning under any word or sentence. Private, on-device, free.">
+    <meta name="theme-color" content="#fbfaf7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#fbfaf7; --bg-alt:#f1efe9; --ink:#0f2540; --text:#46505f;
+            --muted:#8a8f99; --accent:#b07d2b; --line:#e7e2d8;
+            --serif:'Spectral',Georgia,'Times New Roman',serif;
+            --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        }
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        html{ scroll-behavior:smooth; }
+        body{ background:var(--bg); color:var(--text); font-family:var(--sans);
+            -webkit-font-smoothing:antialiased; line-height:1.55; font-size:17px; overflow-x:hidden; }
+        .wrap{ max-width:60rem; margin:0 auto; padding:0 1.6rem; }
+        h1,h2{ font-family:var(--serif); color:var(--ink); font-weight:500; line-height:1.05; letter-spacing:-0.025em; }
+        em{ font-style:italic; color:var(--accent); }
+
+        /* Header */
+        header.site{ position:sticky; top:0; z-index:30; background:rgba(251,250,247,0.72); backdrop-filter:saturate(180%) blur(16px); }
+        header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:3.4rem; max-width:72rem; }
+        .wordmark{ font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); text-decoration:none; }
+        .wordmark span{ color:var(--accent); }
+        .lang{ display:flex; gap:0.1rem; }
+        .lang button{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.04em; color:var(--muted); background:none; border:none; border-radius:6px; padding:0.2rem 0.4rem; cursor:pointer; }
+        .lang button.on{ color:var(--ink); font-weight:700; }
+
+        /* Panels */
+        section{ text-align:center; }
+        .hero{ padding:7rem 0 3rem; }
+        .panel{ padding:9rem 0; }
+        .panel.alt{ background:var(--bg-alt); }
+        .app-icon{ width:74px; height:74px; border-radius:17px; box-shadow:0 12px 30px rgba(15,37,64,0.18); margin-bottom:2rem; }
+        h1{ font-size:clamp(3rem,9vw,5.6rem); margin:0 auto 1.6rem; max-width:13ch; }
+        h2{ font-size:clamp(2.4rem,7vw,4.2rem); margin:0 auto; max-width:15ch; }
+        .sub{ font-family:var(--serif); font-size:clamp(1.25rem,3vw,1.7rem); font-weight:300; color:var(--text); max-width:28rem; margin:0 auto; }
+        .lead{ font-size:clamp(1.2rem,2.6vw,1.5rem); font-weight:300; color:var(--text); max-width:30rem; margin:1.3rem auto 0; line-height:1.5; }
+
+        /* Phone */
+        .phone{ width:300px; max-width:76vw; margin:3.5rem auto 0; }
+        .phone .frame{ border-radius:42px; border:12px solid var(--ink); background:var(--ink); box-shadow:0 40px 90px rgba(15,37,64,0.26); overflow:hidden; }
+        .phone img{ display:block; width:100%; }
+
+        /* Waitlist */
+        .wl{ max-width:30rem; margin:2.6rem auto 0; }
+        .wl form{ display:flex; gap:0.6rem; }
+        .wl input{ flex:1; min-width:0; font-family:var(--sans); font-size:1rem; padding:0.95rem 1.2rem; border:1px solid var(--line); border-radius:980px; background:#fff; color:var(--ink); }
+        .wl input::placeholder{ color:var(--muted); }
+        .wl input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(176,125,43,0.12); }
+        .wl button{ font-family:var(--sans); font-size:0.95rem; font-weight:600; color:#fff; background:var(--ink); border:none; border-radius:980px; padding:0 1.7rem; cursor:pointer; white-space:nowrap; }
+        .wl button:hover{ background:#1a3a5c; }
+        .wl .note{ font-size:0.8rem; color:var(--muted); margin-top:1rem; }
+        .wl .thanks{ color:var(--accent); font-weight:600; font-family:var(--serif); font-size:1.2rem; }
+
+        /* Resonance meter card (mirrors the app) */
+        .reson-card{ max-width:25rem; margin:3rem auto 0; background:var(--ink); border-radius:16px;
+            padding:1.7rem 1.9rem; text-align:left; box-shadow:0 24px 60px rgba(15,37,64,0.22); }
+        .reson-row{ display:flex; align-items:baseline; justify-content:space-between; }
+        .reson-label{ font-size:0.82rem; letter-spacing:0.08em; color:var(--accent); }
+        .reson-val{ font-size:1.6rem; font-weight:700; color:#5fa87a; }
+        .reson-tag{ font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase;
+            color:rgba(255,255,255,0.5); margin-left:0.45rem; }
+        .reson-bar{ position:relative; height:5px; border-radius:980px;
+            background:rgba(255,255,255,0.12); margin-top:1rem; }
+        .reson-fill{ position:absolute; left:0; top:0; height:100%; width:82%;
+            border-radius:980px; background:#5fa87a; }
+        .reson-tick{ position:absolute; left:75%; top:-3px; width:1px; height:11px;
+            background:rgba(255,255,255,0.5); }
+        .reson-note{ font-family:var(--serif); font-style:italic; color:rgba(255,255,255,0.66);
+            font-size:1rem; margin-top:1.2rem; line-height:1.45; }
+
+        /* Privacy (dark) */
+        .priv{ background:var(--ink); }
+        .priv h2{ color:#fff; }
+        .priv .lead{ color:rgba(255,255,255,0.68); }
+
+        /* Reveal */
+        .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
+        .reveal.in{ opacity:1; transform:none; }
+        @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+        /* Footer */
+        footer{ background:var(--ink); color:rgba(255,255,255,0.6); padding:2.6rem 0; }
+        footer .wrap{ display:flex; flex-wrap:wrap; gap:1rem 1.6rem; justify-content:space-between; align-items:center; max-width:72rem; }
+        footer .fw{ font-family:var(--serif); color:#fff; font-weight:600; font-size:1.05rem; }
+        footer a{ color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.85rem; }
+        footer a:hover{ color:#fff; }
+        footer .rights{ width:100%; border-top:1px solid rgba(255,255,255,0.12); padding-top:1.2rem; margin-top:0.4rem; font-size:0.74rem; color:rgba(255,255,255,0.4); }
+    </style>
+</head>
+<body>
+    <header class="site">
+        <div class="wrap">
+            <a class="wordmark" href="/">OpenPoem<span>®</span></a>
+            <div class="lang"><button data-l="en">EN</button><button data-l="nl">NL</button></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="wrap">
+                <img class="app-icon" src="assets/app-icon.png" alt="OpenPoem" width="74" height="74">
+                <h1 data-k="heroH">Go beneath the <em>word</em>.</h1>
+                <p class="sub" data-k="heroSub">The meaning under any word, sentence or conversation. On your iPhone.</p>
+                <div class="wl">
+                    <form class="wl-form" autocomplete="on">
+                        <input type="email" name="email" required spellcheck="false" data-kph="wlPh" placeholder="your email" aria-label="email">
+                        <button type="submit" data-k="wlBtn">Get notified</button>
+                    </form>
+                    <div class="note" data-k="wlNote">Coming to the App Store. No spam, one email.</div>
+                </div>
+                <div class="phone reveal"><div class="frame"><img src="assets/app-word.png" alt="OpenPoem" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- SENTENCE -->
+        <section class="panel alt">
+            <div class="wrap reveal">
+                <h2 data-k="s1H">Any word. Any sentence.</h2>
+                <p class="lead" data-k="s1P">Type a whole sentence. OpenPoem returns what it really means, what it carries, and how it moves.</p>
+                <div class="phone"><div class="frame"><img src="assets/app-sentence.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- CONVERSATION -->
+        <section class="panel">
+            <div class="wrap reveal">
+                <h2 data-k="convH">Now, a conversation.</h2>
+                <p class="lead" data-k="convP">Speak, and OpenPoem reads what sits beneath — what's wanted, what's left unsaid, where the tension is. Recorded and read on your iPhone; nothing leaves it.</p>
+                <div class="phone"><div class="frame"><img src="assets/app-conversation.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- MEETING -->
+        <section class="panel alt">
+            <div class="wrap reveal">
+                <h2 data-k="meetH">Or a whole meeting.</h2>
+                <p class="lead" data-k="meetP">Record a meeting — the screen can lock, it keeps going. Afterwards: what was decided, what to do, and what sat beneath the room. Transcribed on your device.</p>
+                <div class="phone"><div class="frame"><img src="assets/app-meeting.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
+            </div>
+        </section>
+
+        <!-- RESONANCE -->
+        <section class="panel">
+            <div class="wrap reveal">
+                <h2 data-k="resonH">And how strongly it resonates.</h2>
+                <p class="lead" data-k="resonP">Beneath the meaning sits one more thing: whether the words are alive, or just going through the motions. OpenPoem measures it. The line sits at 75.</p>
+                <div class="reson-card">
+                    <div class="reson-row">
+                        <span class="reson-label">resonance</span>
+                        <span><span class="reson-val">82</span><span class="reson-tag" data-k="resonTag">resonant</span></span>
+                    </div>
+                    <div class="reson-bar"><div class="reson-fill"></div><div class="reson-tick"></div></div>
+                    <div class="reson-note" data-k="resonNote">Above the line — the words are alive, not just going through the motions.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- METHOD -->
+        <section class="panel alt">
+            <div class="wrap reveal">
+                <h2 data-k="methH">A method, not a model.</h2>
+                <p class="lead" data-k="methP">OpenPoem doesn't train its own AI. It gives a model a way of reading — four layers down to the source of a word, and a resonance score that asks whether the words are alive, not just correct. The model runs on your iPhone. The method is what makes it OpenPoem.</p>
+            </div>
+        </section>
+
+        <!-- PRIVACY -->
+        <section class="panel priv">
+            <div class="wrap reveal">
+                <h2 data-k="privH">It all happens on your iPhone.</h2>
+                <p class="lead" data-k="privP">It runs on the model built into your iPhone. No account, no cloud, nothing leaves the device. It even works offline.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div class="fw">OpenPoem<span style="color:var(--accent)">®</span></div>
+            <a href="mailto:info@openpoem.org">info@openpoem.org</a>
+            <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
+        </div>
+    </footer>
+
+    <script>
+    (function(){
+        const T={
+            en:{
+                heroH:'Go beneath the <em>word</em>.',
+                heroSub:"The meaning under any word, sentence or conversation. On your iPhone.",
+                wlPh:"your email", wlBtn:"Get notified",
+                wlNote:"Coming to the App Store. No spam, one email.",
+                s1H:"Any word. Any sentence.",
+                s1P:"Type a whole sentence. OpenPoem returns what it really means, what it carries, and how it moves.",
+                convH:'Now, a <em>conversation</em>.',
+                convP:"Speak, and OpenPoem reads what sits beneath — what's wanted, what's left unsaid, where the tension is. Recorded and read on your iPhone; nothing leaves it.",
+                meetH:'Or a whole <em>meeting</em>.',
+                meetP:"Record a meeting — the screen can lock, it keeps going. Afterwards: what was decided, what to do, and what sat beneath the room. Transcribed on your device.",
+                resonH:'And how strongly it <em>resonates</em>.',
+                resonP:"Beneath the meaning sits one more thing: whether the words are alive, or just going through the motions. OpenPoem measures it. The line sits at 75.",
+                resonTag:"resonant",
+                resonNote:"Above the line — the words are alive, not just going through the motions.",
+                methH:'A method, not a <em>model</em>.',
+                methP:"OpenPoem doesn't train its own AI. It gives a model a way of reading — four layers down to the source of a word, and a resonance score that asks whether the words are alive, not just correct. The model runs on your iPhone. The method is what makes it OpenPoem.",
+                privH:"It all happens on your iPhone.",
+                privP:"It runs on the model built into your iPhone. No account, no cloud, nothing leaves the device. It even works offline.",
+                wlThanks:"Thank you, you're on the list.",
+                footRights:"© OpenPoem. OpenPoem® is a registered trademark in the Benelux."
+            },
+            nl:{
+                heroH:'Ga onder het <em>woord</em>.',
+                heroSub:"De betekenis onder elk woord, elke zin of gesprek. Op je iPhone.",
+                wlPh:"je e-mail", wlBtn:"Hou me op de hoogte",
+                wlNote:"Komt naar de App Store. Geen spam, één mailtje.",
+                s1H:"Elk woord. Elke zin.",
+                s1P:"Typ een hele zin. OpenPoem geeft terug wat hij echt betekent, wat hij draagt en hoe hij beweegt.",
+                convH:'Nu een <em>gesprek</em>.',
+                convP:"Spreek, en OpenPoem leest wat eronder zit — wat gewild wordt, wat onuitgesproken blijft, waar de spanning zit. Opgenomen en gelezen op je iPhone; niets verlaat het toestel.",
+                meetH:'Of een hele <em>meeting</em>.',
+                meetP:"Neem een meeting op — het scherm mag op slot, de opname loopt door. Achteraf: wat besloten is, wat er moet gebeuren, en wat er onder de tafel lag. Op je toestel getranscribeerd.",
+                resonH:'En hoe sterk het <em>resoneert</em>.',
+                resonP:"Onder de betekenis zit nog één ding: of de woorden leven, of alleen maar meebewegen. OpenPoem meet het. De lijn ligt op 75.",
+                resonTag:"resonant",
+                resonNote:"Boven de lijn — de woorden leven, ze bewegen niet zomaar mee.",
+                methH:'Een methode, geen <em>model</em>.',
+                methP:"OpenPoem traint geen eigen AI. Het geeft een model een manier van lezen — vier lagen diep tot de bron van een woord, en een resonance-score die vraagt of de woorden leven, niet alleen of ze kloppen. Het model draait op je iPhone. De methode maakt het OpenPoem.",
+                privH:"Alles gebeurt op je iPhone.",
+                privP:"Het draait op het model in je iPhone zelf. Geen account, geen cloud, niets verlaat het toestel. Het werkt zelfs offline.",
+                wlThanks:"Dank je, je staat op de lijst.",
+                footRights:"© OpenPoem. OpenPoem® is een geregistreerd handelsmerk in de Benelux."
+            }
+        };
+        let lang=localStorage.getItem('lang');
+        if(lang!=='nl'&&lang!=='en'){ lang=(navigator.language||'').toLowerCase().indexOf('nl')===0?'nl':'en'; }
+        function apply(){
+            const d=T[lang];
+            document.querySelectorAll('[data-k]').forEach(el=>{
+                const k=el.getAttribute('data-k'); if(d[k]==null) return;
+                if(d[k].indexOf('<')>=0) el.innerHTML=d[k]; else el.textContent=d[k];
+            });
+            document.querySelectorAll('[data-kph]').forEach(el=>{
+                const k=el.getAttribute('data-kph'); if(d[k]!=null) el.placeholder=d[k];
+            });
+            document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));
+            document.documentElement.lang=lang;
+        }
+        document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{lang=b.getAttribute('data-l');localStorage.setItem('lang',lang);apply();}));
+
+        // waitlist: POST to an endpoint if set, else open a prefilled email
+        const ENDPOINT=(window.OPENPOEM_WAITLIST||"").trim();
+        const LIST_EMAIL="waitlist@openpoem.org";
+        document.querySelectorAll('.wl-form').forEach(form=>{
+            form.addEventListener('submit', async e=>{
+                e.preventDefault();
+                const input=form.querySelector('input[type=email]'); const email=(input.value||"").trim();
+                if(!email) return;
+                const done=()=>{ form.outerHTML='<div class="thanks">'+(T[lang]||T.en).wlThanks+'</div>'; };
+                if(ENDPOINT){ try{ await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}); }catch(err){} done(); return; }
+                window.location.href='mailto:'+LIST_EMAIL+'?subject='+encodeURIComponent('OpenPoem waitlist')+'&body='+encodeURIComponent('Please add me to the OpenPoem waitlist: '+email);
+                done();
+            });
+        });
+
+        // reveal on scroll
+        const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.12});
+        document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+        apply();
+    })();
+    </script>
+</body>
+</html>
