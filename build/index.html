@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>OpenPoem · Configure a private build</title>
+    <meta name="description" content="Configure a private OpenPoem: your reading, your model, your walls. By introduction.">
+    <meta name="theme-color" content="#fbfaf7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#fbfaf7; --bg-alt:#f1efe9; --ink:#0f2540; --text:#46505f;
+            --muted:#8a8f99; --accent:#b07d2b; --line:#e7e2d8; --green:#5fa87a;
+            --serif:'Spectral',Georgia,'Times New Roman',serif;
+            --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        }
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        body{ background:var(--bg); color:var(--text); font-family:var(--sans); -webkit-font-smoothing:antialiased; line-height:1.55; font-size:16px; }
+        .wrap{ max-width:72rem; margin:0 auto; padding:0 1.6rem; }
+        h1,h2,h3{ font-family:var(--serif); color:var(--ink); font-weight:500; letter-spacing:-0.02em; line-height:1.1; }
+        a{ color:var(--ink); }
+
+        header.site{ position:sticky; top:0; z-index:30; background:rgba(251,250,247,0.8); backdrop-filter:saturate(180%) blur(14px); border-bottom:1px solid var(--line); }
+        header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:3.4rem; }
+        .wordmark{ font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); text-decoration:none; }
+        .wordmark span{ color:var(--accent); }
+        .hr-right{ display:flex; align-items:center; gap:1rem; }
+        .tag{ font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); }
+        .lang button{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.04em; color:var(--muted); background:none; border:none; border-radius:6px; padding:0.2rem 0.4rem; cursor:pointer; }
+        .lang button.on{ color:var(--ink); font-weight:700; }
+
+        .intro{ padding:3.5rem 0 2rem; max-width:44rem; }
+        .eyebrow{ font-size:0.74rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:1rem; }
+        .intro h1{ font-size:clamp(2rem,5vw,3rem); margin-bottom:1rem; }
+        .intro p{ font-size:1.1rem; color:var(--text); }
+
+        .grid{ display:grid; grid-template-columns:1fr; gap:1.6rem; padding-bottom:5rem; }
+        @media(min-width:860px){ .grid{ grid-template-columns:1.05fr 0.95fr; align-items:start; } .spec{ position:sticky; top:4.6rem; } }
+
+        .panel{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:1.6rem 1.6rem; box-shadow:0 14px 40px rgba(15,37,64,0.06); }
+        .step{ margin-bottom:1.5rem; } .step:last-child{ margin-bottom:0; }
+        .step > label{ display:block; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:0.6rem; }
+        .step .hint{ font-size:0.82rem; color:var(--muted); margin-top:0.5rem; }
+        .opts{ display:flex; flex-wrap:wrap; gap:0.5rem; }
+        .opt{ font-family:var(--sans); font-size:0.9rem; text-align:left; cursor:pointer; padding:0.6rem 0.85rem; border:1px solid var(--line); background:#fdfdfe; color:var(--text); border-radius:10px; transition:.15s; }
+        .opt:hover{ border-color:var(--accent); }
+        .opt.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
+        .opt .t{ display:block; font-weight:600; color:inherit; }
+        .opt.on .t{ color:#fff; }
+        .opt .d{ display:block; font-size:0.76rem; color:var(--muted); margin-top:0.1rem; }
+        .opt.on .d{ color:rgba(255,255,255,0.7); }
+        .adv{ margin-top:0.4rem; border-top:1px dashed var(--line); padding-top:1.1rem; }
+        .adv summary{ cursor:pointer; font-size:0.8rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+        .adv .row{ display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-top:0.9rem; }
+        .adv label{ font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); }
+        .adv select{ width:100%; font:inherit; font-size:0.9rem; color:var(--ink); background:#fdfdfe; border:1px solid var(--line); border-radius:8px; padding:0.5rem 0.6rem; margin-top:0.25rem; -webkit-appearance:none; appearance:none; }
+
+        /* spec card (navy, mirrors the app's result card) */
+        .spec{ background:var(--ink); color:#e8edf4; border-radius:16px; padding:1.7rem 1.7rem; box-shadow:0 24px 60px rgba(15,37,64,0.22); }
+        .spec h2{ color:#fff; font-size:1.4rem; margin-bottom:0.2rem; }
+        .spec .sub{ font-size:0.78rem; letter-spacing:0.06em; color:var(--accent); text-transform:uppercase; margin-bottom:1.2rem; }
+        .srow{ display:grid; grid-template-columns:8.5rem 1fr; gap:0.7rem; padding:0.55rem 0; border-top:1px solid rgba(255,255,255,0.1); font-size:0.92rem; }
+        .srow .k{ color:#9fb0c6; font-family:ui-monospace,Menlo,monospace; font-size:0.8rem; }
+        .srow .v{ color:#fff; }
+        .srow .v b{ color:var(--accent); font-weight:600; }
+        .vram{ margin-top:1.1rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.1); }
+        .vram .big{ display:flex; align-items:baseline; gap:0.5rem; }
+        .vram .n{ font-size:2.4rem; font-weight:700; color:#fff; line-height:1; }
+        .vram .u{ color:var(--accent); font-weight:600; }
+        .vram .lab{ font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:#9fb0c6; margin-top:0.15rem; }
+        .bars{ margin:0.9rem 0; font-family:ui-monospace,Menlo,monospace; font-size:0.76rem; }
+        .bar{ display:grid; grid-template-columns:5.5rem 1fr 3.6rem; align-items:center; gap:0.5rem; margin-bottom:0.4rem; }
+        .bar .bk{ color:#9fb0c6; } .bar .bv{ text-align:right; color:#fff; }
+        .bar .track{ height:7px; background:rgba(255,255,255,0.09); border-radius:4px; overflow:hidden; }
+        .bar .fill{ height:100%; border-radius:4px; }
+        .f-w{ background:#5b7da8; } .f-k{ background:var(--accent); } .f-a{ background:#7fa07a; } .f-f{ background:#6b6f7a; }
+        .fit{ margin-top:0.9rem; }
+        .fit .chip{ display:inline-block; font-size:0.82rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); color:#fff; border-radius:999px; padding:0.28rem 0.7rem; margin:0 0.3rem 0.35rem 0; }
+        .fit .chip b{ color:var(--accent); }
+        .note{ margin-top:1rem; font-size:0.84rem; line-height:1.5; color:#aebbcc; }
+        .note.warn{ color:#e6c98a; }
+        .cta{ display:inline-block; margin-top:1.3rem; font-family:var(--sans); font-size:0.95rem; font-weight:600; color:var(--ink); background:var(--accent); border:none; border-radius:980px; padding:0.7rem 1.5rem; cursor:pointer; text-decoration:none; }
+        .cta:hover{ background:#c98f31; }
+        .disc{ font-size:0.78rem; color:var(--muted); margin-top:1.4rem; max-width:44rem; }
+        footer{ border-top:1px solid var(--line); padding:2rem 0; margin-top:1rem; }
+        footer .wrap{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; }
+        footer .fw{ font-family:var(--serif); color:var(--ink); font-weight:600; }
+        footer a{ font-size:0.85rem; color:var(--text); text-decoration:none; }
+    </style>
+</head>
+<body>
+    <header class="site">
+        <div class="wrap">
+            <a class="wordmark" href="/">OpenPoem<span>®</span></a>
+            <div class="hr-right">
+                <span class="tag" data-k="byIntro">Bespoke · by introduction</span>
+                <div class="lang"><button data-l="en">EN</button><button data-l="nl">NL</button></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="intro">
+            <div class="eyebrow" data-k="eyebrow">Configure a private build</div>
+            <h1 data-k="introH">Your reading. Your model. Your walls.</h1>
+            <p data-k="introP">OpenPoem reads what sits beneath words, conversations and meetings. Here you shape a private deployment — on your own model and documents, inside your own environment. It ends in a real specification, not a callback.</p>
+        </div>
+
+        <div class="grid">
+            <div class="panel" id="controls"></div>
+            <div class="spec" id="spec"></div>
+        </div>
+
+        <p class="disc" data-k="disc"></p>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div class="fw">OpenPoem<span style="color:var(--accent)">®</span></div>
+            <a href="mailto:build@openpoem.org">build@openpoem.org</a>
+        </div>
+    </footer>
+
+    <script>
+    (function(){
+        var lang = localStorage.getItem('lang'); if(lang!=='nl'&&lang!=='en') lang=(navigator.language||'').toLowerCase().indexOf('nl')===0?'nl':'en';
+        var L = (en,nl)=> lang==='nl'?nl:en;
+
+        // ---- static copy ----
+        var T = {
+            byIntro:['Bespoke · by introduction','Op maat · op introductie'],
+            eyebrow:['Configure a private build','Stel een private build samen'],
+            introH:['Your reading. Your model. Your walls.','Jouw lezing. Jouw model. Jouw muren.'],
+            introP:['OpenPoem reads what sits beneath words, conversations and meetings. Here you shape a private deployment — on your own model and documents, inside your own environment. It ends in a real specification, not a callback.',
+                    'OpenPoem leest wat onder woorden, gesprekken en meetings zit. Hier stel je een private uitrol samen — op je eigen model en documenten, binnen je eigen omgeving. Het eindigt in een echte specificatie, niet in een terugbelverzoek.'],
+            disc:['Estimate only. The memory maths uses the real components of inference — weights, KV cache (grows with context and concurrency), activations and framework overhead — plus a safety margin, checked against published model architectures. The final build is scoped together.',
+                  'Alleen een schatting. De geheugensom gebruikt de echte componenten van inference — weights, KV-cache (groeit met context en gelijktijdigheid), activations en framework-overhead — plus een veiligheidsmarge, gecheckt tegen gepubliceerde modelarchitecturen. De uiteindelijke build bepalen we samen.'],
+            sWho:['1. Who is it for','1. Voor wie is het'],
+            sRead:['2. What should it read','2. Wat moet het lezen'],
+            sWhere:['3. Where does it run','3. Waar draait het'],
+            sData:['4. Your data','4. Je data'],
+            sScale:['5. Scale','5. Schaal'],
+            adv:['Adjust the model','Model bijstellen'],
+            aModel:['Model','Model'], aQuant:['Precision','Precisie'], aKv:['KV cache','KV-cache'],
+            specTitle:['Your build','Jouw build'], specSub:['Recommended specification','Aanbevolen specificatie'],
+            kWho:['for','voor'], kModes:['reads','leest'], kModel:['model','model'], kWhere:['runs on','draait op'],
+            kData:['data','data'], kScale:['scale','schaal'], kLicense:['license','licentie'],
+            recVram:['Recommended VRAM','Aanbevolen VRAM'],
+            weights:['weights','weights'], kv:['KV cache','KV-cache'], act:['activations','activations'], fw:['framework','framework'],
+            fitsGpu:['Fits on','Past op'], fitsMac:['Or a Mac','Of een Mac'], macUse:['usable','bruikbaar'],
+            cluster:['Beyond a single box — we design and host the cluster.','Voorbij één machine — wij ontwerpen en hosten het cluster.'],
+            build:['Request this build','Vraag deze build aan'],
+            onDeviceH:['Runs on the device itself','Draait op het toestel zelf'],
+            onDeviceP:['No server, no VRAM to plan. This is the OpenPoem app, on Apple’s on-device model — nothing leaves the phone. Free to start.',
+                       'Geen server, geen VRAM te plannen. Dit is de OpenPoem-app, op Apple’s on-device model — niets verlaat de telefoon. Gratis om te beginnen.'],
+            ragNote:['Your documents need a private retrieval layer — we build the ingestion, the index and the per-document permissions. That is a project, not a download.',
+                     'Je documenten hebben een private retrieval-laag nodig — wij bouwen de ingestie, de index en de rechten per document. Dat is een project, geen download.'],
+            ragConflict:['On-device can’t hold your document corpus. To read your own files, pick a machine or a private cloud below.',
+                         'On-device kan je documentcorpus niet dragen. Om je eigen bestanden te lezen, kies hieronder een machine of private cloud.'],
+            compNote:['Compliance & audit pack included — every reading recorded with its parameters. Built for banking and accountancy.',
+                      'Compliance- & auditpakket inbegrepen — elke lezing vastgelegd met parameters. Gebouwd voor banking en accountancy.']
+        };
+        function applyStatic(){ document.querySelectorAll('[data-k]').forEach(function(el){ var v=T[el.getAttribute('data-k')]; if(v) el.textContent=L(v[0],v[1]); });
+            document.querySelectorAll('.lang button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-l')===lang); }); document.documentElement.lang=lang; }
+
+        // ---- options ----
+        var WHO = [
+            {k:'institution', t:['Regulated institution','Gereguleerde instelling'], d:['Banking, accountancy, compliance','Banking, accountancy, compliance']},
+            {k:'practice',    t:['Firm or practice','Kantoor of praktijk'],        d:['Law, medical, advisory','Recht, medisch, advies']},
+            {k:'individual',  t:['Individual principal','Individuele principaal'],  d:['One person, high discretion','Eén persoon, hoge discretie']}
+        ];
+        var READ = [
+            {k:'words',  t:['Words & sentences','Woorden & zinnen'], d:['Meaning beneath the text','Betekenis onder de tekst']},
+            {k:'talk',   t:['Conversations','Gesprekken'],          d:['Voice: wanted, unsaid, tension','Spraak: gewild, onuitgesproken, spanning']},
+            {k:'meeting',t:['Meetings','Meetings'],                 d:['Decisions, actions, subtext','Besluiten, acties, subtekst']},
+            {k:'docs',   t:['Your documents','Je documenten'],      d:['Read across your own corpus','Lezen over je eigen corpus']}
+        ];
+        var WHERE = [
+            {k:'managed', t:['OpenPoem-managed cluster','Door OpenPoem beheerd cluster'], d:['Private, we host it','Privé, wij hosten']},
+            {k:'onprem',  t:['Your own hardware','Je eigen hardware'],   d:['On-prem, your walls','On-prem, jouw muren']},
+            {k:'cloud',   t:['Your private cloud','Je private cloud'],    d:['Your VPC','Je eigen VPC']},
+            {k:'mac',     t:['A Mac in your office','Een Mac op kantoor'],d:['Small, quiet, local','Klein, stil, lokaal']},
+            {k:'device',  t:['On the iPhone only','Alleen op de iPhone'], d:['No server at all','Helemaal geen server']}
+        ];
+        var DATA = [
+            {k:'none',   t:['Nothing stored','Niets opgeslagen'],    d:['Readings only, kept nowhere','Alleen lezingen, nergens bewaard']},
+            {k:'files',  t:['Your own files','Je eigen bestanden'],  d:['Documents, notes, archives','Documenten, notities, archieven']},
+            {k:'systems',t:['Connected systems','Gekoppelde systemen'],d:['CRM, ledger, mail','CRM, grootboek, mail']}
+        ];
+        var SCALE = [
+            {k:'solo', t:['One person','Eén persoon'],        ctx:32768,  batch:1},
+            {k:'team', t:['A small team','Een klein team'],   ctx:32768,  batch:4},
+            {k:'dept', t:['A department','Een afdeling'],     ctx:65536,  batch:8},
+            {k:'org',  t:['The organisation','De organisatie'],ctx:131072, batch:16}
+        ];
+
+        // ---- VRAM maths (reused, checked against published architectures) ----
+        var MODELS = [
+            {k:'qwen14b', label:'Qwen 2.5 · 14B',        P:14.8, L:48, Hkv:8,  D:128, H:5120},
+            {k:'qwen32b', label:'Qwen 2.5 · 32B',        P:32.5, L:64, Hkv:8,  D:128, H:5120},
+            {k:'llama70b',label:'Llama 3.3 · 70B',       P:70.6, L:80, Hkv:8,  D:128, H:8192},
+            {k:'qwen72b', label:'Qwen 2.5 · 72B',        P:72.7, L:80, Hkv:8,  D:128, H:8192},
+            {k:'mistral123b',label:'Mistral Large · 123B',P:123, L:88, Hkv:8,  D:128, H:12288}
+        ];
+        var QUANT = [ {k:'q4',b:0.60,label:'Q4_K_M · 4-bit'}, {k:'q8',b:1.06,label:'Q8_0 · 8-bit'}, {k:'fp16',b:2.0,label:'FP16 · full'} ];
+        var KVP = [ {k:'fp16',b:2,label:'FP16'}, {k:'fp8',b:1,label:'FP8'} ];
+        var LICENSE = {qwen14b:'Apache 2.0',qwen32b:'Apache 2.0',qwen72b:'Apache 2.0',llama70b:'Llama license',mistral123b:'MRL'};
+        var GPUS = [ {n:'1× RTX 4090',v:24},{n:'1× RTX 5090',v:32},{n:'1× L40S / RTX 6000 Ada',v:48},{n:'1× H100 / A100',v:80},{n:'2× H100',v:160},{n:'4× H100',v:320},{n:'8× H100',v:640},{n:'16× H100',v:1280} ];
+        var MACS = [64,128,192,256,512], MACF=0.72;
+
+        function compute(m,quant,kv,ctx,batch){
+            var bpw=QUANT.find(function(q){return q.k===quant;}).b, kvb=KVP.find(function(q){return q.k===kv;}).b;
+            var weights=m.P*bpw;
+            var kvC=2*m.L*m.Hkv*m.D*kvb*ctx*batch/1e9;
+            var act=batch*(m.H/4096)*(Math.min(ctx,8192)/4096)*0.35;
+            var fw=1.2+0.05*(weights+kvC);
+            var sub=weights+kvC+act+fw;
+            return {weights:weights,kv:kvC,act:act,fw:fw,rec:sub*1.15};
+        }
+        function fitGpu(rec){ var g=GPUS.find(function(x){return x.v>=rec;}); return g?g.n+' · '+g.v+' GB':null; }
+        function fitMac(rec){ var g=MACS.find(function(x){return x*MACF>=rec;}); return g?g+' GB ('+Math.round(g*MACF)+' GB '+L('usable','bruikbaar')+')':null; }
+        var g1=function(x){ return x>=100?Math.round(x):Math.round(x*10)/10; };
+
+        // ---- state ----
+        var S = { who:'practice', read:{words:true,talk:true,meeting:true,docs:false}, where:'onprem', data:'files', scale:'team', modelOverride:null, quant:'q4', kv:'fp16' };
+
+        function recommendedModel(){
+            if(S.modelOverride) return S.modelOverride;
+            var floor='qwen14b';
+            if(S.read.talk||S.read.meeting) floor='qwen32b';
+            if(S.read.docs||S.data==='files'||S.data==='systems') floor='qwen72b';
+            return floor;
+        }
+        function ragNeeded(){ return S.read.docs || S.data==='files' || S.data==='systems'; }
+        function onDevice(){ return S.where==='device'; }
+
+        // ---- render controls ----
+        function seg(field, items, isOn){
+            return '<div class="opts">'+items.map(function(o){
+                return '<button class="opt'+(isOn(o.k)?' on':'')+'" data-f="'+field+'" data-v="'+o.k+'">'+
+                    '<span class="t">'+L(o.t[0],o.t[1])+'</span>'+(o.d?'<span class="d">'+L(o.d[0],o.d[1])+'</span>':'')+'</button>';
+            }).join('')+'</div>';
+        }
+        function renderControls(){
+            var el=document.getElementById('controls');
+            var modelOpts=MODELS.map(function(m){ return '<option value="'+m.k+'"'+(m.k===recommendedModel()?' selected':'')+'>'+m.label+'</option>'; }).join('');
+            var quantOpts=QUANT.map(function(q){ return '<option value="'+q.k+'"'+(q.k===S.quant?' selected':'')+'>'+q.label+'</option>'; }).join('');
+            var kvOpts=KVP.map(function(q){ return '<option value="'+q.k+'"'+(q.k===S.kv?' selected':'')+'>'+q.label+'</option>'; }).join('');
+            el.innerHTML =
+                step('sWho', seg('who', WHO, function(k){return S.who===k;})) +
+                step('sRead', seg('read', READ, function(k){return !!S.read[k];})) +
+                step('sWhere', seg('where', WHERE, function(k){return S.where===k;})) +
+                step('sData', seg('data', DATA, function(k){return S.data===k;})) +
+                step('sScale', seg('scale', SCALE, function(k){return S.scale===k;})) +
+                '<details class="adv"><summary>'+L(T.adv[0],T.adv[1])+'</summary><div class="row">'+
+                  '<div><label>'+L(T.aModel[0],T.aModel[1])+'</label><select data-a="modelOverride">'+modelOpts+'</select></div>'+
+                  '<div><label>'+L(T.aQuant[0],T.aQuant[1])+'</label><select data-a="quant">'+quantOpts+'</select></div>'+
+                  '<div><label>'+L(T.aKv[0],T.aKv[1])+'</label><select data-a="kv">'+kvOpts+'</select></div>'+
+                '</div></details>';
+        }
+        function step(key, inner){ return '<div class="step"><label>'+L(T[key][0],T[key][1])+'</label>'+inner+'</div>'; }
+
+        // ---- render spec ----
+        function bar(cls,label,val,rec){ var pct=Math.max(2,Math.min(100,val/rec*100));
+            return '<div class="bar"><span class="bk">'+label+'</span><span class="track"><span class="fill '+cls+'" style="width:'+pct+'%"></span></span><span class="bv">'+g1(val)+'</span></div>'; }
+
+        function srow(k,v){ return '<div class="srow"><span class="k">'+k+'</span><span class="v">'+v+'</span></div>'; }
+
+        function modeList(){ var names={words:['words','woorden'],talk:['conversations','gesprekken'],meeting:['meetings','meetings'],docs:['documents','documenten']};
+            var out=Object.keys(S.read).filter(function(k){return S.read[k];}).map(function(k){return L(names[k][0],names[k][1]);});
+            return out.length?out.join(' · '):'—'; }
+        function whoLabel(){ var o=WHO.find(function(x){return x.k===S.who;}); return L(o.t[0],o.t[1]); }
+        function whereLabel(){ var o=WHERE.find(function(x){return x.k===S.where;}); return L(o.t[0],o.t[1]); }
+        function dataLabel(){ var o=DATA.find(function(x){return x.k===S.data;}); return L(o.t[0],o.t[1]); }
+        function scaleObj(){ return SCALE.find(function(x){return x.k===S.scale;}); }
+
+        function renderSpec(){
+            var el=document.getElementById('spec');
+            var head='<h2>'+L(T.specTitle[0],T.specTitle[1])+'</h2><div class="sub">'+L(T.specSub[0],T.specSub[1])+'</div>';
+            var base = srow(L(T.kWho[0],T.kWho[1]), whoLabel()) + srow(L(T.kModes[0],T.kModes[1]), modeList()) + srow(L(T.kWhere[0],T.kWhere[1]), whereLabel()) + srow(L(T.kData[0],T.kData[1]), dataLabel());
+
+            // On-device path — no server
+            if(onDevice()){
+                var body='<p style="font-family:var(--serif);color:#fff;font-size:1.15rem;margin:0.2rem 0 0.6rem">'+L(T.onDeviceH[0],T.onDeviceH[1])+'</p><p class="note">'+L(T.onDeviceP[0],T.onDeviceP[1])+'</p>';
+                var warn = ragNeeded()? '<p class="note warn">'+L(T.ragConflict[0],T.ragConflict[1])+'</p>' : '';
+                el.innerHTML=head+base+body+warn+ctaBtn();
+                return;
+            }
+
+            // Server path — real VRAM maths
+            var mk=recommendedModel(), m=MODELS.find(function(x){return x.k===mk;}), sc=scaleObj();
+            var r=compute(m, S.quant, S.kv, sc.ctx, sc.batch);
+            var gpu=fitGpu(r.rec), mac=fitMac(r.rec);
+            var spec = base +
+                srow(L(T.kModel[0],T.kModel[1]), '<b>'+m.label+'</b>') +
+                srow(L(T.kLicense[0],T.kLicense[1]), LICENSE[mk]||'—') +
+                srow(L(T.kScale[0],T.kScale[1]), L(scaleObj().t[0],scaleObj().t[1])+' · '+(sc.ctx/1024)+'K ctx · ×'+sc.batch);
+            var vram = '<div class="vram"><div class="big"><span class="n">'+g1(r.rec)+'</span><span class="u">GB</span></div><div class="lab">'+L(T.recVram[0],T.recVram[1])+'</div>'+
+                '<div class="bars">'+bar('f-w',L(T.weights[0],T.weights[1]),r.weights,r.rec)+bar('f-k',L(T.kv[0],T.kv[1]),r.kv,r.rec)+bar('f-a',L(T.act[0],T.act[1]),r.act,r.rec)+bar('f-f',L(T.fw[0],T.fw[1]),r.fw,r.rec)+'</div>'+
+                '<div class="fit"><div style="font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#9fb0c6;margin-bottom:.4rem">'+L(T.fitsGpu[0],T.fitsGpu[1])+'</div>'+
+                (gpu?'<span class="chip">'+gpu+'</span>':'<span class="chip">'+L(T.cluster[0],T.cluster[1])+'</span>')+
+                (mac?'<span class="chip">Mac · <b>'+mac+'</b></span>':'')+'</div></div>';
+            var notes='';
+            if(ragNeeded()) notes+='<p class="note">'+L(T.ragNote[0],T.ragNote[1])+'</p>';
+            if(S.who==='institution') notes+='<p class="note">'+L(T.compNote[0],T.compNote[1])+'</p>';
+            el.innerHTML=head+spec+vram+notes+ctaBtn();
+        }
+
+        function ctaBtn(){
+            var body = specText();
+            return '<a class="cta" href="mailto:build@openpoem.org?subject='+encodeURIComponent('OpenPoem private build')+'&body='+encodeURIComponent(body)+'">'+L(T.build[0],T.build[1])+'</a>';
+        }
+        function specText(){
+            var lines=[L('I would like a private OpenPoem build.','Ik wil een private OpenPoem-build.'),'',
+                L(T.kWho[0],T.kWho[1])+': '+whoLabel(),
+                L(T.kModes[0],T.kModes[1])+': '+modeList(),
+                L(T.kWhere[0],T.kWhere[1])+': '+whereLabel(),
+                L(T.kData[0],T.kData[1])+': '+dataLabel(),
+                L(T.kScale[0],T.kScale[1])+': '+L(scaleObj().t[0],scaleObj().t[1])];
+            if(!onDevice()){ var mk=recommendedModel(),m=MODELS.find(function(x){return x.k===mk;}),sc=scaleObj(),r=compute(m,S.quant,S.kv,sc.ctx,sc.batch);
+                lines.push(L(T.kModel[0],T.kModel[1])+': '+m.label+' ('+S.quant+', KV '+S.kv+')');
+                lines.push(L(T.recVram[0],T.recVram[1])+': ~'+g1(r.rec)+' GB — '+(fitGpu(r.rec)||L(T.cluster[0],T.cluster[1]))); }
+            else lines.push(L('Runs on the iPhone (on-device).','Draait op de iPhone (on-device).'));
+            return lines.join('\n');
+        }
+
+        function render(){ renderControls(); renderSpec(); }
+
+        // ---- events ----
+        document.getElementById('controls').addEventListener('click', function(e){
+            var b=e.target.closest('.opt'); if(!b) return;
+            var f=b.getAttribute('data-f'), v=b.getAttribute('data-v');
+            if(f==='read'){ S.read[v]=!S.read[v]; }
+            else { S[f]=v; }
+            S.modelOverride=null;       // recompute recommendation when inputs change
+            render();
+        });
+        document.getElementById('controls').addEventListener('change', function(e){
+            var a=e.target.getAttribute('data-a'); if(!a) return;
+            S[a]=e.target.value; renderSpec();
+        });
+        document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click', function(){ lang=b.getAttribute('data-l'); localStorage.setItem('lang',lang); applyStatic(); render(); }); });
+
+        applyStatic(); render();
+    })();
+    </script>
+</body>
+</html>
