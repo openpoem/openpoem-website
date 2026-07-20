@@ -62,21 +62,6 @@
         .wl .note{ font-size:0.8rem; color:var(--muted); margin-top:1rem; }
         .wl .thanks{ color:var(--accent); font-weight:600; font-family:var(--serif); font-size:1.2rem; }
 
-        /* Resonance meter card (mirrors the app) */
-        .reson-card{ max-width:25rem; margin:3rem auto 0; background:var(--ink); border-radius:16px;
-            padding:1.7rem 1.9rem; text-align:left; box-shadow:0 24px 60px rgba(15,37,64,0.22); }
-        .reson-row{ display:flex; align-items:baseline; justify-content:space-between; }
-        .reson-label{ font-size:0.82rem; letter-spacing:0.08em; color:var(--accent); }
-        .reson-val{ font-size:1.6rem; font-weight:700; color:#5fa87a; }
-        .reson-tag{ font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase;
-            color:rgba(255,255,255,0.5); margin-left:0.45rem; }
-        .reson-bar{ position:relative; height:5px; border-radius:980px;
-            background:rgba(255,255,255,0.12); margin-top:1rem; }
-        .reson-fill{ position:absolute; left:0; top:0; height:100%; width:82%;
-            border-radius:980px; background:#5fa87a; }
-        .reson-note{ font-family:var(--serif); font-style:italic; color:rgba(255,255,255,0.66);
-            font-size:1rem; margin-top:1.2rem; line-height:1.45; }
-
         /* Privacy (dark) */
         .priv{ background:var(--ink); }
         .priv h2{ color:#fff; }
@@ -122,17 +107,8 @@
             </div>
         </section>
 
-        <!-- SENTENCE -->
-        <section class="panel alt">
-            <div class="wrap reveal">
-                <h2 data-k="s1H">Any word. Any sentence.</h2>
-                <p class="lead" data-k="s1P">Type a whole sentence. OpenPoem returns what it really means, what it carries, and how it moves.</p>
-                <div class="phone"><div class="frame"><img src="assets/app-sentence.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
-            </div>
-        </section>
-
         <!-- CONVERSATION -->
-        <section class="panel">
+        <section class="panel alt">
             <div class="wrap reveal">
                 <h2 data-k="convH">Now, a conversation.</h2>
                 <p class="lead" data-k="convP">Speak, and OpenPoem reads what sits beneath — what's wanted, what's left unsaid, where the tension is. Recorded and read on your iPhone; nothing leaves it.</p>
@@ -141,27 +117,11 @@
         </section>
 
         <!-- MEETING -->
-        <section class="panel alt">
+        <section class="panel">
             <div class="wrap reveal">
                 <h2 data-k="meetH">Or a whole meeting.</h2>
                 <p class="lead" data-k="meetP">Record a meeting — the screen can lock, it keeps going. Afterwards: what was decided, what to do, and what sat beneath the room. Transcribed on your device.</p>
                 <div class="phone"><div class="frame"><img src="assets/app-meeting.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
-            </div>
-        </section>
-
-        <!-- RESONANCE -->
-        <section class="panel">
-            <div class="wrap reveal">
-                <h2 data-k="resonH">And how strongly it resonates.</h2>
-                <p class="lead" data-k="resonP">Beneath the meaning sits one more thing: whether the words carry weight, feel flat, or come alive.</p>
-                <div class="reson-card">
-                    <div class="reson-row">
-                        <span class="reson-label">resonance</span>
-                        <span><span class="reson-val">82</span><span class="reson-tag" data-k="resonTag">resonant</span></span>
-                    </div>
-                    <div class="reson-bar"><div class="reson-fill"></div></div>
-                    <div class="reson-note" data-k="resonNote">The words have weight. Keep going from there.</div>
-                </div>
             </div>
         </section>
 
@@ -190,16 +150,10 @@
                 heroSub:"The meaning under any word, sentence or conversation. On your iPhone.",
                 wlPh:"your email", wlBtn:"Get notified",
                 wlNote:"Coming to the App Store. No spam, one email.",
-                s1H:"Any word. Any sentence.",
-                s1P:"A whole sentence — what it means, what it carries, and how strongly it lands.",
                 convH:'Now, a <em>conversation</em>.',
                 convP:"Speak, and it reads what's wanted and what's left unsaid. Nothing leaves your iPhone.",
                 meetH:'Or a whole <em>meeting</em>.',
                 meetP:"Record a whole meeting. Afterwards: what was decided — and what sat beneath the room.",
-                resonH:'And how strongly it <em>resonates</em>.',
-                resonP:"Beneath the meaning sits one more thing: whether the words carry weight, feel flat, or come alive.",
-                resonTag:"resonant",
-                resonNote:"The words have weight. Keep going from there.",
                 privH:"It all happens on your iPhone.",
                 privP:"No account. No cloud handoff. Your words stay on your iPhone, even offline.",
                 wlThanks:"Thank you, you're on the list.",
@@ -210,16 +164,10 @@
                 heroSub:"De betekenis onder elk woord, elke zin of gesprek. Op je iPhone.",
                 wlPh:"je e-mail", wlBtn:"Hou me op de hoogte",
                 wlNote:"Komt naar de App Store. Geen spam, één mailtje.",
-                s1H:"Elk woord. Elke zin.",
-                s1P:"Een hele zin — wat hij betekent, wat hij draagt, en hoe sterk hij landt.",
                 convH:'Nu een <em>gesprek</em>.',
                 convP:"Spreek, en het leest wat gewild wordt en wat onuitgesproken blijft. Niets verlaat je iPhone.",
                 meetH:'Of een hele <em>meeting</em>.',
                 meetP:"Neem een hele meeting op. Achteraf: wat besloten is — en wat er onder de tafel lag.",
-                resonH:'En hoe sterk het <em>resoneert</em>.',
-                resonP:"Onder de betekenis zit nog één ding: of de woorden dragen, vlak blijven of tot leven komen.",
-                resonTag:"resonant",
-                resonNote:"Deze woorden dragen iets. Van hieruit kun je verder.",
                 privH:"Alles gebeurt op je iPhone.",
                 privP:"Geen account. Geen cloud-overdracht. Je woorden blijven op je iPhone, ook offline.",
                 wlThanks:"Dank je, je staat op de lijst.",
