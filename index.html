@@ -26,18 +26,21 @@
 
         /* ---- the image as the whole background, with drifting mist ---- */
         .bg{ position:fixed; inset:0; z-index:-4; background:#000 url('assets/tril-bg.png') center 44% / cover no-repeat;
-            filter:brightness(0.62) saturate(1.06);
-            animation:breathe 26s ease-in-out infinite alternate, dim 1.7s ease 1.5s both; }
+            filter:brightness(0.5) saturate(1.06); animation:breathe 26s ease-in-out infinite alternate; }
         @keyframes breathe{ 0%{ transform:scale(1); } 100%{ transform:scale(1.08); } }
-        /* intro: the image opens in full force, then settles into the backdrop */
-        @keyframes dim{ 0%{ filter:brightness(1.14) saturate(1.16); } 100%{ filter:brightness(0.62) saturate(1.06); } }
-        @keyframes veilIn{ 0%{ opacity:0; } 100%{ opacity:1; } }
-        @keyframes introUp{ 0%{ opacity:0; transform:translateY(12px); } 100%{ opacity:1; transform:none; } }
-        .veil{ position:fixed; inset:0; z-index:-3; pointer-events:none; opacity:0;
-            animation:veilIn 1.7s ease 1.5s both;
+        .veil{ position:fixed; inset:0; z-index:-3; pointer-events:none;
             background:
-              linear-gradient(180deg, rgba(6,5,8,0.78) 0%, rgba(6,5,8,0.5) 28%, rgba(6,5,8,0.55) 68%, rgba(6,5,8,0.9) 100%),
-              radial-gradient(100% 74% at 50% 52%, rgba(6,5,8,0.30), rgba(6,5,8,0.74) 100%); }
+              linear-gradient(180deg, rgba(6,5,8,0.72) 0%, rgba(6,5,8,0.48) 28%, rgba(6,5,8,0.55) 68%, rgba(6,5,8,0.9) 100%),
+              radial-gradient(100% 74% at 50% 52%, rgba(6,5,8,0.30), rgba(6,5,8,0.72) 100%); }
+        /* hero: the image in full force at the top, fading into black; text below */
+        .hero{ position:relative; overflow:hidden; justify-content:flex-start; padding:0; }
+        .hero-img{ width:100%; height:62vh; flex:none;
+            background:url('assets/tril-bg.png') center 42% / cover no-repeat; filter:brightness(1.02) saturate(1.12);
+            -webkit-mask-image:linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+            mask-image:linear-gradient(180deg, #000 0%, #000 62%, transparent 100%);
+            animation:heroIn 1.5s ease both; }
+        @keyframes heroIn{ from{ opacity:0; transform:scale(1.04); } to{ opacity:1; transform:none; } }
+        .hero .manifesto{ margin-top:-5vh; padding:0 1.6rem 7vh; position:relative; z-index:1; }
         .mist{ position:fixed; inset:-30%; z-index:-2; pointer-events:none; opacity:0.6; filter:blur(46px);
             background:
               radial-gradient(38% 30% at 28% 36%, rgba(190,192,200,0.10), transparent 60%),
@@ -47,12 +50,7 @@
         @keyframes mist{ 0%{ transform:translate(-4%,-2%) scale(1); } 100%{ transform:translate(5%,3%) scale(1.18); } }
         .mist.two{ z-index:-2; opacity:0.4; animation:mist2 60s ease-in-out infinite alternate; }
         @keyframes mist2{ 0%{ transform:translate(3%,2%) scale(1.1); } 100%{ transform:translate(-5%,-3%) scale(1); } }
-        @media(prefers-reduced-motion:reduce){
-            .bg{ animation:none; filter:brightness(0.62) saturate(1.06); }
-            .mist,.mist.two{ animation:none; }
-            .veil{ animation:none; opacity:1; }
-            main{ animation:none; opacity:1; transform:none; }
-        }
+        @media(prefers-reduced-motion:reduce){ .bg,.mist,.mist.two,.hero-img{ animation:none; } }
 
         /* ---- header ---- */
         header.site{ position:fixed; top:0; left:0; right:0; z-index:20; }
@@ -64,7 +62,7 @@
         .lang button.on{ color:var(--ink); font-weight:700; }
 
         /* ---- screens ---- */
-        main{ position:relative; z-index:1; opacity:0; animation:introUp 1.5s ease 2s both; }
+        main{ position:relative; z-index:1; }
         .screen{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
             text-align:center; padding:6rem 1.6rem; }
         .screen > *{ text-shadow:0 2px 34px rgba(0,0,0,0.85); }
@@ -115,11 +113,14 @@
     </header>
 
     <main>
-        <section class="screen manifesto">
-            <p class="mlead" data-k="m1">I build an iPhone app for the <em>3%</em>.</p>
-            <p class="msub" data-k="m2">Not for the likes. Not for the masses. Just for the few.</p>
-            <p class="maccent" data-k="m3">Those who listen between the words.</p>
-            <div class="cue" data-k="cue">scroll</div>
+        <section class="screen hero">
+            <div class="hero-img"></div>
+            <div class="manifesto">
+                <p class="mlead" data-k="m1">I build an iPhone app for the <em>3%</em>.</p>
+                <p class="msub" data-k="m2">Not for the likes. Not for the masses. Just for the few.</p>
+                <p class="maccent" data-k="m3">Those who listen between the words.</p>
+                <div class="cue" data-k="cue">scroll</div>
+            </div>
         </section>
 
         <section class="screen poem">
