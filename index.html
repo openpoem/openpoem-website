@@ -3,85 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenPoem · Go beneath the word</title>
-    <meta name="description" content="OpenPoem is an iPhone app for reading what sits beneath words, sentences, conversations and meetings. Private and on-device.">
-    <meta property="og:title" content="OpenPoem · go beneath the word">
-    <meta property="og:description" content="An iPhone app that finds the meaning under any word or sentence. Private, on-device, free.">
-    <meta name="theme-color" content="#fbfaf7">
+    <script>document.documentElement.classList.add('js')</script>
+    <title>OpenPoem · For the few who listen between the words</title>
+    <meta name="description" content="An iPhone app for the few. For those who listen between the words. Private, on-device. Test the preflight version.">
+    <meta property="og:title" content="OpenPoem">
+    <meta property="og:description" content="For the few who listen between the words. An iPhone app.">
+    <meta name="theme-color" content="#08070a">
+    <link rel="icon" href="assets/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
     <style>
         :root{
-            --bg:#fbfaf7; --bg-alt:#f1efe9; --ink:#0f2540; --text:#46505f;
-            --muted:#8a8f99; --accent:#b07d2b; --line:#e7e2d8;
+            --ink:#f2efe8; --text:#cbccd2; --muted:#8a8c94; --accent:#d1382b;
             --serif:'Spectral',Georgia,'Times New Roman',serif;
             --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
         }
         *{ margin:0; padding:0; box-sizing:border-box; }
         html{ scroll-behavior:smooth; }
-        body{ background:var(--bg); color:var(--text); font-family:var(--sans);
-            -webkit-font-smoothing:antialiased; line-height:1.55; font-size:17px; overflow-x:hidden; }
-        .wrap{ max-width:60rem; margin:0 auto; padding:0 1.6rem; }
-        h1,h2{ font-family:var(--serif); color:var(--ink); font-weight:500; line-height:1.05; letter-spacing:-0.025em; }
-        em{ font-style:italic; color:var(--accent); }
+        body{ background:#08070a; color:var(--text); font-family:var(--serif);
+            -webkit-font-smoothing:antialiased; line-height:1.6; overflow-x:hidden; }
 
-        /* Header */
-        header.site{ position:sticky; top:0; z-index:30; background:rgba(251,250,247,0.72); backdrop-filter:saturate(180%) blur(16px); }
-        header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:3.4rem; max-width:72rem; }
-        .wordmark{ font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); text-decoration:none; }
-        .wordmark span{ color:var(--accent); }
+        /* ---- the image as the whole background, with drifting mist ---- */
+        .bg{ position:fixed; inset:0; z-index:-4; background:#000 url('assets/tril-bg.png') center 44% / cover no-repeat;
+            filter:brightness(0.62) saturate(1.06); animation:breathe 26s ease-in-out infinite alternate; }
+        @keyframes breathe{ 0%{ transform:scale(1); } 100%{ transform:scale(1.08); } }
+        .veil{ position:fixed; inset:0; z-index:-3; pointer-events:none;
+            background:
+              linear-gradient(180deg, rgba(6,5,8,0.78) 0%, rgba(6,5,8,0.5) 28%, rgba(6,5,8,0.55) 68%, rgba(6,5,8,0.9) 100%),
+              radial-gradient(100% 74% at 50% 52%, rgba(6,5,8,0.30), rgba(6,5,8,0.74) 100%); }
+        .mist{ position:fixed; inset:-30%; z-index:-2; pointer-events:none; opacity:0.6; filter:blur(46px);
+            background:
+              radial-gradient(38% 30% at 28% 36%, rgba(190,192,200,0.10), transparent 60%),
+              radial-gradient(44% 34% at 72% 58%, rgba(150,152,162,0.09), transparent 60%),
+              radial-gradient(52% 42% at 50% 84%, rgba(209,56,43,0.08), transparent 62%);
+            animation:mist 44s ease-in-out infinite alternate; }
+        @keyframes mist{ 0%{ transform:translate(-4%,-2%) scale(1); } 100%{ transform:translate(5%,3%) scale(1.18); } }
+        .mist.two{ z-index:-2; opacity:0.4; animation:mist2 60s ease-in-out infinite alternate; }
+        @keyframes mist2{ 0%{ transform:translate(3%,2%) scale(1.1); } 100%{ transform:translate(-5%,-3%) scale(1); } }
+        @media(prefers-reduced-motion:reduce){ .bg,.mist,.mist.two{ animation:none; } }
+
+        /* ---- header ---- */
+        header.site{ position:fixed; top:0; left:0; right:0; z-index:20; }
+        header.site .wrap{ max-width:72rem; margin:0 auto; padding:1.2rem 1.6rem; display:flex; align-items:center; justify-content:space-between; }
+        .wordmark{ font-family:var(--serif); font-size:1.15rem; font-weight:600; color:var(--ink); text-decoration:none; letter-spacing:0.01em; text-shadow:0 2px 20px rgba(0,0,0,0.8); }
+        .wordmark span{ color:var(--accent); text-shadow:0 0 16px rgba(209,56,43,0.7); }
         .lang{ display:flex; gap:0.1rem; }
-        .lang button{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.04em; color:var(--muted); background:none; border:none; border-radius:6px; padding:0.2rem 0.4rem; cursor:pointer; }
+        .lang button{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.05em; color:var(--muted); background:none; border:none; border-radius:6px; padding:0.2rem 0.4rem; cursor:pointer; text-shadow:0 1px 10px rgba(0,0,0,0.8); }
         .lang button.on{ color:var(--ink); font-weight:700; }
 
-        /* Panels */
-        section{ text-align:center; }
-        .hero{ padding:7rem 0 3rem; }
-        .panel{ padding:7rem 0; }
-        .panel.alt{ background:var(--bg-alt); }
-        .app-icon{ width:74px; height:74px; border-radius:17px; box-shadow:0 12px 30px rgba(15,37,64,0.18); margin-bottom:2rem; }
-        h1{ font-size:clamp(3rem,9vw,5.6rem); margin:0 auto 1.6rem; max-width:13ch; }
-        h2{ font-size:clamp(2.4rem,7vw,4.2rem); margin:0 auto; max-width:15ch; }
-        .sub{ font-family:var(--serif); font-size:clamp(1.25rem,3vw,1.7rem); font-weight:300; color:var(--text); max-width:28rem; margin:0 auto; }
-        .lead{ font-size:clamp(1.2rem,2.6vw,1.5rem); font-weight:300; color:var(--text); max-width:30rem; margin:1.3rem auto 0; line-height:1.5; }
+        /* ---- screens ---- */
+        main{ position:relative; z-index:1; }
+        .screen{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+            text-align:center; padding:6rem 1.6rem; }
+        .screen > *{ text-shadow:0 2px 34px rgba(0,0,0,0.85); }
 
-        /* Phone */
-        .phone{ width:300px; max-width:76vw; margin:3.5rem auto 0; }
-        .phone .frame{ border-radius:42px; border:12px solid var(--ink); background:var(--ink); box-shadow:0 40px 90px rgba(15,37,64,0.26); overflow:hidden; }
-        .phone img{ display:block; width:100%; }
+        .manifesto{ max-width:40rem; margin:0 auto; }
+        .mlead{ font-size:clamp(1.7rem,5vw,3rem); font-weight:400; color:var(--ink); line-height:1.2; letter-spacing:-0.015em; }
+        .mlead em{ font-style:normal; color:var(--accent); text-shadow:0 0 30px rgba(209,56,43,0.65); }
+        .msub{ font-size:clamp(1.15rem,2.8vw,1.55rem); font-weight:300; color:var(--text); margin-top:1.5rem; line-height:1.5; }
+        .maccent{ font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,3.2vw,1.8rem); color:var(--accent); margin-top:1.7rem; text-shadow:0 0 26px rgba(209,56,43,0.4); }
+        .cue{ margin-top:3.5rem; font-family:var(--sans); font-size:0.68rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--muted); }
 
-        /* Waitlist */
-        .wl{ max-width:30rem; margin:2.6rem auto 0; }
-        .wl form{ display:flex; gap:0.6rem; }
-        .wl input{ flex:1; min-width:0; font-family:var(--sans); font-size:1rem; padding:0.95rem 1.2rem; border:1px solid var(--line); border-radius:980px; background:#fff; color:var(--ink); }
-        .wl input::placeholder{ color:var(--muted); }
-        .wl input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(176,125,43,0.12); }
-        .wl button{ font-family:var(--sans); font-size:0.95rem; font-weight:600; color:#fff; background:var(--ink); border:none; border-radius:980px; padding:0 1.7rem; cursor:pointer; white-space:nowrap; }
-        .wl button:hover{ background:#1a3a5c; }
-        .wl .note{ font-size:0.8rem; color:var(--muted); margin-top:1rem; }
-        .wl .thanks{ color:var(--accent); font-weight:600; font-family:var(--serif); font-size:1.2rem; }
+        .poem{ gap:0; }
+        .couplet{ font-size:clamp(1.5rem,4.4vw,2.5rem); font-weight:300; color:var(--ink); line-height:1.35; margin:1.4rem 0; letter-spacing:-0.01em;
+            transition:opacity 1s ease, transform 1s ease; }
+        .js .couplet{ opacity:0; transform:translateY(22px); }
+        .couplet.in{ opacity:1; transform:none; }
+        @media(prefers-reduced-motion:reduce){ .couplet{ opacity:1; transform:none; } }
 
-        /* Privacy (dark) */
-        .priv{ background:var(--ink); }
-        .priv h2{ color:#fff; }
-        .priv .lead{ color:rgba(255,255,255,0.68); }
+        .cta{ }
+        .ctaq{ font-size:clamp(1.4rem,3.4vw,2rem); font-weight:300; color:var(--ink); max-width:24ch; margin:0 auto 2.2rem; line-height:1.4; }
+        .beta-btn{ display:inline-block; font-family:var(--sans); font-size:1rem; font-weight:600; color:#fff;
+            background:linear-gradient(180deg,#e0463a,#b3241a); border-radius:980px; padding:1rem 2.2rem; text-decoration:none;
+            box-shadow:0 0 0 1px rgba(255,130,110,0.25), 0 14px 36px rgba(209,56,43,0.45), 0 0 70px rgba(209,56,43,0.4);
+            transition:box-shadow .18s ease, transform .18s ease; }
+        .beta-btn:hover{ transform:translateY(-1px); box-shadow:0 0 0 1px rgba(255,150,130,0.4), 0 16px 46px rgba(209,56,43,0.6), 0 0 100px rgba(209,56,43,0.55); }
+        .ctanote{ font-family:var(--sans); font-size:0.82rem; color:var(--muted); margin-top:1.1rem; letter-spacing:0.02em; }
 
-        /* Reveal */
-        .reveal{ opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
-        .reveal.in{ opacity:1; transform:none; }
-        @media(prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
-
-        /* Footer */
-        footer{ background:var(--ink); color:rgba(255,255,255,0.6); padding:2.6rem 0; }
-        footer .wrap{ display:flex; flex-wrap:wrap; gap:1rem 1.6rem; justify-content:space-between; align-items:center; max-width:72rem; }
-        footer .fw{ font-family:var(--serif); color:#fff; font-weight:600; font-size:1.05rem; }
-        footer a{ color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.85rem; }
-        footer a:hover{ color:#fff; }
-        footer .rights{ width:100%; border-top:1px solid rgba(255,255,255,0.12); padding-top:1.2rem; margin-top:0.4rem; font-size:0.74rem; color:rgba(255,255,255,0.4); }
+        footer{ position:relative; z-index:1; text-align:center; padding:2.4rem 1.6rem 3rem; }
+        footer .fw{ font-family:var(--serif); color:var(--ink); font-weight:600; font-size:1rem; }
+        footer .fw span{ color:var(--accent); }
+        footer .row{ margin-top:0.7rem; display:flex; gap:1.4rem; justify-content:center; flex-wrap:wrap; }
+        footer a{ font-family:var(--sans); color:var(--muted); text-decoration:none; font-size:0.82rem; }
+        footer a:hover{ color:var(--ink); }
+        footer .rights{ font-family:var(--sans); margin-top:1rem; font-size:0.72rem; color:rgba(255,255,255,0.32); }
     </style>
 </head>
 <body>
+    <div class="bg"></div>
+    <div class="veil"></div>
+    <div class="mist"></div>
+    <div class="mist two"></div>
+
     <header class="site">
         <div class="wrap">
             <a class="wordmark" href="/">OpenPoem<span>®</span></a>
@@ -90,127 +104,104 @@
     </header>
 
     <main>
-        <!-- HERO -->
-        <section class="hero">
-            <div class="wrap">
-                <img class="app-icon" src="assets/app-icon.png" alt="OpenPoem" width="74" height="74">
-                <h1 data-k="heroH">Go beneath the <em>word</em>.</h1>
-                <p class="sub" data-k="heroSub">The meaning under any word, sentence or conversation. On your iPhone.</p>
-                <div class="wl">
-                    <form class="wl-form" autocomplete="on">
-                        <input type="email" name="email" required spellcheck="false" data-kph="wlPh" placeholder="your email" aria-label="email">
-                        <button type="submit" data-k="wlBtn">Get notified</button>
-                    </form>
-                    <div class="note" data-k="wlNote">Coming to the App Store. No spam, one email.</div>
-                </div>
-                <div class="phone reveal"><div class="frame"><img src="assets/app-word.png" alt="OpenPoem" width="300" height="652"></div></div>
-            </div>
+        <section class="screen manifesto">
+            <p class="mlead" data-k="m1">I build an iPhone app for the <em>3%</em>.</p>
+            <p class="msub" data-k="m2">Not for the likes. Not for the masses. Just for the few.</p>
+            <p class="maccent" data-k="m3">Those who listen between the words.</p>
+            <div class="cue" data-k="cue">scroll</div>
         </section>
 
-        <!-- CONVERSATION -->
-        <section class="panel alt">
-            <div class="wrap reveal">
-                <h2 data-k="convH">Now, a conversation.</h2>
-                <p class="lead" data-k="convP">Speak, and OpenPoem reads what sits beneath — what's wanted, what's left unsaid, where the tension is. Recorded and read on your iPhone; nothing leaves it.</p>
-                <div class="phone"><div class="frame"><img src="assets/app-conversation.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
-            </div>
+        <section class="screen poem">
+            <p class="couplet reveal" data-k="p1">For those that speak<br>without words</p>
+            <p class="couplet reveal" data-k="p2">For those that know<br>silence kills</p>
+            <p class="couplet reveal" data-k="p3">For those that look<br>where it's dark</p>
+            <p class="couplet reveal" data-k="p4">For those that cry<br>in the rain</p>
+            <p class="couplet reveal" data-k="p5">For those that breathe<br>until it is done</p>
         </section>
 
-        <!-- MEETING -->
-        <section class="panel">
-            <div class="wrap reveal">
-                <h2 data-k="meetH">Or a whole meeting.</h2>
-                <p class="lead" data-k="meetP">Record a meeting — the screen can lock, it keeps going. Afterwards: what was decided, what to do, and what sat beneath the room. Transcribed on your device.</p>
-                <div class="phone"><div class="frame"><img src="assets/app-meeting.png" alt="OpenPoem" loading="lazy" width="300" height="652"></div></div>
-            </div>
-        </section>
-
-        <!-- PRIVACY -->
-        <section class="panel priv">
-            <div class="wrap reveal">
-                <h2 data-k="privH">It all happens on your iPhone.</h2>
-                <p class="lead" data-k="privP">No account. No cloud handoff. Your words stay on your iPhone, even offline.</p>
-            </div>
+        <section class="screen cta">
+            <p class="ctaq" data-k="ctaQ">Want to test the preflight Apple version?</p>
+            <a class="beta-btn" href="#">Request beta access</a>
+            <p class="ctanote" data-k="ctaNote">iPhone 15 Pro or newer · preflight beta</p>
         </section>
     </main>
 
     <footer>
-        <div class="wrap">
-            <div class="fw">OpenPoem<span style="color:var(--accent)">®</span></div>
-            <a href="/build/" data-k="footBuild">For organisations →</a>
+        <div class="fw">OpenPoem<span>®</span></div>
+        <div class="row">
             <a href="mailto:info@openpoem.org">info@openpoem.org</a>
-            <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
+            <a href="/build/" data-k="footBuild">For organisations</a>
         </div>
+        <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
     </footer>
 
     <script>
     (function(){
         const T={
             en:{
-                heroH:'Go beneath the <em>word</em>.',
-                heroSub:"The meaning under any word, sentence or conversation. On your iPhone.",
-                wlPh:"your email", wlBtn:"Get notified",
-                wlNote:"Coming to the App Store. No spam, one email.",
-                convH:'Now, a <em>conversation</em>.',
-                convP:"Speak, and it reads what's wanted and what's left unsaid. Nothing leaves your iPhone.",
-                meetH:'Or a whole <em>meeting</em>.',
-                meetP:"Record a whole meeting. Afterwards: what was decided — and what sat beneath the room.",
-                privH:"It all happens on your iPhone.",
-                privP:"No account. No cloud handoff. Your words stay on your iPhone, even offline.",
-                wlThanks:"Thank you, you're on the list.",
-                footBuild:"For organisations →",
+                m1:'I build an iPhone app for the <em>3%</em>.',
+                m2:"Not for the likes. Not for the masses. Just for the few.",
+                m3:"Those who listen between the words.",
+                cue:"scroll",
+                p1:"For those that speak<br>without words",
+                p2:"For those that know<br>silence kills",
+                p3:"For those that look<br>where it's dark",
+                p4:"For those that cry<br>in the rain",
+                p5:"For those that breathe<br>until it is done",
+                ctaQ:"Want to test the preflight Apple version?",
+                ctaNote:"iPhone 15 Pro or newer · preflight beta",
+                betaBtn:"Test on TestFlight", betaAsk:"Request beta access",
+                footBuild:"For organisations",
                 footRights:"© OpenPoem. OpenPoem® is a registered trademark in the Benelux."
             },
             nl:{
-                heroH:'Ga onder het <em>woord</em>.',
-                heroSub:"De betekenis onder elk woord, elke zin of gesprek. Op je iPhone.",
-                wlPh:"je e-mail", wlBtn:"Hou me op de hoogte",
-                wlNote:"Komt naar de App Store. Geen spam, één mailtje.",
-                convH:'Nu een <em>gesprek</em>.',
-                convP:"Spreek, en het leest wat gewild wordt en wat onuitgesproken blijft. Niets verlaat je iPhone.",
-                meetH:'Of een hele <em>meeting</em>.',
-                meetP:"Neem een hele meeting op. Achteraf: wat besloten is — en wat er onder de tafel lag.",
-                privH:"Alles gebeurt op je iPhone.",
-                privP:"Geen account. Geen cloud-overdracht. Je woorden blijven op je iPhone, ook offline.",
-                wlThanks:"Dank je, je staat op de lijst.",
-                footBuild:"Voor organisaties →",
+                m1:'Ik bouw een iPhone-app voor de <em>3%</em>.',
+                m2:"Niet voor de likes. Niet voor de massa. Alleen voor de weinigen.",
+                m3:"Zij die tussen de woorden luisteren.",
+                cue:"scroll",
+                p1:"Voor wie spreekt<br>zonder woorden",
+                p2:"Voor wie weet<br>dat stilte doodt",
+                p3:"Voor wie kijkt<br>waar het donker is",
+                p4:"Voor wie huilt<br>in de regen",
+                p5:"Voor wie ademt<br>tot het klaar is",
+                ctaQ:"Wil je de preflight-versie voor Apple testen?",
+                ctaNote:"iPhone 15 Pro of nieuwer · preflight-beta",
+                betaBtn:"Test op TestFlight", betaAsk:"Vraag beta-toegang",
+                footBuild:"Voor organisaties",
                 footRights:"© OpenPoem. OpenPoem® is een geregistreerd handelsmerk in de Benelux."
             }
         };
         let lang=localStorage.getItem('lang');
         if(lang!=='nl'&&lang!=='en'){ lang=(navigator.language||'').toLowerCase().indexOf('nl')===0?'nl':'en'; }
+
+        // TestFlight preflight. Paste Apple's join code below when it arrives and
+        // the button becomes the direct door; until then it captures testers by
+        // email — your inbox is the waitlist.
+        const TESTFLIGHT="https://testflight.apple.com/join/REPLACE";
+        function wireBeta(){
+            const d=T[lang]||T.en, pending=TESTFLIGHT.indexOf('REPLACE')>=0;
+            document.querySelectorAll('.beta-btn').forEach(function(a){
+                a.href = pending
+                    ? 'mailto:info@openpoem.org?subject='+encodeURIComponent('OpenPoem preflight beta')+'&body='+encodeURIComponent('I would like to test the OpenPoem preflight version.')
+                    : TESTFLIGHT;
+                a.textContent = pending ? d.betaAsk : d.betaBtn;
+            });
+        }
         function apply(){
             const d=T[lang];
             document.querySelectorAll('[data-k]').forEach(el=>{
                 const k=el.getAttribute('data-k'); if(d[k]==null) return;
                 if(d[k].indexOf('<')>=0) el.innerHTML=d[k]; else el.textContent=d[k];
             });
-            document.querySelectorAll('[data-kph]').forEach(el=>{
-                const k=el.getAttribute('data-kph'); if(d[k]!=null) el.placeholder=d[k];
-            });
             document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));
             document.documentElement.lang=lang;
+            wireBeta();
         }
         document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{lang=b.getAttribute('data-l');localStorage.setItem('lang',lang);apply();}));
 
-        // waitlist: POST to an endpoint if set, else open a prefilled email
-        const ENDPOINT=(window.OPENPOEM_WAITLIST||"").trim();
-        const LIST_EMAIL="waitlist@openpoem.org";
-        document.querySelectorAll('.wl-form').forEach(form=>{
-            form.addEventListener('submit', async e=>{
-                e.preventDefault();
-                const input=form.querySelector('input[type=email]'); const email=(input.value||"").trim();
-                if(!email) return;
-                const done=()=>{ form.outerHTML='<div class="thanks">'+(T[lang]||T.en).wlThanks+'</div>'; };
-                if(ENDPOINT){ try{ await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}); }catch(err){} done(); return; }
-                window.location.href='mailto:'+LIST_EMAIL+'?subject='+encodeURIComponent('OpenPoem waitlist')+'&body='+encodeURIComponent('Please add me to the OpenPoem waitlist: '+email);
-                done();
-            });
-        });
-
-        // reveal on scroll
-        const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.12});
-        document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+        // reveal the poem line by line
+        const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.3});
+        document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i*0.12)+'s'; io.observe(el); });
 
         apply();
     })();
