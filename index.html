@@ -72,6 +72,7 @@
         .mlead em{ font-style:normal; color:var(--accent); text-shadow:0 0 30px rgba(209,56,43,0.65); }
         .msub{ font-size:clamp(1.15rem,2.8vw,1.55rem); font-weight:300; color:var(--text); margin-top:1.5rem; line-height:1.5; }
         .maccent{ font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,3.2vw,1.8rem); color:var(--accent); margin-top:1.7rem; text-shadow:0 0 26px rgba(209,56,43,0.4); }
+        .mwhy{ font-family:var(--serif); font-style:italic; font-size:clamp(1.02rem,2.5vw,1.42rem); color:var(--ink); opacity:0.82; margin-top:0.5rem; }
         .cue{ margin-top:3.5rem; font-family:var(--sans); font-size:0.68rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--muted); }
 
         .poem{ gap:0; }
@@ -96,6 +97,18 @@
         footer .row{ margin-top:0.7rem; display:flex; gap:1.4rem; justify-content:center; flex-wrap:wrap; }
         footer a{ font-family:var(--sans); color:var(--muted); text-decoration:none; font-size:0.82rem; }
         footer a:hover{ color:var(--ink); }
+        .vsx{ display:inline-flex; align-items:center; gap:0.6rem; margin-top:1.3rem;
+            font-family:var(--sans); font-size:0.82rem; letter-spacing:0.01em; color:var(--text);
+            text-decoration:none; padding:0.55rem 1.05rem; border-radius:980px;
+            border:1px solid rgba(209,56,43,0.3); background:rgba(209,56,43,0.05);
+            transition:color .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease, transform .22s ease; }
+        .vsx:hover{ color:var(--ink); border-color:rgba(209,56,43,0.7); background:rgba(209,56,43,0.12);
+            box-shadow:0 8px 24px rgba(209,56,43,0.22), 0 0 46px rgba(209,56,43,0.16); transform:translateY(-1px); }
+        .vsx b{ color:var(--ink); font-weight:600; }
+        .vsx .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); flex:none;
+            box-shadow:0 0 10px rgba(209,56,43,0.9); animation:vsxpulse 2.4s ease-in-out infinite; }
+        @keyframes vsxpulse{ 0%,100%{ opacity:0.5; transform:scale(0.82); } 50%{ opacity:1; transform:scale(1.18); box-shadow:0 0 16px rgba(209,56,43,1); } }
+        @media(prefers-reduced-motion:reduce){ .vsx .dot{ animation:none; } }
         footer .rights{ font-family:var(--sans); margin-top:1rem; font-size:0.72rem; color:rgba(255,255,255,0.32); }
     </style>
 </head>
@@ -118,6 +131,7 @@
                 <p class="mlead" data-k="m1">I build an iPhone app for the <em>3%</em>.</p>
                 <p class="msub" data-k="m2">Not for the likes. Not for the masses. Just for the few.</p>
                 <p class="maccent" data-k="m3">Those who listen between the words.</p>
+                <p class="mwhy" data-k="m4">To find the truth behind words.</p>
                 <div class="cue" data-k="cue">scroll</div>
             </div>
         </section>
@@ -143,6 +157,10 @@
             <a href="mailto:info@openpoem.org">info@openpoem.org</a>
             <a href="/build/" data-k="footBuild">For organisations</a>
         </div>
+        <a class="vsx" href="https://marketplace.visualstudio.com/items?itemName=openpoem.openpoem-night" target="_blank" rel="noopener">
+            <span class="dot"></span>
+            <span>The theme I write in — <b>OpenPoem Night</b> for VS&nbsp;Code</span>
+        </a>
         <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
     </footer>
 
@@ -153,6 +171,7 @@
                 m1:'I build an iPhone app for the <em>3%</em>.',
                 m2:"Not for the likes. Not for the masses. Just for the few.",
                 m3:"Those who listen between the words.",
+                m4:"To find the truth behind words.",
                 cue:"scroll",
                 p1:"For those that speak<br>without words",
                 p2:"For those that know<br>silence kills",
