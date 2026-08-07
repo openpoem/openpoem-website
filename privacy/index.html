@@ -92,15 +92,38 @@
         <h2>Verification, and why</h2>
         <p>Free readings run on our own API key, so the app asks Apple to confirm that the request comes from a real iPhone running OpenPoem (DeviceCheck). It proves the device, not you: no identity is involved, and nothing about you is sent to Apple.</p>
 
+        <h2>Why we are allowed to do this</h2>
+        <p>Two grounds under the GDPR, and no consent banner, because consent is not the right instrument here:</p>
+        <ul>
+            <li><strong>To do what you asked</strong> (Art. 6(1)(b)): sending your text to be read is the service itself — you press Read, it goes.</li>
+            <li><strong>A legitimate interest</strong> (Art. 6(1)(f)) in keeping the free tier alive: the anonymous device id, the daily counts, the device verification and the hashed IP on a refused request exist to stop one script draining what is meant for many. Nothing about it profiles you, and none of it is used for anything else.</li>
+        </ul>
+        <p>The transfer to Anthropic in the United States rests on the safeguards in Anthropic's data processing agreement, including the European Commission's standard contractual clauses. See <a href="https://privacy.anthropic.com/">their privacy centre</a> for what they do with API data.</p>
+
+        <h2>How long we keep it</h2>
+        <ul>
+            <li><strong>Your text and its reading: never.</strong> Not for a minute — there is no column in our database that could hold them.</li>
+            <li><strong>Daily counts</strong> (which device read how often): deleted after 30 days.</li>
+            <li><strong>Refused requests</strong> (reason, hashed IP): deleted after 90 days.</li>
+            <li><strong>A device record</strong>: deleted after a year without a reading.</li>
+        </ul>
+        <p>This runs by itself, every night — it is a job in the database, not a good intention.</p>
+
         <h2>Your choices</h2>
         <ul>
-            <li>Delete any transcript or reading in the app; deleting the app removes everything on the device.</li>
-            <li>Bring your own Anthropic key and the free tier is bypassed entirely — your readings then go straight from your phone to Anthropic, billed to you.</li>
-            <li>Write to <a href="mailto:info@openpoem.org">info@openpoem.org</a> to ask what is held under your device identifier, or to have it erased.</li>
+            <li><strong>Erase everything</strong> — Settings → privacy &amp; ai. One tap deletes every transcript and reading on the phone, your key, and the rows we hold on the server. There is no way back, and no copy elsewhere.</li>
+            <li><strong>Forget this device</strong> — a new anonymous id starts and the counts we hold stop pointing at this phone.</li>
+            <li>Delete a single transcript in the app, or delete the app to remove everything on the device.</li>
+            <li>Bring your own Anthropic key and the free tier is bypassed entirely — readings then go straight from your phone to Anthropic, billed to you.</li>
+            <li>Write to <a href="mailto:info@openpoem.org">info@openpoem.org</a> to ask what is held under your device identifier, to have it corrected, or to object to the processing above. We answer within a month.</li>
+            <li>Unhappy with how we handle it? You can complain to the Dutch data protection authority, the <a href="https://autoriteitpersoonsgegevens.nl/">Autoriteit Persoonsgegevens</a>, or to the authority where you live.</li>
         </ul>
 
         <h2>Children</h2>
         <p>OpenPoem is not made for children and is not directed at them.</p>
+
+        <h2>Who is responsible</h2>
+        <p>OpenPoem, <span style="color:var(--muted)">[legal entity, address and Chamber of Commerce number]</span>, is the controller for the processing described here. Contact: <a href="mailto:info@openpoem.org">info@openpoem.org</a>.</p>
 
         <p class="updated">Last updated 7 August 2026. OpenPoem® is a registered trademark in the Benelux. Questions: <a href="mailto:info@openpoem.org">info@openpoem.org</a>.</p>
     </main>
