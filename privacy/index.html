@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenPoem · Privacy &amp; AI</title>
+    <meta name="description" content="What OpenPoem sends, what it keeps, and which AI reads your words.">
+    <meta name="theme-color" content="#0a090c">
+    <link rel="icon" href="../assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --bg:#0a090c; --card:#151318; --ink:#f2efe8; --text:#cbccd2;
+            --muted:#abadb5; --accent:#d1382b; --line:#2a2830;
+            --serif:'Spectral',Georgia,'Times New Roman',serif;
+            --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+        }
+        *{ margin:0; padding:0; box-sizing:border-box; }
+        body{ background:var(--bg); color:var(--text); font-family:var(--sans);
+            -webkit-font-smoothing:antialiased; line-height:1.65; font-size:17px; }
+        ::selection{ background:rgba(209,56,43,0.35); color:var(--ink); }
+        .wrap{ max-width:44rem; margin:0 auto; padding:0 clamp(1rem,4vw,1.6rem); }
+        header.site{ border-bottom:1px solid var(--line); }
+        header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:3.4rem; }
+        .wordmark{ font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); text-decoration:none; }
+        .wordmark span{ color:var(--accent); }
+        .tag{ font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); }
+        h1{ font-family:var(--serif); color:var(--ink); font-weight:500; letter-spacing:-0.02em;
+            font-size:clamp(2rem,5vw,2.8rem); line-height:1.15; margin:clamp(2.5rem,6vw,3.5rem) 0 0.6rem; }
+        .lede{ font-size:1.15rem; color:var(--ink); margin-bottom:2.5rem; }
+        h2{ font-family:var(--serif); color:var(--ink); font-weight:500; font-size:1.45rem;
+            margin:2.6rem 0 0.7rem; }
+        p{ margin-bottom:1rem; }
+        ul{ margin:0 0 1rem 1.2rem; } li{ margin-bottom:0.4rem; }
+        strong{ color:var(--ink); font-weight:600; }
+        a{ color:var(--accent); }
+        .box{ background:var(--card); border:1px solid var(--line); border-radius:14px;
+            padding:1.3rem 1.4rem; margin:1.6rem 0; }
+        .box p:last-child{ margin-bottom:0; }
+        .updated{ font-size:0.85rem; color:var(--muted); margin-top:3rem; }
+        footer{ border-top:1px solid var(--line); margin-top:3rem; padding:2rem 0; }
+        footer .wrap{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; }
+        footer .fw{ font-family:var(--serif); color:var(--ink); font-weight:600; }
+        footer .fw span{ color:var(--accent); }
+        footer a{ font-size:0.9rem; color:var(--text); text-decoration:none; }
+        footer a:hover{ color:var(--ink); }
+    </style>
+</head>
+<body>
+    <header class="site">
+        <div class="wrap">
+            <a class="wordmark" href="/">OpenPoem<span>®</span></a>
+            <span class="tag">Privacy &amp; AI</span>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <h1>What we send, and what we keep.</h1>
+        <p class="lede">OpenPoem reads what lives between the words. To do that, the text you give it has to be read — and you should know by whom, where, and what is left behind afterwards.</p>
+
+        <div class="box">
+            <p><strong>In one paragraph.</strong> The text you ask OpenPoem to read travels to Anthropic in the United States, where Claude reads it and sends back a reading. We keep none of it: not the text, not the reading. Recording and transcription never leave your iPhone at all. What we do keep is a count — an anonymous device identifier and how many readings it asked for — so five a day can be free without being drained by a script.</p>
+        </div>
+
+        <h2>Which AI reads, and where</h2>
+        <p>OpenPoem is built on <strong>Claude</strong>, a model made by <strong>Anthropic</strong>, and every reading is written by it. Anthropic's servers are in the United States, so your text crosses the Atlantic over an encrypted connection and is processed there under <a href="https://www.anthropic.com/legal/commercial-terms">Anthropic's API terms</a> and <a href="https://privacy.anthropic.com/">privacy policy</a>. Their retention and handling are theirs, not ours; we link rather than paraphrase, because we cannot promise on their behalf.</p>
+        <p>Everything the app writes is written by an AI. The reading, the advice, the moves it names, the answers in <em>keep thinking</em> — all of it. It is a reading, not a fact, and it can be wrong.</p>
+
+        <h2>What stays on your iPhone</h2>
+        <ul>
+            <li><strong>Recordings and transcription.</strong> Speech is turned into text by Apple's on-device engine. The audio never leaves the phone; only the text you choose to have read does.</li>
+            <li><strong>Your library.</strong> Transcripts and their readings live in the app on your device, and in your own encrypted device backup if you make one. Delete an item and it is gone — there is no copy elsewhere.</li>
+            <li><strong>Your own API key</strong>, if you add one, is stored in the iPhone Keychain and sent only to Anthropic.</li>
+        </ul>
+
+        <h2>What we keep on our side</h2>
+        <p>Only what is needed to give away five readings a day without being abused, and to see when someone tries:</p>
+        <ul>
+            <li>an <strong>anonymous device identifier</strong> generated on your phone (no name, no email, no account);</li>
+            <li>Apple's <strong>vendor identifier</strong> for this app on this device;</li>
+            <li><strong>counts and timestamps</strong>: how many readings, first and last use;</li>
+            <li>for refused requests: the reason and a <strong>hashed</strong> IP address — never the address itself.</li>
+        </ul>
+        <p><strong>No text is ever stored.</strong> Not the text you send, not the reading that comes back, not in a database and not in a log. The tables have no column for it.</p>
+
+        <h2>Who reads what, and about whom</h2>
+        <p>A reading is always about the <strong>text</strong>, never about a person. The app names what a text does — where it points, where it judges, which rhetorical moves it makes, what runs under it — and it is instructed, in every request, never to diagnose, score or judge the human being who wrote it. Marks of evasion are marks in language; they are not proof that anyone lied.</p>
+        <p>If you paste something written by someone else, you are responsible for what you share. For private use that is ordinary and fine. If you use OpenPoem at work — on colleagues, candidates or clients — you take on the obligations that come with it, and OpenPoem may not be used to assess, select or monitor people.</p>
+
+        <h2>Verification, and why</h2>
+        <p>Free readings run on our own API key, so the app asks Apple to confirm that the request comes from a real iPhone running OpenPoem (DeviceCheck). It proves the device, not you: no identity is involved, and nothing about you is sent to Apple.</p>
+
+        <h2>Your choices</h2>
+        <ul>
+            <li>Delete any transcript or reading in the app; deleting the app removes everything on the device.</li>
+            <li>Bring your own Anthropic key and the free tier is bypassed entirely — your readings then go straight from your phone to Anthropic, billed to you.</li>
+            <li>Write to <a href="mailto:info@openpoem.org">info@openpoem.org</a> to ask what is held under your device identifier, or to have it erased.</li>
+        </ul>
+
+        <h2>Children</h2>
+        <p>OpenPoem is not made for children and is not directed at them.</p>
+
+        <p class="updated">Last updated 7 August 2026. OpenPoem® is a registered trademark in the Benelux. Questions: <a href="mailto:info@openpoem.org">info@openpoem.org</a>.</p>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div class="fw">OpenPoem<span>®</span></div>
+            <a href="/">Back to the app</a>
+        </div>
+    </footer>
+</body>
+</html>
