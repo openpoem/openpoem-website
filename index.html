@@ -123,6 +123,12 @@
         footer .fw{ font-family:var(--serif); color:var(--ink); font-weight:600; font-size:1rem; }
         footer .fw span{ color:var(--accent); }
         footer .row{ margin-top:0.7rem; display:flex; gap:1.4rem; justify-content:center; flex-wrap:wrap; }
+        footer .mark{ max-width:34rem; margin:0 auto 2.3rem; padding-bottom:2rem; border-bottom:1px solid rgba(255,255,255,0.08); text-align:center; }
+        .mark-eyebrow{ font-family:var(--sans); font-size:0.68rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); margin-bottom:1.1rem; }
+        .mark-line{ font-family:var(--serif); font-size:0.92rem; line-height:1.55; color:var(--muted); margin:0.55rem 0; }
+        .mark-line b{ color:var(--ink); font-weight:600; }
+        .mark-line em{ font-style:italic; color:var(--text); }
+        .mark-close{ font-family:var(--serif); font-style:italic; font-size:1.05rem; color:var(--accent); margin-top:1.2rem; text-shadow:0 0 22px rgba(209,56,43,0.35); }
         footer a{ font-family:var(--sans); color:var(--muted); text-decoration:none; font-size:0.82rem; }
         footer a:hover{ color:var(--ink); }
         .vsx{ display:inline-flex; align-items:center; gap:0.6rem; margin-top:1.3rem;
@@ -199,6 +205,13 @@
     </main>
 
     <footer>
+        <div class="mark">
+            <p class="mark-eyebrow">The mark</p>
+            <p class="mark-line"><b>Apple</b> — the word. Before the apple, a word pointed at the thing; after it, at good and evil. The name stepped in front of what it named.</p>
+            <p class="mark-line"><b>Snake</b> — older than the name. It coils the fruit because meaning was here first, and still knows the way back to before.</p>
+            <p class="mark-line"><b>Pulse</b> — the frequency beneath the words: the heartbeat under every symbol. Listen there, between the words, and you hear what was meant.</p>
+            <p class="mark-close">The word is not the thing.</p>
+        </div>
         <div class="fw">OpenPoem<span>®</span></div>
         <div class="row">
             <a href="mailto:info@openpoem.org">info@openpoem.org</a>
