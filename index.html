@@ -67,6 +67,9 @@
         header.site .wrap{ max-width:72rem; margin:0 auto; padding:1.2rem 1.6rem; display:flex; align-items:center; justify-content:space-between; }
         .wordmark{ font-family:var(--serif); font-size:1.15rem; font-weight:600; color:var(--ink); text-decoration:none; letter-spacing:0.01em; text-shadow:0 2px 20px rgba(0,0,0,0.8); }
         .wordmark span{ color:var(--accent); text-shadow:0 0 16px rgba(209,56,43,0.7); }
+        .langsel{ font-family:var(--sans); font-size:0.8rem; color:var(--text); background:rgba(20,18,24,0.55); border:1px solid #2a2830; border-radius:8px; padding:0.32rem 0.55rem; cursor:pointer; -webkit-appearance:none; appearance:none; text-shadow:0 1px 10px rgba(0,0,0,0.8); }
+        .langsel:focus{ outline:none; border-color:var(--accent); }
+        .langsel option{ background:#151318; color:var(--text); }
         .lang{ display:flex; gap:0.1rem; }
         .lang button{ font-family:var(--sans); font-size:0.72rem; letter-spacing:0.05em; color:var(--muted); background:none; border:none; border-radius:6px; padding:0.2rem 0.4rem; cursor:pointer; text-shadow:0 1px 10px rgba(0,0,0,0.8); }
         .lang button.on{ color:var(--ink); font-weight:700; }
@@ -155,6 +158,7 @@
     <header class="site">
         <div class="wrap">
             <a class="wordmark" href="/">OpenPoem<span>®</span></a>
+            <select class="langsel" aria-label="Language"></select>
         </div>
     </header>
 
@@ -184,15 +188,15 @@
                     <img src="assets/app-home.png" alt="OpenPoem on iPhone — read what sits beneath the words" loading="lazy">
                 </div>
                 <div class="prod-copy">
-                    <p class="prod-eyebrow">The app</p>
-                    <h2 class="prod-head">Give it language.<br>Read what is underneath.</h2>
-                    <p class="prod-line">Paste a message, a page, a whole meeting — or speak it — and read what is wanted, what stays unsaid, where the tension sits, and the way back to before.</p>
+                    <p class="prod-eyebrow" data-k="prodEyebrow">The app</p>
+                    <h2 class="prod-head" data-k="prodHead">Give it language.<br>Read what is underneath.</h2>
+                    <p class="prod-line" data-k="prodLine">Paste a message, a page, a whole meeting — or speak it — and read what is wanted, what stays unsaid, where the tension sits, and the way back to before.</p>
                     <ul class="prod-points">
-                        <li>Read by Claude · we keep no text</li>
-                        <li>Recording &amp; transcription stay on your iPhone</li>
-                        <li>Five readings a day, free</li>
+                        <li data-k="prodP1">Read by Claude · we keep no text</li>
+                        <li data-k="prodP2">Recording &amp; transcription stay on your iPhone</li>
+                        <li data-k="prodP3">Five readings a day, free</li>
                     </ul>
-                    <p class="prod-fine"><a href="/privacy/">How it works with your words &rarr;</a></p>
+                    <p class="prod-fine"><a href="/privacy/" data-k="prodFine">How it works with your words &rarr;</a></p>
                 </div>
             </div>
         </section>
@@ -206,52 +210,369 @@
 
     <footer>
         <div class="mark">
-            <p class="mark-eyebrow">The Brand</p>
-            <p class="mark-line"><b>Apple</b> — the word. Before the apple, a word pointed at the thing; after it, at good and evil. The name stepped in front of what it named.</p>
-            <p class="mark-line"><b>Snake</b> — older than the name. It coils the fruit because meaning was here first, and still knows the way back to before.</p>
-            <p class="mark-line"><b>Pulse</b> — the frequency beneath the words: the heartbeat under every symbol. Listen there, between the words, and you hear what was meant.</p>
-            <p class="mark-close">The word is not the thing.</p>
+            <p class="mark-eyebrow" data-k="brandEyebrow">The Brand</p>
+            <p class="mark-line" data-k="brandApple"><b>Apple</b> — the word. Before the apple, a word pointed at the thing; after it, at good and evil. The name stepped in front of what it named.</p>
+            <p class="mark-line" data-k="brandSnake"><b>Snake</b> — older than the name. It coils the fruit because meaning was here first, and still knows the way back to before.</p>
+            <p class="mark-line" data-k="brandPulse"><b>Pulse</b> — the frequency beneath the words: the heartbeat under every symbol. Listen there, between the words, and you hear what was meant.</p>
+            <p class="mark-close" data-k="brandClose">The word is not the thing.</p>
         </div>
         <div class="fw">OpenPoem<span>®</span></div>
         <div class="row">
             <a href="mailto:info@openpoem.org">info@openpoem.org</a>
-            <a href="/privacy/">Privacy &amp; AI</a>
-            <a href="/terms/">Terms</a>
+            <a href="/privacy/" data-k="footPrivacy">Privacy &amp; AI</a>
+            <a href="/terms/" data-k="footTerms">Terms</a>
             <a href="/build/" data-k="footBuild">For organisations</a>
         </div>
         <a class="vsx" href="https://marketplace.visualstudio.com/items?itemName=openpoem.openpoem-night" target="_blank" rel="noopener">
             <span class="dot"></span>
-            <span>The theme I write in — <b>OpenPoem Night</b> for VS&nbsp;Code</span>
+            <span data-k="vsx">The theme I write in — <b>OpenPoem Night</b> for VS&nbsp;Code</span>
         </a>
         <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
     </footer>
 
     <script>
     (function(){
-        const T={
-            en:{
-                m1:'I build an iPhone app for the <em>3%</em>.',
-                m2:"Not for the likes. Not for the masses. Just for the few.",
-                m3:"Those who listen between the words.",
-                m4:"To find the truth behind words.",
-                cue:"scroll",
-                p1:"For those that speak<br>without words",
-                p2:"For those that know<br>silence kills",
-                p3:"For those that see<br>where it's dark",
-                p4:"For those that cry<br>in the rain",
-                p5:"For those that breathe<br>until it is done",
-                ctaQ:"Want to test the preflight Apple version?",
-                ctaNote:"iPhone 15 Pro or newer · preflight beta",
-                betaBtn:"Test on TestFlight", betaAsk:"Request beta access",
-                footBuild:"For organisations",
-                footRights:"© OpenPoem. OpenPoem® is a registered trademark in the Benelux."
-            }
-        };
-        var lang='en';
-
-        // TestFlight preflight. Paste Apple's join code below when it arrives and
-        // the button becomes the direct door; until then it captures testers by
-        // email — your inbox is the waitlist.
+        const T = {
+        "en": {
+                "m1": "I build an iPhone app for the <em>3%</em>.",
+                "m2": "Not for the likes. Not for the masses. Just for the few.",
+                "m3": "Those who listen between the words.",
+                "m4": "To find the truth behind words.",
+                "cue": "scroll",
+                "p1": "For those that speak<br>without words",
+                "p2": "For those that know<br>silence kills",
+                "p3": "For those that see<br>where it's dark",
+                "p4": "For those that cry<br>in the rain",
+                "p5": "For those that breathe<br>until it is done",
+                "prodEyebrow": "The app",
+                "prodHead": "Give it language.<br>Read what is underneath.",
+                "prodLine": "Paste a message, a page, a whole meeting — or speak it — and read what is wanted, what stays unsaid, where the tension sits, and the way back to before.",
+                "prodP1": "Read by Claude · we keep no text",
+                "prodP2": "Recording & transcription stay on your iPhone",
+                "prodP3": "Five readings a day, free",
+                "prodFine": "How it works with your words →",
+                "ctaQ": "Want to test the preflight Apple version?",
+                "ctaNote": "iPhone 15 Pro or newer · preflight beta",
+                "betaAsk": "Request beta access",
+                "betaBtn": "Test on TestFlight",
+                "brandEyebrow": "The Brand",
+                "brandApple": "<b>Apple</b> — the word. Before the apple, a word pointed at the thing; after it, at good and evil. The name stepped in front of what it named.",
+                "brandSnake": "<b>Snake</b> — older than the name. It coils the fruit because meaning was here first, and still knows the way back to before.",
+                "brandPulse": "<b>Pulse</b> — the frequency beneath the words: the heartbeat under every symbol. Listen there, between the words, and you hear what was meant.",
+                "brandClose": "The word is not the thing.",
+                "footBuild": "For organisations",
+                "footPrivacy": "Privacy & AI",
+                "footTerms": "Terms",
+                "footRights": "© OpenPoem. OpenPoem® is a registered trademark in the Benelux.",
+                "vsx": "The theme I write in — <b>OpenPoem Night</b> for VS Code"
+        },
+        "nl": {
+                "m1": "Ik bouw een iPhone-app voor de <em>3%</em>.",
+                "m2": "Niet voor de likes. Niet voor de massa. Alleen voor de enkelen.",
+                "m3": "Voor wie luistert tussen de woorden.",
+                "m4": "Om de waarheid achter de woorden te vinden.",
+                "cue": "scroll",
+                "p1": "Voor wie spreekt<br>zonder woorden",
+                "p2": "Voor wie weet<br>dat stilte doodt",
+                "p3": "Voor wie ziet<br>waar het donker is",
+                "p4": "Voor wie huilt<br>in de regen",
+                "p5": "Voor wie ademt<br>tot het volbracht is",
+                "prodEyebrow": "De app",
+                "prodHead": "Geef het taal.<br>Lees wat eronder ligt.",
+                "prodLine": "Plak een bericht, een pagina, een hele vergadering — of spreek het — en lees wat gewild wordt, wat onuitgesproken blijft, waar de spanning zit, en de weg terug naar ervoor.",
+                "prodP1": "Gelezen door Claude · wij bewaren geen tekst",
+                "prodP2": "Opnemen en transcriberen blijven op je iPhone",
+                "prodP3": "Vijf lezingen per dag, gratis",
+                "prodFine": "Hoe het met je woorden werkt →",
+                "ctaQ": "Wil je de preflight Apple-versie testen?",
+                "ctaNote": "iPhone 15 Pro of nieuwer · preflight-bèta",
+                "betaAsk": "Vraag bèta-toegang aan",
+                "betaBtn": "Test op TestFlight",
+                "brandEyebrow": "Het merk",
+                "brandApple": "<b>Apple</b> — het woord. Vóór de appel wees een woord naar het ding; daarna naar goed en kwaad. De naam ging vóór wat hij benoemde staan.",
+                "brandSnake": "<b>Slang</b> — ouder dan de naam. Ze windt zich om de vrucht omdat de betekenis er eerder was, en kent nog altijd de weg terug naar ervoor.",
+                "brandPulse": "<b>Puls</b> — de frequentie onder de woorden: de hartslag onder elk symbool. Luister daar, tussen de woorden, en je hoort wat bedoeld werd.",
+                "brandClose": "Het woord is niet het ding.",
+                "footBuild": "Voor organisaties",
+                "footPrivacy": "Privacy & AI",
+                "footTerms": "Voorwaarden",
+                "footRights": "© OpenPoem. OpenPoem® is een geregistreerd merk in de Benelux.",
+                "vsx": "Het thema waarin ik schrijf — <b>OpenPoem Night</b> voor VS Code"
+        },
+        "de": {
+                "m1": "Ich baue eine iPhone-App für die <em>3%</em>.",
+                "m2": "Nicht für die Likes. Nicht für die Masse. Nur für die wenigen.",
+                "m3": "Die, die zwischen den Wörtern hören.",
+                "m4": "Um die Wahrheit hinter den Wörtern zu finden.",
+                "cue": "scrollen",
+                "p1": "Für die, die sprechen<br>ohne Wörter",
+                "p2": "Für die, die wissen<br>Schweigen tötet",
+                "p3": "Für die, die sehen<br>wo es dunkel ist",
+                "p4": "Für die, die weinen<br>im Regen",
+                "p5": "Für die, die atmen<br>bis es vollbracht ist",
+                "prodEyebrow": "Die App",
+                "prodHead": "Gib ihr Sprache.<br>Lies, was darunter liegt.",
+                "prodLine": "Füge eine Nachricht ein, eine Seite, eine ganze Besprechung — oder sprich sie — und lies, was gewollt wird, was ungesagt bleibt, wo die Spannung sitzt, und den Weg zurück zum Davor.",
+                "prodP1": "Von Claude gelesen · wir behalten keinen Text",
+                "prodP2": "Aufnahme & Transkription bleiben auf deinem iPhone",
+                "prodP3": "Fünf Lesungen am Tag, frei",
+                "prodFine": "Wie es mit deinen Wörtern arbeitet →",
+                "ctaQ": "Willst du die Preflight-Version für Apple testen?",
+                "ctaNote": "iPhone 15 Pro oder neuer · Preflight-Beta",
+                "betaAsk": "Beta-Zugang anfragen",
+                "betaBtn": "Auf TestFlight testen",
+                "brandEyebrow": "Die Marke",
+                "brandApple": "<b>Apple</b> — das Wort. Vor dem Apfel zeigte ein Wort auf das Ding; danach auf Gut und Böse. Der Name trat vor das, was er benannte.",
+                "brandSnake": "<b>Schlange</b> — älter als der Name. Sie windet sich um die Frucht, weil die Bedeutung zuerst hier war und noch den Weg zurück zum Davor kennt.",
+                "brandPulse": "<b>Puls</b> — die Frequenz unter den Wörtern: der Herzschlag unter jedem Symbol. Hör dort hin, zwischen den Wörtern, und du hörst, was gemeint war.",
+                "brandClose": "Das Wort ist nicht das Ding.",
+                "footBuild": "Für Organisationen",
+                "footPrivacy": "Datenschutz & KI",
+                "footTerms": "Nutzungsbedingungen",
+                "footRights": "© OpenPoem. OpenPoem® ist eine eingetragene Marke in den Benelux-Ländern.",
+                "vsx": "Das Theme, in dem ich schreibe — <b>OpenPoem Night</b> für VS Code"
+        },
+        "fr": {
+                "m1": "Je bâtis une app iPhone pour les <em>3%</em>.",
+                "m2": "Pas pour les likes. Pas pour la masse. Juste pour les rares.",
+                "m3": "Ceux qui écoutent entre les mots.",
+                "m4": "Pour trouver la vérité derrière les mots.",
+                "cue": "défiler",
+                "p1": "Pour ceux qui parlent<br>sans mots",
+                "p2": "Pour ceux qui savent<br>que le silence tue",
+                "p3": "Pour ceux qui voient<br>là où il fait noir",
+                "p4": "Pour ceux qui pleurent<br>sous la pluie",
+                "p5": "Pour ceux qui respirent<br>jusqu'au bout",
+                "prodEyebrow": "L'app",
+                "prodHead": "Donne-lui une langue.<br>Lis ce qui est dessous.",
+                "prodLine": "Colle un message, une page, une réunion entière — ou parle — et lis ce qui est voulu, ce qui reste tu, où se tient la tension, et le chemin de retour vers l'avant.",
+                "prodP1": "Lu par Claude · nous ne gardons aucun texte",
+                "prodP2": "L'enregistrement et la transcription restent sur ton iPhone",
+                "prodP3": "Cinq lectures par jour, gratuites",
+                "prodFine": "Comment ça marche avec tes mots →",
+                "ctaQ": "Envie de tester la version Apple avant le vol ?",
+                "ctaNote": "iPhone 15 Pro ou plus récent · bêta avant vol",
+                "betaAsk": "Demander l'accès bêta",
+                "betaBtn": "Tester sur TestFlight",
+                "brandEyebrow": "La marque",
+                "brandApple": "<b>Apple</b> — le mot. Avant la pomme, un mot désignait la chose ; après elle, le bien et le mal. Le nom s'est dressé devant ce qu'il nommait.",
+                "brandSnake": "<b>Serpent</b> — plus vieux que le nom. Il enlace le fruit parce que le sens était là le premier, et connaît encore le chemin de retour vers l'avant.",
+                "brandPulse": "<b>Pouls</b> — la fréquence sous les mots : le battement de cœur sous chaque symbole. Écoute là, entre les mots, et tu entends ce qui était voulu.",
+                "brandClose": "Le mot n'est pas la chose.",
+                "footBuild": "Pour les organisations",
+                "footPrivacy": "Confidentialité & IA",
+                "footTerms": "Conditions",
+                "footRights": "© OpenPoem. OpenPoem® est une marque déposée au Benelux.",
+                "vsx": "Le thème dans lequel j'écris — <b>OpenPoem Night</b> pour VS Code"
+        },
+        "es": {
+                "m1": "Construyo una app de iPhone para el <em>3%</em>.",
+                "m2": "No para los likes. No para las masas. Solo para los pocos.",
+                "m3": "Para los que escuchan entre las palabras.",
+                "m4": "Para hallar la verdad detrás de las palabras.",
+                "cue": "desliza",
+                "p1": "Para los que hablan<br>sin palabras",
+                "p2": "Para los que saben<br>que el silencio mata",
+                "p3": "Para los que ven<br>en lo oscuro",
+                "p4": "Para los que lloran<br>bajo la lluvia",
+                "p5": "Para los que respiran<br>hasta el final",
+                "prodEyebrow": "La app",
+                "prodHead": "Dale lenguaje.<br>Lee lo que hay debajo.",
+                "prodLine": "Pega un mensaje, una página, una reunión entera — o dilo en voz alta — y lee qué se quiere, qué queda sin decir, dónde está la tensión, y el camino de vuelta al antes.",
+                "prodP1": "Leído por Claude · no guardamos texto",
+                "prodP2": "La grabación y la transcripción se quedan en tu iPhone",
+                "prodP3": "Cinco lecturas al día, gratis",
+                "prodFine": "Cómo funciona con tus palabras →",
+                "ctaQ": "¿Quieres probar la versión previa de Apple?",
+                "ctaNote": "iPhone 15 Pro o más nuevo · beta previa",
+                "betaAsk": "Pide acceso a la beta",
+                "betaBtn": "Prueba en TestFlight",
+                "brandEyebrow": "La marca",
+                "brandApple": "<b>Apple</b> — la palabra. Antes de la manzana, una palabra señalaba la cosa; después, el bien y el mal. El nombre se puso delante de lo que nombraba.",
+                "brandSnake": "<b>Serpiente</b> — más vieja que el nombre. Enrosca el fruto porque el sentido estuvo aquí primero, y aún conoce el camino de vuelta al antes.",
+                "brandPulse": "<b>Pulso</b> — la frecuencia debajo de las palabras: el latido bajo cada símbolo. Escucha ahí, entre las palabras, y oyes lo que se quiso decir.",
+                "brandClose": "La palabra no es la cosa.",
+                "footBuild": "Para organizaciones",
+                "footPrivacy": "Privacidad e IA",
+                "footTerms": "Condiciones",
+                "footRights": "© OpenPoem. OpenPoem® es una marca registrada en el Benelux.",
+                "vsx": "El tema con el que escribo — <b>OpenPoem Night</b> para VS Code"
+        },
+        "it": {
+                "m1": "Costruisco un'app iPhone per il <em>3%</em>.",
+                "m2": "Non per i like. Non per le masse. Solo per i pochi.",
+                "m3": "Chi ascolta tra le parole.",
+                "m4": "Per trovare la verità dietro le parole.",
+                "cue": "scorri",
+                "p1": "Per chi parla<br>senza parole",
+                "p2": "Per chi sa<br>che il silenzio uccide",
+                "p3": "Per chi vede<br>dov'è buio",
+                "p4": "Per chi piange<br>sotto la pioggia",
+                "p5": "Per chi respira<br>fino alla fine",
+                "prodEyebrow": "L'app",
+                "prodHead": "Dalle una lingua.<br>Leggi ciò che sta sotto.",
+                "prodLine": "Incolla un messaggio, una pagina, un'intera riunione — o parla — e leggi che cosa si vuole, che cosa resta non detto, dove sta la tensione, e la via di ritorno al prima.",
+                "prodP1": "Letto da Claude · non conserviamo testo",
+                "prodP2": "Registrazione e trascrizione restano sul tuo iPhone",
+                "prodP3": "Cinque letture al giorno, gratis",
+                "prodFine": "Come funziona con le tue parole →",
+                "ctaQ": "Vuoi provare la versione Apple in preflight?",
+                "ctaNote": "iPhone 15 Pro o più recente · beta preflight",
+                "betaAsk": "Richiedi l'accesso alla beta",
+                "betaBtn": "Prova su TestFlight",
+                "brandEyebrow": "Il marchio",
+                "brandApple": "<b>Apple</b> — la parola. Prima della mela, una parola indicava la cosa; dopo, il bene e il male. Il nome si è messo davanti a ciò che nominava.",
+                "brandSnake": "<b>Serpente</b> — più antico del nome. Si avvolge al frutto perché il significato era qui per primo, e conosce ancora la via di ritorno al prima.",
+                "brandPulse": "<b>Battito</b> — la frequenza sotto le parole: il battito sotto ogni simbolo. Ascolta lì, tra le parole, e senti ciò che era voluto.",
+                "brandClose": "La parola non è la cosa.",
+                "footBuild": "Per le organizzazioni",
+                "footPrivacy": "Privacy e IA",
+                "footTerms": "Condizioni",
+                "footRights": "© OpenPoem. OpenPoem® è un marchio registrato nel Benelux.",
+                "vsx": "Il tema in cui scrivo — <b>OpenPoem Night</b> per VS Code"
+        },
+        "sv": {
+                "m1": "Jag bygger en iPhone-app för de <em>3%</em>.",
+                "m2": "Inte för likes. Inte för massan. Bara för de få.",
+                "m3": "De som lyssnar mellan orden.",
+                "m4": "För att finna sanningen bakom orden.",
+                "cue": "skrolla",
+                "p1": "För dem som talar<br>utan ord",
+                "p2": "För dem som vet<br>att tystnad dödar",
+                "p3": "För dem som ser<br>där det är mörkt",
+                "p4": "För dem som gråter<br>i regnet",
+                "p5": "För dem som andas<br>tills det är fullbordat",
+                "prodEyebrow": "Appen",
+                "prodHead": "Ge den språk.<br>Läs det som ligger under.",
+                "prodLine": "Klistra in ett meddelande, en sida, ett helt möte — eller tala in det — och läs vad som önskas, vad som förblir osagt, var spänningen sitter, och vägen tillbaka till före.",
+                "prodP1": "Läst av Claude · vi sparar ingen text",
+                "prodP2": "Inspelning & transkription stannar på din iPhone",
+                "prodP3": "Fem läsningar om dagen, gratis",
+                "prodFine": "Så fungerar det med dina ord →",
+                "ctaQ": "Vill du testa förhandsversionen för Apple?",
+                "ctaNote": "iPhone 15 Pro eller nyare · förhandsbeta",
+                "betaAsk": "Begär betaåtkomst",
+                "betaBtn": "Testa via TestFlight",
+                "brandEyebrow": "Varumärket",
+                "brandApple": "<b>Apple</b> — ordet. Före äpplet pekade ett ord mot tinget; efter det, mot gott och ont. Namnet ställde sig framför det som det namngav.",
+                "brandSnake": "<b>Ormen</b> — äldre än namnet. Den ringlar sig kring frukten eftersom meningen fanns här först, och känner ännu vägen tillbaka till före.",
+                "brandPulse": "<b>Pulsen</b> — frekvensen under orden: hjärtslaget under varje symbol. Lyssna där, mellan orden, och du hör det som menades.",
+                "brandClose": "Ordet är inte tinget.",
+                "footBuild": "För organisationer",
+                "footPrivacy": "Integritet & AI",
+                "footTerms": "Villkor",
+                "footRights": "© OpenPoem. OpenPoem® är ett registrerat varumärke i Benelux.",
+                "vsx": "Temat jag skriver i — <b>OpenPoem Night</b> för VS Code"
+        },
+        "da": {
+                "m1": "Jeg bygger en iPhone-app til de <em>3%</em>.",
+                "m2": "Ikke for likes. Ikke for masserne. Kun for de få.",
+                "m3": "Dem, der lytter mellem ordene.",
+                "m4": "For at finde sandheden bag ordene.",
+                "cue": "rul",
+                "p1": "For dem, der taler<br>uden ord",
+                "p2": "For dem, der ved<br>tavshed dræber",
+                "p3": "For dem, der ser<br>hvor det er mørkt",
+                "p4": "For dem, der græder<br>i regnen",
+                "p5": "For dem, der ånder<br>til det er forbi",
+                "prodEyebrow": "Appen",
+                "prodHead": "Giv den sprog.<br>Læs, hvad der ligger under.",
+                "prodLine": "Indsæt en besked, en side, et helt møde — eller tal — og læs, hvad der ønskes, hvad der bliver usagt, hvor spændingen sidder, og vejen tilbage til før.",
+                "prodP1": "Læst af Claude · vi gemmer ingen tekst",
+                "prodP2": "Optagelse & transskription bliver på din iPhone",
+                "prodP3": "Fem læsninger om dagen, gratis",
+                "prodFine": "Sådan virker den med dine ord →",
+                "ctaQ": "Vil du teste preflight-versionen fra Apple?",
+                "ctaNote": "iPhone 15 Pro eller nyere · preflight-beta",
+                "betaAsk": "Bed om beta-adgang",
+                "betaBtn": "Test på TestFlight",
+                "brandEyebrow": "Mærket",
+                "brandApple": "<b>Apple</b> — ordet. Før æblet pegede et ord på tingen; efter det på godt og ondt. Navnet trådte foran den ting, det navngav.",
+                "brandSnake": "<b>Slange</b> — ældre end navnet. Den snor sig om frugten, fordi meningen var her først og stadig kender vejen tilbage til før.",
+                "brandPulse": "<b>Puls</b> — frekvensen under ordene: hjerteslaget under hvert symbol. Lyt dér, mellem ordene, og du hører, hvad der var ment.",
+                "brandClose": "Ordet er ikke tinget.",
+                "footBuild": "For organisationer",
+                "footPrivacy": "Privatliv & AI",
+                "footTerms": "Vilkår",
+                "footRights": "© OpenPoem. OpenPoem® er et registreret varemærke i Benelux.",
+                "vsx": "Temaet, jeg skriver i — <b>OpenPoem Night</b> til VS Code"
+        },
+        "nb": {
+                "m1": "Jeg bygger en iPhone-app for de <em>3%</em>.",
+                "m2": "Ikke for likes. Ikke for massene. Bare for de få.",
+                "m3": "De som lytter mellom ordene.",
+                "m4": "For å finne sannheten bak ordene.",
+                "cue": "rull",
+                "p1": "For dem som taler<br>uten ord",
+                "p2": "For dem som vet<br>at stillhet dreper",
+                "p3": "For dem som ser<br>der det er mørkt",
+                "p4": "For dem som gråter<br>i regnet",
+                "p5": "For dem som puster<br>til det er over",
+                "prodEyebrow": "Appen",
+                "prodHead": "Gi den språk.<br>Les det som ligger under.",
+                "prodLine": "Lim inn en melding, en side, et helt møte — eller snakk den inn — og les hva som ønskes, hva som blir usagt, hvor spenningen sitter, og veien tilbake til før.",
+                "prodP1": "Lest av Claude · vi beholder ingen tekst",
+                "prodP2": "Opptak & transkripsjon blir på iPhonen din",
+                "prodP3": "Fem lesninger om dagen, gratis",
+                "prodFine": "Slik virker den med ordene dine →",
+                "ctaQ": "Vil du teste forhåndsversjonen fra Apple?",
+                "ctaNote": "iPhone 15 Pro eller nyere · forhåndsbeta",
+                "betaAsk": "Be om betatilgang",
+                "betaBtn": "Test på TestFlight",
+                "brandEyebrow": "Merket",
+                "brandApple": "<b>Apple</b> — ordet. Før eplet pekte et ord mot tingen; etter det, mot godt og ondt. Navnet trådte foran det det navnga.",
+                "brandSnake": "<b>Slangen</b> — eldre enn navnet. Den slynger seg om frukten fordi mening var her først, og kjenner ennå veien tilbake til før.",
+                "brandPulse": "<b>Pulsen</b> — frekvensen under ordene: hjerteslaget under hvert symbol. Lytt der, mellom ordene, og du hører hva som var ment.",
+                "brandClose": "Ordet er ikke tinget.",
+                "footBuild": "For organisasjoner",
+                "footPrivacy": "Personvern & KI",
+                "footTerms": "Vilkår",
+                "footRights": "© OpenPoem. OpenPoem® er et registrert varemerke i Benelux.",
+                "vsx": "Temaet jeg skriver i — <b>OpenPoem Night</b> for VS Code"
+        },
+        "fi": {
+                "m1": "Rakennan iPhone-sovellusta <em>3%</em>:lle.",
+                "m2": "Ei tykkäyksille. Ei massoille. Vain harvoille.",
+                "m3": "Niille, jotka kuuntelevat sanojen välissä.",
+                "m4": "Löytääkseen totuuden sanojen takaa.",
+                "cue": "vieritä",
+                "p1": "Niille jotka puhuvat<br>ilman sanoja",
+                "p2": "Niille jotka tietävät<br>hiljaisuus tappaa",
+                "p3": "Niille jotka näkevät<br>pimeässä",
+                "p4": "Niille jotka itkevät<br>sateessa",
+                "p5": "Niille jotka hengittävät<br>loppuun asti",
+                "prodEyebrow": "Sovellus",
+                "prodHead": "Anna sille kieltä.<br>Lue, mitä on alla.",
+                "prodLine": "Liitä viesti, sivu, kokonainen kokous — tai puhu se — ja lue, mitä halutaan, mikä jää sanomatta, missä jännite on, ja tie takaisin siihen, mitä oli ennen.",
+                "prodP1": "Claude lukee · emme säilytä tekstiä",
+                "prodP2": "Nauhoitus ja litterointi pysyvät iPhonessasi",
+                "prodP3": "Viisi lukemista päivässä, ilmaiseksi",
+                "prodFine": "Miten se toimii sanojesi kanssa →",
+                "ctaQ": "Haluatko testata Applen esiversiota?",
+                "ctaNote": "iPhone 15 Pro tai uudempi · esiversion beta",
+                "betaAsk": "Pyydä beta-pääsyä",
+                "betaBtn": "Testaa TestFlightissä",
+                "brandEyebrow": "Merkki",
+                "brandApple": "<b>Apple</b> — sana. Ennen omenaa sana osoitti asiaa; sen jälkeen hyvää ja pahaa. Nimi astui sen eteen, minkä nimesi.",
+                "brandSnake": "<b>Käärme</b> — nimeä vanhempi. Se kietoutuu hedelmään, koska merkitys oli täällä ensin — ja tietää yhä tien takaisin siihen, mitä oli ennen.",
+                "brandPulse": "<b>Syke</b> — taajuus sanojen alla: sydämenlyönti jokaisen merkin alla. Kuuntele siellä, sanojen välissä, niin kuulet, mitä tarkoitettiin.",
+                "brandClose": "Sana ei ole asia.",
+                "footBuild": "Organisaatioille",
+                "footPrivacy": "Yksityisyys & tekoäly",
+                "footTerms": "Käyttöehdot",
+                "footRights": "© OpenPoem. OpenPoem® on Beneluxissa rekisteröity tavaramerkki.",
+                "vsx": "Teema, jolla kirjoitan — <b>OpenPoem Night</b> VS Codelle"
+        }
+};
+        const NAMES = {"en":"English","nl":"Nederlands","de":"Deutsch","fr":"Français","es":"Español","it":"Italiano","sv":"Svenska","da":"Dansk","nb":"Norsk","fi":"Suomi"};
+        const ORDER = ["en","nl","de","fr","es","it","sv","da","nb","fi"];
+        function pick(){
+            try{ const s=localStorage.getItem('openpoem.lang'); if(s&&T[s]) return s; }catch(e){}
+            const navs = navigator.languages || [navigator.language || 'en'];
+            for(const l of navs){ const c=(l||'').slice(0,2).toLowerCase(); if(c==='no'&&T['nb']) return 'nb'; if(T[c]) return c; }
+            return 'en';
+        }
+        let lang = pick();
         const TESTFLIGHT="https://testflight.apple.com/join/REPLACE";
         function wireBeta(){
             const d=T[lang]||T.en, pending=TESTFLIGHT.indexOf('REPLACE')>=0;
@@ -263,18 +584,26 @@
             });
         }
         function apply(){
-            const d=T[lang];
-            document.querySelectorAll('[data-k]').forEach(el=>{
-                const k=el.getAttribute('data-k'); if(d[k]==null) return;
-                if(d[k].indexOf('<')>=0) el.innerHTML=d[k]; else el.textContent=d[k];
+            const d=T[lang]||T.en;
+            document.querySelectorAll('[data-k]').forEach(function(el){
+                const k=el.getAttribute('data-k'); let v=(d[k]!=null)?d[k]:T.en[k];
+                if(v==null) return;
+                if(v.indexOf('<')>=0) el.innerHTML=v; else el.textContent=v;
             });
             document.documentElement.lang=lang;
             wireBeta();
         }
-        // reveal the poem line by line
-        const io=new IntersectionObserver((es)=>{ es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.3});
-        document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i*0.12)+'s'; io.observe(el); });
-
+        function buildPicker(){
+            const sel=document.querySelector('.langsel'); if(!sel) return;
+            if(!sel.options.length){
+                ORDER.forEach(function(c){ const o=document.createElement('option'); o.value=c; o.textContent=NAMES[c]; sel.appendChild(o); });
+                sel.addEventListener('change', function(e){ lang=e.target.value; try{localStorage.setItem('openpoem.lang',lang);}catch(err){} apply(); });
+            }
+            sel.value=lang;
+        }
+        const io=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } }); },{threshold:0.3});
+        document.querySelectorAll('.reveal').forEach(function(el,i){ el.style.transitionDelay=(i*0.12)+'s'; io.observe(el); });
+        buildPicker();
         apply();
     })();
     </script>
