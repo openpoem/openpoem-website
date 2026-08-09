@@ -147,6 +147,9 @@
         @keyframes vsxpulse{ 0%,100%{ opacity:0.5; transform:scale(0.82); } 50%{ opacity:1; transform:scale(1.18); box-shadow:0 0 16px rgba(209,56,43,1); } }
         @media(prefers-reduced-motion:reduce){ .vsx .dot{ animation:none; } }
         footer .rights{ font-family:var(--sans); margin-top:1rem; font-size:0.72rem; color:rgba(255,255,255,0.32); }
+        footer .mz{ display:inline-flex; align-items:center; gap:0.45rem; margin-top:0.9rem; font-family:var(--sans); font-size:0.78rem; letter-spacing:0.02em; color:var(--muted); text-decoration:none; transition:color .18s ease; }
+        footer .mz:hover{ color:var(--ink); }
+        footer .mz svg{ opacity:0.85; }
     </style>
 </head>
 <body>
@@ -228,6 +231,10 @@
             <span data-k="vsx">The theme I write in — <b>OpenPoem Night</b> for VS&nbsp;Code</span>
         </a>
         <div class="rights" data-k="footRights">© OpenPoem. OpenPoem® is a registered trademark in the Benelux.</div>
+        <a class="mz" href="https://mediazone.nl" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M4.8 7.2h14.4M4.8 16.8h14.4"/></svg>
+            Mediazone
+        </a>
     </footer>
 
     <script>
