@@ -1,0 +1,5 @@
+# Static hand-written site — Jekyll only copies files (no Liquid: pages have no front matter).
+# The one thing we need Jekyll to do differently: include the .well-known dot-directory
+# (normally excluded) so /.well-known/tdmrep.json is served for the TDM opt-out.
+include:
+  - ".well-known"
