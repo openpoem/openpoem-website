@@ -6,6 +6,12 @@
     <script>document.documentElement.classList.add('js')</script>
     <title>OpenPoem · For the few who listen between the words</title>
     <meta name="description" content="An iPhone app for the few. For those who listen between the words — read by Claude, and we keep no text. Test the preflight version.">
+    <!-- AI / TDM signals: findable & citable, but not for model training.
+         Mirrors robots.txt (Content-Signal: ai-train=no) + /.well-known/tdmrep.json.
+         GitHub Pages can't set HTTP headers, so we reserve rights via meta tags. -->
+    <meta name="tdm-reservation" content="1">
+    <meta name="tdm-policy" content="https://openpoem.org/.well-known/tdmrep.json">
+    <meta name="robots" content="noai, noimageai">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://openpoem.org/">
     <meta property="og:title" content="OpenPoem — The word is not the thing.">
