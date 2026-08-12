@@ -1,0 +1,59 @@
+# openpoem.org
+# Findable everywhere — not used to train AI models.
+# Search engines and live AI assistants may read and cite this site;
+# AI *training* crawlers are asked to stay out.
+#
+# Content-Signal states a preference for how automated systems may use this
+# content (a statement of preference, not a technical access control):
+#   search   = build a search index and surface links to this site
+#   ai-input = use content as input to an AI system (RAG, grounding, live answers)
+#   ai-train = use content to train or fine-tune AI models
+
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+# --- Opt out of AI model training ---
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: PanguBot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+Sitemap: https://openpoem.org/sitemap.xml
